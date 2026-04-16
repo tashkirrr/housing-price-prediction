@@ -16,6 +16,16 @@
 - [style.css](file://global-housing-static/css/style.css)
 </cite>
 
+## Update Summary
+**Changes Made**
+- Updated project branding from "Global Housing Predictor" to "Realteak" throughout all documentation
+- Added comprehensive documentation for new navigation structure (Buy, Sell, Rent, About Us, Contact)
+- Documented enhanced hero section with integrated search functionality
+- Added new color scheme documentation (#1a1a2e, #e8b923) and Google Fonts integration
+- Updated property card design documentation with images and trend indicators
+- Enhanced CSS framework documentation with new typography system
+- Updated all file references and code examples to reflect Realteak branding
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
@@ -29,125 +39,149 @@
 
 ## Introduction
 
-The Global Housing Predictor is a fully static, client-side real estate price prediction application designed for seamless deployment on GitHub Pages. This project demonstrates modern static site deployment practices using vanilla HTML, CSS, and JavaScript without requiring any backend infrastructure.
+Realteak is a comprehensive, fully static, client-side real estate platform designed for seamless deployment on GitHub Pages. This project represents a complete rebranding from the previous Global Housing Predictor, featuring a sophisticated real estate marketplace with integrated property search, valuation tools, and market exploration capabilities.
 
-The application provides property price estimation capabilities across 20+ countries with embedded market data, responsive design, and automated deployment through GitHub Actions. It serves as an excellent example of how to build and deploy static web applications efficiently.
+The application provides advanced property price estimation across 20+ countries with enhanced market data, responsive design, automated deployment through GitHub Actions, and a modern rebranded user experience. Realteak serves as an excellent example of how to build and deploy sophisticated static web applications with enterprise-grade functionality.
+
+**Updated** Complete rebranding from Global Housing Predictor to Realteak with enhanced navigation structure and modern design system
 
 ## Project Structure
 
-The static site follows a clean, organized structure optimized for GitHub Pages deployment:
+The static site follows a modern, organized structure optimized for GitHub Pages deployment with Realteak's enhanced architecture:
 
 ```mermaid
 graph TB
-subgraph "Static Site Structure"
-A[index.html] --> B[CSS Styles]
-A --> C[JavaScript Files]
+subgraph "Realteak Static Site Structure"
+A[index.html] --> B[Enhanced CSS Styles]
+A --> C[JavaScript Modules]
 D[explore.html] --> C
 E[predict.html] --> C
 F[countries.html] --> C
 G[about.html] --> C
-C --> H[main.js - Core Logic]
-C --> I[explore.js - Search Functionality]
-C --> J[predict.js - Price Calculator]
-C --> K[countries.js - Country Listing]
-B --> L[style.css - Responsive Design]
+C --> H[main.js - Core Logic & Branding]
+C --> I[explore.js - Advanced Search]
+C --> J[predict.js - Enhanced Valuation]
+C --> K[countries.js - Market Analytics]
+B --> L[style.css - Modern Design System]
+B --> M[Google Fonts Integration]
 end
 subgraph "GitHub Pages Deployment"
-M[GitHub Repository] --> N[Pages Workflow]
-N --> O[Automated Build]
-O --> P[Static Assets]
-P --> Q[Live Website]
+N[GitHub Repository] --> O[Pages Workflow]
+O --> P[Automated Build]
+P --> Q[Static Assets]
+Q --> R[Live Realteak Website]
 end
-R[.github/workflows/pages.yml] --> N
+S[.github/workflows/pages.yml] --> O
 ```
 
 **Diagram sources**
-- [index.html:1-230](file://global-housing-static/index.html#L1-L230)
+- [index.html:1-285](file://global-housing-static/index.html#L1-L285)
 - [pages.yml:1-35](file://global-housing-static/.github/workflows/pages.yml#L1-L35)
 
 **Section sources**
-- [README.md:35-53](file://global-housing-static/README.md#L35-L53)
-- [index.html:1-230](file://global-housing-static/index.html#L1-L230)
+- [README.md:1-83](file://global-housing-static/README.md#L1-L83)
+- [index.html:1-285](file://global-housing-static/index.html#L1-L285)
 
 ## Core Components
 
-### Static HTML Pages
-The application consists of five primary HTML pages, each serving specific functionality:
+### Enhanced Navigation System
+Realteak features a sophisticated four-tier navigation structure designed for real estate workflows:
 
-- **index.html**: Homepage featuring hero section, statistics, featured properties, and call-to-action
-- **explore.html**: City and country search interface with filtering capabilities
-- **predict.html**: Interactive property price prediction calculator
-- **countries.html**: Country listing with market statistics
-- **about.html**: Methodology and data source information
+- **Buy**: Primary navigation for property search and market exploration
+- **Sell**: Property valuation and listing tools
+- **Rent**: Rental market analysis and tenant resources
+- **About Us**: Company information and methodology
+- **Contact**: Support and inquiry management
+
+### Modern Hero Section
+The enhanced hero section includes integrated property search functionality with three-tier filtering:
+
+- **Location Search**: Comprehensive city and country search
+- **Property Type**: House, Apartment, Villa, Townhouse selection
+- **Price Range**: $0-$100k, $100k-$500k, $500k+ options
+- **Integrated Call-to-Action**: Streamlined property discovery
+
+### Advanced Property Cards
+Realteak introduces sophisticated property cards with:
+
+- **High-quality property imagery**: Landscape and lifestyle photos
+- **Trend indicators**: Upward/downward arrows with percentage changes
+- **Property badges**: Featured listings and special offers
+- **Enhanced metadata**: Detailed property specifications and pricing
 
 ### JavaScript Architecture
-All functionality is contained within three specialized JavaScript modules:
+All functionality is contained within four specialized JavaScript modules:
 
-- **main.js**: Contains shared functions, global data storage, currency formatting, and DOM manipulation utilities
-- **explore.js**: Handles location search, filtering, and city listing functionality
-- **predict.js**: Implements the price calculation algorithm and form handling
-- **countries.js**: Manages country listing and navigation
+- **main.js**: Enhanced shared functions, global data storage, currency formatting, DOM manipulation utilities, and Realteak branding
+- **explore.js**: Advanced location search, filtering, and city listing functionality
+- **predict.js**: Enhanced price calculation algorithm with confidence scoring and market comparison
+- **countries.js**: Market analytics and country listing management
 
-### CSS Framework
-The stylesheet provides comprehensive styling with responsive design principles, custom CSS variables for consistent theming, and mobile-first approach.
+### Modern CSS Framework
+The stylesheet provides comprehensive styling with Realteak's enhanced design system:
+
+- **Color Scheme**: Deep blue (#1a1a2e) and gold (#e8b923) accent colors
+- **Typography System**: Inter, Great Vibes, and Poppins font integration
+- **Responsive Design**: Mobile-first approach with advanced breakpoint management
+- **Custom CSS Variables**: Consistent theming across all components
 
 **Section sources**
-- [index.html:1-230](file://global-housing-static/index.html#L1-L230)
-- [explore.html:1-84](file://global-housing-static/explore.html#L1-L84)
-- [predict.html:1-126](file://global-housing-static/predict.html#L1-L126)
-- [countries.html:1-54](file://global-housing-static/countries.html#L1-L54)
-- [about.html:1-128](file://global-housing-static/about.html#L1-L128)
+- [index.html:10-74](file://global-housing-static/index.html#L10-L74)
+- [explore.html:10-29](file://global-housing-static/explore.html#L10-L29)
+- [predict.html:10-29](file://global-housing-static/predict.html#L10-L29)
+- [countries.html:10-25](file://global-housing-static/countries.html#L10-L25)
+- [about.html:10-25](file://global-housing-static/about.html#L10-L25)
 
 ## Architecture Overview
 
-The static site employs a client-side architecture pattern that maximizes performance and minimizes server requirements:
+The static site employs a modern client-side architecture pattern optimized for Realteak's sophisticated real estate platform:
 
 ```mermaid
 sequenceDiagram
 participant User as User Browser
-participant HTML as HTML Pages
+participant HTML as Realteak Pages
 participant JS as JavaScript Modules
 participant Data as Embedded Data
 participant GitHub as GitHub Pages
-User->>HTML : Load Page
+User->>HTML : Load Realteak Site
 HTML->>JS : Load main.js
 JS->>Data : Access globalData
-Data-->>JS : Return country/city data
-JS-->>HTML : Render dynamic content
-HTML-->>User : Display interactive interface
-User->>JS : Submit form/Click button
+Data-->>JS : Return enhanced property/country data
+JS-->>HTML : Render branded interface
+HTML-->>User : Display Realteak experience
+User->>JS : Search/Submit form
 JS->>Data : Process calculations
-Data-->>JS : Return results
-JS-->>HTML : Update DOM with results
-HTML-->>User : Show calculated price
-Note over User,GitHub : All processing happens client-side
+Data-->>JS : Return results with confidence
+JS-->>HTML : Update DOM with enhanced cards
+HTML-->>User : Show property results with trends
+Note over User,GitHub : All processing client-side with Realteak branding
 ```
 
 **Diagram sources**
-- [main.js:1-210](file://global-housing-static/js/main.js#L1-L210)
-- [predict.js:1-122](file://global-housing-static/js/predict.js#L1-L122)
+- [main.js:168-210](file://global-housing-static/js/main.js#L168-L210)
+- [predict.js:46-122](file://global-housing-static/js/predict.js#L46-L122)
 - [explore.js:1-107](file://global-housing-static/js/explore.js#L1-L107)
 
 The architecture leverages several key principles:
 
-### Data Embedding Strategy
-All market data is embedded directly in JavaScript files, eliminating the need for external API calls or server-side processing. This approach ensures fast loading times and reliable operation.
+### Enhanced Data Embedding Strategy
+All market data is embedded directly in JavaScript files with Realteak's enhanced property dataset, eliminating external API calls while supporting sophisticated property analytics and trend calculations.
 
 ### Modular JavaScript Design
-Each page loads only the JavaScript necessary for its functionality, reducing bundle size and improving performance.
+Each page loads only necessary JavaScript for its functionality, with enhanced modularity supporting Realteak's complex navigation and property presentation systems.
 
-### Responsive Design Implementation
-CSS media queries and flexible layouts ensure optimal viewing experience across all device sizes.
+### Advanced Responsive Design Implementation
+CSS media queries and flexible layouts ensure optimal viewing experience across all device sizes with Realteak's modern design system.
 
 **Section sources**
-- [main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
-- [style.css:1-806](file://global-housing-static/css/style.css#L1-L806)
+- [main.js:19-133](file://global-housing-static/js/main.js#L19-L133)
+- [style.css:1-734](file://global-housing-static/css/style.css#L1-L734)
 
 ## Detailed Component Analysis
 
-### Price Prediction Engine
+### Enhanced Price Prediction Engine
 
-The prediction algorithm combines multiple factors to calculate property values:
+The prediction algorithm combines multiple factors with Realteak's sophisticated confidence scoring:
 
 ```mermaid
 flowchart TD
@@ -162,10 +196,11 @@ H --> I[Age Discount]
 I --> J[Garage/Patio Bonus]
 J --> K[Pool Bonus]
 K --> L[Income Factor]
-L --> M[Final Price]
-M --> N[Confidence Level]
+L --> M[Enhanced Confidence Scoring]
+M --> N[Final Price]
 N --> O[Price Range]
-O --> P[Display Results]
+O --> P[Market Context]
+P --> Q[Display Enhanced Results]
 ```
 
 **Diagram sources**
@@ -176,11 +211,12 @@ The calculation process incorporates:
 - **Feature Bonuses**: Bedrooms (+$10k each), Bathrooms (+$8k each), Garage (+$15k), Pool (+$25k)
 - **Age Adjustment**: Progressive discount for older properties
 - **Income Factor**: Local purchasing power adjustment
-- **Confidence Scoring**: Based on data availability and market maturity
+- **Enhanced Confidence Scoring**: Based on data availability and market maturity
+- **Market Comparison**: Contextual analysis against local averages
 
-### Search and Filtering System
+### Advanced Search and Filtering System
 
-The explore functionality provides comprehensive location-based search:
+The explore functionality provides comprehensive location-based search with Realteak's enhanced filtering:
 
 ```mermaid
 classDiagram
@@ -188,37 +224,38 @@ class GlobalData {
 +countries : Array
 +cities : Object
 +featuredProperties : Array
-+featuredProperties : Array
 }
 class SearchEngine {
 +searchLocations()
 +displayAllCities()
-+createCityCard()
++createEnhancedCityCard()
 +searchInput : Element
 +countryFilter : Element
 }
-class CityCard {
+class EnhancedCityCard {
 +city : String
 +country : String
 +avgPrice : Number
 +priceMultiplier : Number
++trendIndicator : String
++propertyImage : String
 }
 GlobalData --> SearchEngine : contains
-SearchEngine --> CityCard : creates
-CityCard --> GlobalData : references
+SearchEngine --> EnhancedCityCard : creates
+EnhancedCityCard --> GlobalData : references
 ```
 
 **Diagram sources**
 - [explore.js:20-59](file://global-housing-static/js/explore.js#L20-L59)
-- [main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [main.js:19-133](file://global-housing-static/js/main.js#L19-L133)
 
 **Section sources**
 - [predict.js:46-113](file://global-housing-static/js/predict.js#L46-L113)
 - [explore.js:61-94](file://global-housing-static/js/explore.js#L61-L94)
 
-### Responsive Navigation System
+### Modern Navigation System
 
-The navigation component adapts seamlessly across device sizes:
+The navigation component adapts seamlessly across device sizes with Realteak's enhanced branding:
 
 ```mermaid
 stateDiagram-v2
@@ -247,7 +284,7 @@ Visible --> Hidden : User clicks outside
 
 ## Deployment Pipeline
 
-The GitHub Actions workflow automates the entire deployment process:
+The GitHub Actions workflow automates the entire deployment process for Realteak:
 
 ```mermaid
 flowchart TD
@@ -257,7 +294,7 @@ C --> D[Setup GitHub Pages]
 D --> E[Upload Artifact]
 E --> F[Deploy to GitHub Pages]
 F --> G[Generate URL]
-G --> H[Live Website]
+G --> H[Live Realteak Website]
 I[Workflow Dispatch] --> B
 J[Branch Push] --> B
 subgraph "Workflow Configuration"
@@ -289,28 +326,28 @@ The workflow includes several key security and performance features:
 
 ### Optimization Strategies
 
-The static architecture inherently provides excellent performance characteristics:
+The static architecture inherently provides excellent performance characteristics with Realteak's enhanced optimizations:
 
-- **Zero Server Costs**: No backend infrastructure required
-- **CDN Distribution**: GitHub Pages automatically serves content globally
-- **Minimal Dependencies**: Single HTML/CSS/JS files per page
-- **Fast Load Times**: Embedded data eliminates network requests
+- **Zero Server Costs**: No backend infrastructure required for Realteak's client-side operations
+- **CDN Distribution**: GitHub Pages automatically serves content globally with enhanced caching
+- **Minimal Dependencies**: Single HTML/CSS/JS files per page with optimized asset loading
+- **Fast Load Times**: Embedded data eliminates network requests while supporting sophisticated property analytics
 
-### Bundle Size Management
+### Enhanced Bundle Size Management
 
-Each page loads only necessary JavaScript:
-- **Homepage**: Loads main.js for navigation and featured properties
-- **Explore Page**: Loads main.js + explore.js for search functionality
-- **Predict Page**: Loads main.js + predict.js for calculation engine
-- **Countries Page**: Loads main.js + countries.js for listing
-- **About Page**: Loads main.js for shared functionality
+Each page loads only necessary JavaScript with Realteak's optimized architecture:
+- **Homepage**: Loads main.js for navigation, branding, and enhanced property cards
+- **Explore Page**: Loads main.js + explore.js for advanced search and filtering
+- **Predict Page**: Loads main.js + predict.js for enhanced valuation engine
+- **Countries Page**: Loads main.js + countries.js for market analytics
+- **About Page**: Loads main.js for shared functionality with Realteak branding
 
-### Caching Strategy
+### Advanced Caching Strategy
 
 Browser caching is optimized through:
-- **Static Asset Delivery**: GitHub Pages handles efficient caching
-- **CSS Variable Usage**: Reduces repeated style calculations
-- **Minimal DOM Manipulation**: Efficient rendering with event delegation
+- **Static Asset Delivery**: GitHub Pages handles efficient caching with Realteak's asset optimization
+- **CSS Variable Usage**: Reduces repeated style calculations with enhanced theming
+- **Minimal DOM Manipulation**: Efficient rendering with event delegation and enhanced property card management
 
 ## Troubleshooting Guide
 
@@ -335,13 +372,13 @@ Browser caching is optimized through:
 
 **JavaScript Issues**
 - Use browser developer tools to inspect console errors
-- Verify globalData structure in main.js
+- Verify globalData structure in main.js with Realteak's enhanced property dataset
 - Test individual function calls in browser console
 
 **Styling Problems**
-- Check CSS specificity conflicts
-- Verify responsive breakpoints
-- Test cross-browser compatibility
+- Check CSS specificity conflicts with Realteak's enhanced design system
+- Verify responsive breakpoints with new typography and color scheme
+- Test cross-browser compatibility with Google Fonts integration
 
 **Section sources**
 - [pages.yml:8-16](file://global-housing-static/.github/workflows/pages.yml#L8-L16)
@@ -349,12 +386,13 @@ Browser caching is optimized through:
 
 ## Conclusion
 
-The Global Housing Predictor demonstrates a mature approach to static site deployment that balances functionality with simplicity. By embedding all data and logic within client-side JavaScript, the application achieves:
+Realteak demonstrates a sophisticated approach to static site deployment that balances enterprise functionality with simplicity. By embedding all data and logic within client-side JavaScript with enhanced Realteak branding, the application achieves:
 
-- **Zero Infrastructure Complexity**: No servers, databases, or backend services required
-- **Excellent Performance**: Fast loading times through embedded data and CDN distribution
+- **Zero Infrastructure Complexity**: No servers, databases, or backend services required for real estate platform
+- **Excellent Performance**: Fast loading times through embedded data and CDN distribution with enhanced optimization
 - **Automatic Updates**: Seamless deployment through GitHub Actions automation
-- **Cross-Platform Compatibility**: Responsive design works across all devices
-- **Cost-Effective Hosting**: Leverages GitHub Pages free tier
+- **Modern Branding**: Sophisticated rebranding with comprehensive navigation and design system
+- **Cross-Platform Compatibility**: Responsive design works across all devices with Realteak's enhanced user experience
+- **Cost-Effective Hosting**: Leverages GitHub Pages free tier with enterprise-grade functionality
 
-This project serves as an excellent template for similar static applications, showcasing best practices in client-side architecture, responsive design, and automated deployment workflows. The modular JavaScript structure and comprehensive GitHub Actions pipeline provide a solid foundation for future enhancements while maintaining the simplicity that makes static hosting so effective.
+This project serves as an excellent template for sophisticated static real estate applications, showcasing best practices in client-side architecture, modern design systems, comprehensive GitHub Actions pipelines, and enterprise-level rebranding strategies. The modular JavaScript structure and enhanced deployment workflow provide a solid foundation for future Realteak platform enhancements while maintaining the simplicity that makes static hosting so effective.

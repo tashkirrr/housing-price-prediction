@@ -25,14 +25,12 @@
 
 ## Update Summary
 **Changes Made**
-- Complete replacement of Streamlit-based web application with modern Next.js + TypeScript + TailwindCSS implementation
-- Client-side machine learning implementation with embedded model data
-- Real-time data integration with external APIs and geocoding services
-- GitHub Pages deployment workflow for static hosting
-- Comprehensive component architecture with React Query state management
-- Modern UI design with glass-morphism effects, animations, and responsive layouts
-- Geographic visualization capabilities with Mapbox integration
-- Multi-country housing prediction capabilities
+- Enhanced Realteak branding with new ocean-teal color scheme and gradient accents
+- Improved UI components with glass-morphism effects and modern styling system
+- Implemented responsive design patterns with mobile-first approach
+- Updated component architecture with consistent design tokens and animations
+- Modernized styling system with custom Tailwind CSS configuration
+- Enhanced user interface with improved interactive elements and visual feedback
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -47,7 +45,7 @@
 10. [Appendices](#appendices)
 
 ## Introduction
-This document focuses on the modern Next.js-based interactive web application that powers real-time property price predictions worldwide. The application features a complete rewrite from the previous Streamlit implementation, now utilizing Next.js + TypeScript + TailwindCSS for enhanced performance, modern UI design, and client-side machine learning capabilities. It provides real-time property price predictions with integrated geographic visualization, comprehensive educational insights, and support for multiple countries beyond California.
+This document focuses on the modern Next.js-based interactive web application that powers real-time property price predictions worldwide. The application features a complete rewrite from the previous Streamlit implementation, now utilizing Next.js + TypeScript + TailwindCSS for enhanced performance, modern UI design, and client-side machine learning capabilities. The application showcases the new Realteak branding with an ocean-teal color scheme, glass-morphism effects, and responsive design patterns that provide an immersive user experience across all device types.
 
 ## Project Structure
 The web application is implemented as a modern Next.js application with TypeScript and TailwindCSS for styling. The application features client-side machine learning with embedded model data, real-time data integration, and GitHub Pages deployment. The architecture supports both the Next.js web interface and maintains backward compatibility with the existing FastAPI service.
@@ -109,11 +107,11 @@ Mapbox --> Components
 - [.github/workflows/pages.yml:1-51](file://.github/workflows/pages.yml#L1-L51)
 
 ## Core Components
-The modern Next.js application consists of several key components working together to provide a seamless user experience:
+The modern Next.js application consists of several key components working together to provide a seamless user experience with the new Realteak branding:
 
 - **Root Layout** orchestrating the main application layout with header, footer, and provider setup
-- **Header Component** with responsive navigation, mobile menu, and glass-morphism design
-- **Footer Component** with comprehensive link structure and social media integration
+- **Header Component** featuring the new Realteak branding with ocean-teal gradient logo and responsive navigation
+- **Footer Component** showcasing the enhanced footer design with glass-morphism effects
 - **React Query Provider** managing caching, optimistic updates, and error handling
 - **State Management** powered by React Query for caching, stale-while-revalidate strategy
 - **Client-Side ML** with embedded model data for instant predictions without server requests
@@ -123,9 +121,9 @@ The modern Next.js application consists of several key components working togeth
 Key implementation highlights:
 - Real-time prediction calculations with debounced updates
 - Interactive sliders and number inputs with visual feedback
-- Glass-morphism UI design with TailwindCSS utilities
-- Responsive layout supporting desktop and mobile experiences
-- Animated transitions using Framer Motion
+- Glass-morphism UI design with TailwindCSS utilities and backdrop blur
+- Responsive layout supporting desktop and mobile experiences with mobile-first approach
+- Animated transitions using Framer Motion with custom easing functions
 - Comprehensive error handling and loading states
 - Integration with external APIs for geocoding and real-time data
 - Multi-country support with country-specific model data
@@ -173,7 +171,7 @@ EmbeddedModel -.-> APIApp["Legacy FastAPI Service"]
 ## Detailed Component Analysis
 
 ### Next.js Application Layout (layout.tsx)
-The root layout component serves as the foundation for all pages, managing metadata, fonts, providers, and overall application structure.
+The root layout component serves as the foundation for all pages, managing metadata, fonts, providers, and overall application structure with the new Realteak branding.
 
 ```mermaid
 flowchart TD
@@ -192,28 +190,32 @@ RenderFooter --> HydrationComplete["SSR/Hydration Complete"]
 - [layout.tsx:1-42](file://global-housing-predictor/src/app/layout.tsx#L1-L42)
 
 ### Header Component (Header.tsx)
-The Header component provides responsive navigation with glass-morphism design, animated mobile menu, and brand identity.
+The Header component provides responsive navigation with glass-morphism design, animated mobile menu, and the new Realteak branding featuring ocean-teal gradient accents.
 
 Key features:
 - Responsive navigation with desktop and mobile views
-- Animated mobile menu using Framer Motion
-- Glass-morphism design with backdrop blur
-- Navigation items for Home, Explore, Predict, and About
-- Brand logo with gradient background
-- Smooth hover animations and transitions
+- Animated mobile menu using Framer Motion with smooth transitions
+- Glass-morphism design with backdrop blur and transparent backgrounds
+- Realteak branding with gradient ocean-teal logo and modern typography
+- Navigation items for Home, Explore, Predict, and About with Lucide icons
+- Enhanced hover animations and interactive feedback
+
+**Updated** Enhanced with Realteak branding and improved glass-morphism effects
 
 **Section sources**
 - [Header.tsx:1-98](file://global-housing-predictor/src/components/layout/Header.tsx#L1-L98)
 
 ### Footer Component (Footer.tsx)
-The Footer component provides comprehensive link structure, brand information, and social media integration.
+The Footer component provides comprehensive link structure, brand information, and social media integration with the new Realteak design language.
 
 Key features:
 - Multi-column layout with product, resources, and legal sections
-- Brand identity with logo and tagline
-- Social media links with hover effects
-- Responsive grid layout adapting to screen size
-- Copyright information and legal compliance
+- Realteak brand identity with ocean-teal gradient logo and modern typography
+- Social media links with hover effects and consistent styling
+- Responsive grid layout adapting to screen size with glass-morphism background
+- Enhanced copyright information and legal compliance with updated branding
+
+**Updated** Updated with Realteak branding and improved glass-morphism design
 
 **Section sources**
 - [Footer.tsx:1-99](file://global-housing-predictor/src/components/layout/Footer.tsx#L1-L99)
@@ -255,14 +257,17 @@ The service layer provides abstraction for external API integrations:
 - [package.json:15-19](file://global-housing-predictor/package.json#L15-L19)
 
 ### UI Component Library
-The application includes a comprehensive set of specialized UI components:
+The application includes a comprehensive set of specialized UI components with the new Realteak design system:
 
-- **Glass-Morphism Cards**: Modern card designs with backdrop blur
-- **Animated Transitions**: Smooth page and component transitions
-- **Interactive Sliders**: Radix UI sliders for property inputs
-- **Dialog Components**: Modal dialogs for detailed information
-- **Dropdown Menus**: Country selection and navigation dropdowns
-- **Responsive Grids**: Adaptive layouts for different screen sizes
+- **Glass-Morphism Cards**: Modern card designs with backdrop blur and transparent backgrounds
+- **Animated Transitions**: Smooth page and component transitions with custom easing
+- **Interactive Sliders**: Radix UI sliders for property inputs with enhanced visual feedback
+- **Dialog Components**: Modal dialogs for detailed information with glass-morphism styling
+- **Dropdown Menus**: Country selection and navigation dropdowns with consistent design
+- **Responsive Grids**: Adaptive layouts for different screen sizes with mobile-first approach
+- **Custom Color System**: Ocean-teal and teal gradients as primary brand colors
+
+**Updated** Enhanced with Realteak branding and improved glass-morphism effects
 
 **Section sources**
 - [Header.tsx:15-98](file://global-housing-predictor/src/components/layout/Header.tsx#L15-L98)
@@ -278,8 +283,8 @@ The modern Next.js application relies on a carefully curated set of dependencies
 - **React DOM 18.2.0**: React renderer for web platforms
 - **@tanstack/react-query 5.0.0**: Advanced state management and caching
 - **Axios 1.6.0**: HTTP client for API requests
-- **Lucide React 0.294.0**: SVG icon library
-- **Framer Motion 10.16.0**: Animation library for smooth transitions
+- **Lucide React 0.294.0**: SVG icon library with consistent design language
+- **Framer Motion 10.16.0**: Animation library for smooth transitions and micro-interactions
 - **Recharts 2.10.0**: Charting library for data visualization
 - **Zustand 4.4.0**: Lightweight state management
 - **Radix UI**: Accessible UI components (Dialog, Dropdown Menu, Select, Slider)
@@ -288,7 +293,7 @@ The modern Next.js application relies on a carefully curated set of dependencies
 
 **Development Dependencies:**
 - **TypeScript 5.0.0**: Type safety and enhanced development experience
-- **TailwindCSS 3.3.0**: Utility-first CSS framework
+- **TailwindCSS 3.3.0**: Utility-first CSS framework with custom color system
 - **PostCSS 8.4.0**: CSS post-processor
 - **Autoprefixer 10.4.0**: Automatic vendor prefixing
 - **ESLint 8.0.0**: Code quality and linting
@@ -319,7 +324,7 @@ NextApp --> TypeScript["typescript@^5.0.0"]
 - [package.json:1-44](file://global-housing-predictor/package.json#L1-L44)
 
 ## Performance Considerations
-The modern Next.js application implements several performance optimizations:
+The modern Next.js application implements several performance optimizations with the new Realteak branding:
 
 - **Static Generation**: Next.js generates static HTML for optimal performance
 - **Client-Side Caching**: React Query manages intelligent caching with 1-minute stale time
@@ -327,48 +332,59 @@ The modern Next.js application implements several performance optimizations:
 - **Optimized Rendering**: Memoized components and efficient state updates
 - **Bundle Optimization**: Next.js provides efficient bundling and tree-shaking
 - **Embedded Model**: Client-side ML eliminates network latency for predictions
-- **Responsive Design**: Mobile-first approach with adaptive layouts
+- **Responsive Design**: Mobile-first approach with adaptive layouts and glass-morphism effects
 - **Image Optimization**: Next.js automatically optimizes images
 - **Code Splitting**: Dynamic imports for route-based splitting
 - **Font Optimization**: Preloading and subsetting of Google Fonts
+- **Animation Performance**: Hardware-accelerated animations with Framer Motion
+- **CSS Optimization**: TailwindCSS purging and custom color system optimization
+
+**Updated** Enhanced with glass-morphism effects and improved animation performance
 
 **Section sources**
 - [providers.tsx:7-17](file://global-housing-predictor/src/components/providers.tsx#L7-L17)
 - [layout.tsx:8-16](file://global-housing-predictor/src/app/layout.tsx#L8-L16)
 
 ## Troubleshooting Guide
-Common issues and resolutions for the modern Next.js application:
+Common issues and resolutions for the modern Next.js application with Realteak branding:
 
 - **Model Loading Issues**: Ensure embedded model data is properly included in build
 - **API Integration Problems**: Verify external API keys and network connectivity
 - **Build Errors**: Check Next.js configuration and dependency versions
 - **Performance Issues**: Monitor React Query cache and optimize component rendering
-- **Styling Problems**: Verify TailwindCSS configuration and utility classes
+- **Styling Problems**: Verify TailwindCSS configuration and custom color system
 - **Deployment Failures**: Check GitHub Pages workflow permissions and build artifacts
 - **Mapbox Issues**: Verify API keys and geographic data availability
 - **TypeScript Errors**: Check type definitions and configuration settings
+- **Glass-Morphism Effects**: Ensure backdrop blur and transparency are supported in target browsers
+- **Animation Issues**: Verify Framer Motion animations are compatible with target devices
+
+**Updated** Added troubleshooting for Realteak branding and glass-morphism effects
 
 **Section sources**
 - [.github/workflows/pages.yml:16-51](file://.github/workflows/pages.yml#L16-L51)
 - [tsconfig.json:1-50](file://global-housing-predictor/tsconfig.json#L1-L50)
 
 ## Conclusion
-The modern Next.js-based web application delivers a superior user experience compared to the previous Streamlit implementation. With client-side machine learning, real-time data integration, geographic visualization, and modern UI design, the application provides instant price predictions with comprehensive demographic insights across multiple countries. The GitHub Pages deployment ensures easy distribution while maintaining backward compatibility with the existing FastAPI service for programmatic access.
+The modern Next.js-based web application delivers a superior user experience compared to the previous Streamlit implementation, now featuring the enhanced Realteak branding. With its ocean-teal color scheme, glass-morphism design effects, responsive layout patterns, and client-side machine learning capabilities, the application provides instant price predictions with comprehensive demographic insights across multiple countries. The GitHub Pages deployment ensures easy distribution while maintaining backward compatibility with the existing FastAPI service for programmatic access.
 
 ## Appendices
 
 ### User Interaction Examples
-- Example 1: Navigate between Home, Explore, Predict, and About sections with animated transitions
-- Example 2: Use responsive navigation with mobile menu that animates open/close
+- Example 1: Navigate between Home, Explore, Predict, and About sections with animated transitions and glass-morphism effects
+- Example 2: Use responsive navigation with mobile menu that animates open/close with smooth transitions
 - Example 3: Explore geographic visualization with Mapbox integration and location-based insights
-- Example 4: View comprehensive footer with multi-column link structure and social media integration
+- Example 4: View comprehensive footer with multi-column link structure and social media integration featuring Realteak branding
+- Example 5: Interact with property input controls featuring glass-morphism cards and real-time validation feedback
 
 Expected responses:
-- Smooth page transitions with loading states
-- Responsive navigation that adapts to mobile screen sizes
-- Geographic visualization with interactive map controls
-- Glass-morphism design elements with backdrop blur effects
-- Multi-country support with country-specific model data
+- Smooth page transitions with loading states and glass-morphism effects
+- Responsive navigation that adapts to mobile screen sizes with Realteak branding
+- Geographic visualization with interactive map controls and modern UI elements
+- Glass-morphism design elements with backdrop blur effects and ocean-teal accents
+- Multi-country support with country-specific model data and enhanced user interface
+
+**Updated** Enhanced with Realteak branding and glass-morphism effects
 
 **Section sources**
 - [Header.tsx:15-98](file://global-housing-predictor/src/components/layout/Header.tsx#L15-L98)
@@ -382,12 +398,16 @@ Expected responses:
   - Screen reader friendly labels and descriptions
   - High contrast color schemes for visual accessibility
   - Focus management and skip links
+  - Glass-morphism effects with appropriate contrast ratios
 - **Responsive Design**:
   - Mobile-first approach with adaptive grid layouts
   - Flexible component sizing for different screen dimensions
   - Touch-friendly input controls and interactive elements
-  - Performance optimization for mobile devices
-  - Responsive typography and spacing
+  - Performance optimization for mobile devices with animations
+  - Responsive typography and spacing with Realteak branding
+  - Glass-morphism effects optimized for various screen sizes
+
+**Updated** Enhanced with Realteak branding and glass-morphism accessibility considerations
 
 **Section sources**
 - [Header.tsx:15-98](file://global-housing-predictor/src/components/layout/Header.tsx#L15-L98)
@@ -395,11 +415,15 @@ Expected responses:
 - [globals.css:52-66](file://global-housing-predictor/src/app/globals.css#L52-L66)
 
 ### Browser Compatibility
-- **Modern Browsers**: Full support for Chrome, Firefox, Safari, and Edge
+- **Modern Browsers**: Full support for Chrome, Firefox, Safari, and Edge with glass-morphism effects
 - **JavaScript Requirements**: ES6+ features with polyfills for older browsers
 - **Progressive Enhancement**: Graceful degradation for limited browser capabilities
-- **Mobile Support**: Comprehensive touch interaction support
+- **Mobile Support**: Comprehensive touch interaction support with Realteak branding
 - **Server-Side Rendering**: Full compatibility with SSR/SSG approaches
+- **Animation Support**: Hardware-accelerated animations with fallbacks for older devices
+- **CSS Custom Properties**: Modern CSS features with appropriate fallbacks
+
+**Updated** Added compatibility considerations for Realteak branding and glass-morphism effects
 
 **Section sources**
 - [package.json:31-42](file://global-housing-predictor/package.json#L31-L42)
@@ -411,16 +435,21 @@ Expected responses:
   - Static site hosting with CDN acceleration
   - Custom domain support with GitHub Pages
   - Automatic TypeScript compilation and optimization
+  - Realteak branding assets and optimized build process
 - **Local Development**:
   - Next.js dev server with hot module replacement
   - Development tools for debugging and profiling
   - Environment variable configuration
   - TypeScript type checking and linting
+  - Glass-morphism effect testing and optimization
 - **Production Optimization**:
   - Static site generation for optimal performance
   - Asset optimization and compression
   - Cache headers for improved loading times
   - Bundle analysis and optimization
+  - Realteak branding optimization and performance monitoring
+
+**Updated** Enhanced with Realteak branding and glass-morphism optimization considerations
 
 **Section sources**
 - [.github/workflows/pages.yml:1-51](file://.github/workflows/pages.yml#L1-L51)
@@ -434,6 +463,9 @@ The modern Next.js application maintains compatibility with the existing FastAPI
 - **API Endpoint Compatibility**: Legacy endpoints remain functional
 - **Data Format Parity**: Response formats maintained for existing integrations
 - **Multi-Country Support**: Extended geographic coverage with regional data
+- **Realteak Branding**: New branding does not affect API functionality
+
+**Updated** Added Realteak branding compatibility note
 
 **Section sources**
 - [api/main.py:155-179](file://api/main.py#L155-L179)
