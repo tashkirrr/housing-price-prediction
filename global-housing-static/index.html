@@ -3,158 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Housing Predictor - Worldwide Real Estate Prices</title>
+    <title>Realteak - Real Estate Done Right</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container nav-container">
             <a href="index.html" class="logo">
-                <span class="logo-icon">🏠</span>
-                <span class="logo-text">Estate<span class="logo-accent">Predict</span></span>
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">Realteak</span>
             </a>
-            <ul class="nav-links" id="navLinks">
+            <ul class="nav-links">
                 <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="explore.html">Explore</a></li>
-                <li><a href="predict.html">Predict</a></li>
-                <li><a href="countries.html">Countries</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="explore.html">Buy</a></li>
+                <li><a href="predict.html">Sell</a></li>
+                <li><a href="countries.html">Rent</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="about.html">Contact</a></li>
             </ul>
-            <div class="nav-actions">
-                <a href="predict.html" class="btn btn-primary">Get Estimate</a>
-            </div>
+            <a href="predict.html" class="btn btn-login">Login</a>
             <button class="nav-toggle" onclick="toggleNav()">☰</button>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <header class="hero">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" alt="City skyline">
+        </div>
         <div class="hero-overlay"></div>
-        <div class="hero-bg"></div>
         <div class="container hero-content">
-            <div class="hero-badge">🌍 Global Coverage • 50+ Countries</div>
             <h1 class="hero-title">
-                Buy. Sell. Rent.<br>
-                <span class="hero-title-accent">Real Estate Done Right</span>
+                <span class="script-font">Buy. Sell. Rent.</span><br>
+                <span class="sans-font">Real Estate Done Right</span>
             </h1>
-            <p class="hero-subtitle">
-                Discover accurate property valuations across the globe using our advanced 
-                prediction model trained on international market data.
-            </p>
             
             <!-- Search Box -->
             <div class="search-box">
                 <div class="search-field">
-                    <label>📍 Location</label>
-                    <input type="text" id="heroSearch" placeholder="Search city or country...">
+                    <label>Search location</label>
+                    <input type="text" placeholder="Enter location...">
                 </div>
+                <div class="search-divider"></div>
                 <div class="search-field">
-                    <label>🏠 Property Type</label>
-                    <select id="propertyType">
-                        <option>All Types</option>
+                    <label>Buy</label>
+                    <select>
+                        <option>Property Type</option>
                         <option>House</option>
                         <option>Apartment</option>
                         <option>Villa</option>
                     </select>
                 </div>
+                <div class="search-divider"></div>
                 <div class="search-field">
-                    <label>💰 Price Range</label>
-                    <select id="priceRange">
+                    <label>Price</label>
+                    <select>
                         <option>Any Price</option>
                         <option>$0 - $100k</option>
                         <option>$100k - $500k</option>
-                        <option>$500k - $1M</option>
-                        <option>$1M+</option>
+                        <option>$500k+</option>
                     </select>
                 </div>
-                <button class="btn btn-dark btn-search" onclick="heroSearch()">
-                    Find Property
-                </button>
+                <button class="btn btn-find">Find Property</button>
             </div>
         </div>
     </header>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Countries Covered</div>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <div class="stat-number">5,000+</div>
-                    <div class="stat-label">Cities in Database</div>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <div class="stat-number">85%</div>
-                    <div class="stat-label">Prediction Accuracy</div>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Instant Results</div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Featured Properties -->
     <section class="featured-section">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">
-                    Discover Handpicked Markets<br>
-                    <span class="section-title-accent">That Define Value</span>
+                    Discover Handpicked Homes<br>
+                    <span class="script-accent">That Define Elegance</span>
                 </h2>
-                <div class="filter-tabs">
-                    <button class="tab active">All</button>
-                    <button class="tab">North America</button>
-                    <button class="tab">Europe</button>
-                    <button class="tab">Asia</button>
+            </div>
+            
+            <div class="filter-tabs">
+                <button class="tab active">All</button>
+                <button class="tab">Villa</button>
+                <button class="tab">Apartments</button>
+                <button class="tab">Duplex Home</button>
+                <button class="tab">Townhouses</button>
+                <button class="tab">Studio Apartments</button>
+                <button class="tab">Luxury Villa</button>
+                <button class="tab-arrow">→</button>
+            </div>
+            
+            <div class="properties-grid">
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80" alt="Tropical Oasis">
+                        <span class="property-tag">Featured</span>
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Tropical Oasis</h3>
+                        <p class="property-desc">A stunning beachfront villa with modern amenities</p>
+                        <div class="property-price">$2,400,000</div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="properties-grid" id="propertiesGrid">
-                <!-- Property cards populated by JS -->
-            </div>
-            
-            <div class="section-footer">
-                <a href="explore.html" class="btn btn-outline">View All Markets →</a>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80" alt="Bali Cliff Retreat">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Bali Cliff Retreat</h3>
+                        <p class="property-desc">Panoramic ocean views, tropical living area</p>
+                        <div class="property-price">$850,000</div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80" alt="Metro Skyline Loft">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Metro Skyline Loft</h3>
+                        <p class="property-desc">Contemporary design, floor-to-ceiling windows</p>
+                        <div class="property-price">$2,150,000</div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Coastal Haven">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Coastal Haven</h3>
+                        <p class="property-desc">Modern luxury with private beach access</p>
+                        <div class="property-price">$3,200,000</div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=80" alt="Garden Estate">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Garden Estate</h3>
+                        <p class="property-desc">Spacious family home with lush gardens</p>
+                        <div class="property-price">$1,850,000</div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80" alt="Urban Penthouse">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Urban Penthouse</h3>
+                        <p class="property-desc">Exclusive penthouse with rooftop terrace</p>
+                        <div class="property-price">$4,500,000</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- How It Works -->
-    <section class="how-it-works">
+    <!-- Journey Section -->
+    <section class="journey-section">
         <div class="container">
             <div class="section-header center">
-                <h2 class="section-title">Your Journey To The Perfect<br><span class="section-title-accent">Valuation Starts Here</span></h2>
-                <p class="section-subtitle">Three simple steps to get an accurate property estimate anywhere in the world.</p>
+                <h2 class="section-title">
+                    Your Journey To The Perfect<br>
+                    <span class="script-accent">Home Starts With Us</span>
+                </h2>
+                <p class="section-subtitle">We provide personalized guidance through every step of your real estate journey, from initial search to final purchase.</p>
             </div>
             
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-icon">📍</div>
-                    <h3>Select Location</h3>
-                    <p>Choose from 5,000+ cities across 50+ countries worldwide.</p>
-                    <div class="step-number">01</div>
+            <div class="journey-image">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80" alt="Happy family with new home">
+                <div class="journey-stats">
+                    <div class="stat-box">
+                        <div class="stat-num">1,500+</div>
+                        <div class="stat-label">Happy Families</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num">30+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num">98%</div>
+                        <div class="stat-label">Client Satisfaction</div>
+                    </div>
                 </div>
-                <div class="step-card">
-                    <div class="step-icon">🏠</div>
-                    <h3>Enter Details</h3>
-                    <p>Provide property specifications like size, bedrooms, and features.</p>
-                    <div class="step-number">02</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-icon">💰</div>
-                    <h3>Get Estimate</h3>
-                    <p>Receive an instant, accurate price estimate with confidence range.</p>
-                    <div class="step-number">03</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header center">
+                <h2 class="section-title">
+                    Hear From Our Awesome<br>
+                    <span class="script-accent">Satisfied Clients</span>
+                </h2>
+            </div>
+            
+            <div class="testimonial-card">
+                <p class="testimonial-text">"We Couldn't Be Happier With The Outcome Of Our Renovation Project. From The Initial Consultation To The Final Touches, The Team Demonstrated A High Level Of Professionalism, Creativity."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">👤</div>
+                    <div class="author-info">
+                        <div class="author-name">Sarah Johnson</div>
+                        <div class="author-rating">⭐⭐⭐⭐⭐ 5.0</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -165,12 +224,12 @@
         <div class="container">
             <div class="cta-card">
                 <div class="cta-content">
-                    <h2>Make Your Dream Home<br>a Reality</h2>
-                    <p>Get accurate property valuations for any location worldwide. Start your journey today.</p>
-                    <a href="predict.html" class="btn btn-white">Get Started →</a>
+                    <h2>Make Your Dream<br>Space a Reality</h2>
+                    <p>Start your journey to finding the perfect home today. Our expert team is here to guide you every step of the way.</p>
+                    <a href="predict.html" class="btn btn-white">Get Started</a>
                 </div>
                 <div class="cta-image">
-                    <div class="house-illustration">🏡</div>
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80" alt="Dream home">
                 </div>
             </div>
         </div>
@@ -179,47 +238,43 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-grid">
+            <div class="footer-top">
                 <div class="footer-brand">
                     <a href="index.html" class="logo">
-                        <span class="logo-icon">🏠</span>
-                        <span class="logo-text">Estate<span class="logo-accent">Predict</span></span>
+                        <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                            <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                        </svg>
+                        <span class="logo-text">Realteak</span>
                     </a>
-                    <p>Accurate property valuations using machine learning and global market data.</p>
-                    <div class="social-links">
-                        <a href="#">📘</a>
-                        <a href="#">🐦</a>
-                        <a href="#">📸</a>
-                        <a href="#">💼</a>
-                    </div>
+                    <p>Your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
                 </div>
                 <div class="footer-links">
-                    <h4>Product</h4>
+                    <h4>Company</h4>
                     <ul>
-                        <li><a href="explore.html">Explore Markets</a></li>
-                        <li><a href="predict.html">Price Predictor</a></li>
-                        <li><a href="countries.html">Countries</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
                     <h4>Resources</h4>
                     <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="about.html#methodology">Methodology</a></li>
-                        <li><a href="about.html#data">Data Sources</a></li>
+                        <li><a href="explore.html">Properties</a></li>
+                        <li><a href="predict.html">Valuation</a></li>
+                        <li><a href="#">Blog</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
-                    <h4>Legal</h4>
+                    <h4>Support</h4>
                     <ul>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 EstatePredict. All rights reserved.</p>
+                <p>&copy; 2026 Realteak. All rights reserved.</p>
             </div>
         </div>
     </footer>
