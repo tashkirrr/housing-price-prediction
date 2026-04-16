@@ -7,7 +7,7 @@ Thank you for your interest in contributing to this project! We welcome contribu
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/yourusername/housing-price-prediction.git
+   git clone https://github.com/tashkirrr/housing-price-prediction.git
    cd housing-price-prediction
    ```
 3. **Create a virtual environment**:

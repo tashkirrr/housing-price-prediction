@@ -9,7 +9,7 @@ Version: 1.0.0
 """
 
 __version__ = "1.0.0"
-__author__ = "Your Name"
+__author__ = "tashkirrr"
 
 from .data_processing import DataProcessor, FeatureEngineer
 from .models import ModelTrainer, ModelEvaluator

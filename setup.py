@@ -22,12 +22,12 @@ if requirements_path.exists():
 setup(
     name="california-housing-prediction",
     version="1.0.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="tashkirrr",
+    author_email="",
     description="A comprehensive machine learning solution for predicting California house prices",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/housing-price-prediction",
+    url="https://github.com/tashkirrr/housing-price-prediction",
     packages=find_packages(exclude=["tests", "tests.*", "notebooks", "docs"]),
     classifiers=[
         "Development Status :: 4 - Beta",
