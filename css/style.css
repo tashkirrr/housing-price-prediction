@@ -727,6 +727,99 @@ body {
     }
 }
 
+/* Countries Page Styles */
+.region-section {
+    margin-bottom: 4rem;
+}
+
+.region-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+}
+
+.countries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.country-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.country-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.country-flag {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.country-card h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 0.75rem;
+}
+
+.country-cities {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.country-price {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.stats-summary {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--gray-200);
+}
+
+.stats-summary .stat-item {
+    text-align: center;
+}
+
+.stats-summary .stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.stats-summary .stat-label {
+    font-size: 1rem;
+    color: var(--gray-500);
+    margin-top: 0.5rem;
+}
+
 /* Utility Classes */
 .hidden {
     display: none !important;

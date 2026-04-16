@@ -3,51 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countries - Global Housing Predictor</title>
+    <title>Countries We Cover - Realteak</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
-        <div class="container">
+        <div class="container nav-container">
             <a href="index.html" class="logo">
-                <span class="logo-icon">🌍</span>
-                <span class="logo-text">Global Housing</span>
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">Realteak</span>
             </a>
-            <button class="nav-toggle" onclick="toggleNav()">☰</button>
-            <ul class="nav-links" id="navLinks">
+            <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="explore.html">Explore</a></li>
-                <li><a href="predict.html">Predict</a></li>
-                <li><a href="countries.html" class="active">Countries</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="explore.html">Buy</a></li>
+                <li><a href="predict.html">Sell</a></li>
+                <li><a href="countries.html" class="active">Rent</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="about.html">Contact</a></li>
             </ul>
+            <a href="predict.html" class="btn btn-login">Login</a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
         </div>
     </nav>
 
-    <main class="page-header">
+    <header class="page-header">
         <div class="container">
-            <h1>Countries & Markets</h1>
-            <p>Browse all countries in our database and their key market indicators.</p>
+            <h1>20+ Countries Worldwide</h1>
+            <p>We provide property valuations across major markets in North America, Europe, Asia, and beyond.</p>
         </div>
-    </main>
+    </header>
 
-    <section class="countries-section">
+    <section class="featured-section">
         <div class="container">
-            <div id="countriesGrid" class="countries-grid">
-                <!-- Populated by JavaScript -->
+            <div class="section-header">
+                <h2 class="section-title">
+                    Browse by Region<br>
+                    <span class="script-accent">Find Your Market</span>
+                </h2>
+            </div>
+
+            <!-- North America -->
+            <div class="region-section">
+                <h3 class="region-title">🇺🇸 North America</h3>
+                <div class="countries-grid" id="northAmericaGrid">
+                    <div class="country-card">
+                        <div class="country-flag">🇺🇸</div>
+                        <h4>United States</h4>
+                        <p class="country-cities">New York, Los Angeles, San Francisco, Chicago, Boston, Seattle, Miami, Austin</p>
+                        <div class="country-price">Avg: $250/sq ft</div>
+                        <a href="predict.html?country=US" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇨🇦</div>
+                        <h4>Canada</h4>
+                        <p class="country-cities">Toronto, Vancouver, Montreal, Calgary, Ottawa</p>
+                        <div class="country-price">Avg: C$300/sq ft</div>
+                        <a href="predict.html?country=CA" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇲🇽</div>
+                        <h4>Mexico</h4>
+                        <p class="country-cities">Mexico City, Guadalajara, Monterrey, Cancun, Tijuana</p>
+                        <div class="country-price">Avg: Mex$50/sq ft</div>
+                        <a href="predict.html?country=MX" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Europe -->
+            <div class="region-section">
+                <h3 class="region-title">🇪🇺 Europe</h3>
+                <div class="countries-grid" id="europeGrid">
+                    <div class="country-card">
+                        <div class="country-flag">🇬🇧</div>
+                        <h4>United Kingdom</h4>
+                        <p class="country-cities">London, Manchester, Birmingham, Edinburgh, Glasgow</p>
+                        <div class="country-price">Avg: £450/sq ft</div>
+                        <a href="predict.html?country=GB" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇩🇪</div>
+                        <h4>Germany</h4>
+                        <p class="country-cities">Berlin, Munich, Hamburg, Frankfurt, Cologne</p>
+                        <div class="country-price">Avg: €280/sq ft</div>
+                        <a href="predict.html?country=DE" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇫🇷</div>
+                        <h4>France</h4>
+                        <p class="country-cities">Paris, Lyon, Marseille, Nice, Toulouse</p>
+                        <div class="country-price">Avg: €320/sq ft</div>
+                        <a href="predict.html?country=FR" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇪🇸</div>
+                        <h4>Spain</h4>
+                        <p class="country-cities">Madrid, Barcelona, Valencia, Seville, Malaga</p>
+                        <div class="country-price">Avg: €180/sq ft</div>
+                        <a href="predict.html?country=ES" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇮🇹</div>
+                        <h4>Italy</h4>
+                        <p class="country-cities">Rome, Milan, Naples, Turin, Florence</p>
+                        <div class="country-price">Avg: €170/sq ft</div>
+                        <a href="predict.html?country=IT" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇳🇱</div>
+                        <h4>Netherlands</h4>
+                        <p class="country-cities">Amsterdam, Rotterdam, The Hague, Utrecht, Eindhoven</p>
+                        <div class="country-price">Avg: €290/sq ft</div>
+                        <a href="predict.html?country=NL" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇸🇪</div>
+                        <h4>Sweden</h4>
+                        <p class="country-cities">Stockholm, Gothenburg, Malmö, Uppsala, Linkoping</p>
+                        <div class="country-price">Avg: kr220/sq ft</div>
+                        <a href="predict.html?country=SE" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇨🇭</div>
+                        <h4>Switzerland</h4>
+                        <p class="country-cities">Zurich, Geneva, Basel, Bern, Lausanne</p>
+                        <div class="country-price">Avg: Fr.550/sq ft</div>
+                        <a href="predict.html?country=CH" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Asia Pacific -->
+            <div class="region-section">
+                <h3 class="region-title">🌏 Asia Pacific</h3>
+                <div class="countries-grid" id="asiaGrid">
+                    <div class="country-card">
+                        <div class="country-flag">🇯🇵</div>
+                        <h4>Japan</h4>
+                        <p class="country-cities">Tokyo, Osaka, Yokohama, Nagoya, Kyoto</p>
+                        <div class="country-price">Avg: ¥400/sq ft</div>
+                        <a href="predict.html?country=JP" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇸🇬</div>
+                        <h4>Singapore</h4>
+                        <p class="country-cities">Singapore Central, Marina Bay, Orchard, Sentosa</p>
+                        <div class="country-price">Avg: S$1,200/sq ft</div>
+                        <a href="predict.html?country=SG" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇦🇺</div>
+                        <h4>Australia</h4>
+                        <p class="country-cities">Sydney, Melbourne, Brisbane, Perth, Adelaide</p>
+                        <div class="country-price">Avg: A$350/sq ft</div>
+                        <a href="predict.html?country=AU" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇨🇳</div>
+                        <h4>China</h4>
+                        <p class="country-cities">Shanghai, Beijing, Shenzhen, Guangzhou, Hangzhou</p>
+                        <div class="country-price">Avg: ¥150/sq ft</div>
+                        <a href="predict.html?country=CN" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇰🇷</div>
+                        <h4>South Korea</h4>
+                        <p class="country-cities">Seoul, Busan, Incheon, Daegu, Daejeon</p>
+                        <div class="country-price">Avg: ₩200/sq ft</div>
+                        <a href="predict.html?country=KR" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇮🇳</div>
+                        <h4>India</h4>
+                        <p class="country-cities">Mumbai, Delhi, Bangalore, Hyderabad, Chennai</p>
+                        <div class="country-price">Avg: ₹80/sq ft</div>
+                        <a href="predict.html?country=IN" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇹🇭</div>
+                        <h4>Thailand</h4>
+                        <p class="country-cities">Bangkok, Chiang Mai, Phuket, Pattaya, Koh Samui</p>
+                        <div class="country-price">Avg: ฿70/sq ft</div>
+                        <a href="predict.html?country=TH" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle East & South America -->
+            <div class="region-section">
+                <h3 class="region-title">🌍 Middle East & South America</h3>
+                <div class="countries-grid" id="othersGrid">
+                    <div class="country-card">
+                        <div class="country-flag">🇦🇪</div>
+                        <h4>UAE</h4>
+                        <p class="country-cities">Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah</p>
+                        <div class="country-price">Avg: AED 350/sq ft</div>
+                        <a href="predict.html?country=AE" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-flag">🇧🇷</div>
+                        <h4>Brazil</h4>
+                        <p class="country-cities">Sao Paulo, Rio de Janeiro, Brasilia, Salvador, Fortaleza</p>
+                        <div class="country-price">Avg: R$60/sq ft</div>
+                        <a href="predict.html?country=BR" class="btn btn-outline btn-sm">Get Estimate</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="stats-summary">
+                <div class="stat-item">
+                    <div class="stat-number">20</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95+</div>
+                    <div class="stat-label">Cities</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Continents</div>
+                </div>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                            <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                        </svg>
+                        <span class="logo-text">Realteak</span>
+                    </a>
+                    <p>Your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="explore.html">Properties</a></li>
+                        <li><a href="predict.html">Valuation</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Global Housing Predictor. Open source project.</p>
+                <p>&copy; 2026 Realteak. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
-    <script src="js/countries.js"></script>
 </body>
 </html>
