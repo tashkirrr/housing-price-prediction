@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Housing Predictor - Worldwide Real Estate Prices</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="navbar">
-        <div class="container">
+        <div class="container nav-container">
             <a href="index.html" class="logo">
-                <span class="logo-icon">🌍</span>
-                <span class="logo-text">Global Housing</span>
+                <span class="logo-icon">🏠</span>
+                <span class="logo-text">Estate<span class="logo-accent">Predict</span></span>
             </a>
-            <button class="nav-toggle" onclick="toggleNav()">☰</button>
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="explore.html">Explore</a></li>
@@ -21,107 +22,204 @@
                 <li><a href="countries.html">Countries</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
+            <div class="nav-actions">
+                <a href="predict.html" class="btn btn-primary">Get Estimate</a>
+            </div>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <header class="hero">
-        <div class="container">
-            <h1>Discover Property Values Worldwide</h1>
+        <div class="hero-overlay"></div>
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
+            <div class="hero-badge">🌍 Global Coverage • 50+ Countries</div>
+            <h1 class="hero-title">
+                Buy. Sell. Rent.<br>
+                <span class="hero-title-accent">Real Estate Done Right</span>
+            </h1>
             <p class="hero-subtitle">
-                Explore real estate prices across the globe using our prediction model 
-                trained on data from multiple international markets.
+                Discover accurate property valuations across the globe using our advanced 
+                prediction model trained on international market data.
             </p>
-            <div class="hero-actions">
-                <a href="predict.html" class="btn btn-primary">Get a Prediction</a>
-                <a href="explore.html" class="btn btn-secondary">Explore Markets</a>
+            
+            <!-- Search Box -->
+            <div class="search-box">
+                <div class="search-field">
+                    <label>📍 Location</label>
+                    <input type="text" id="heroSearch" placeholder="Search city or country...">
+                </div>
+                <div class="search-field">
+                    <label>🏠 Property Type</label>
+                    <select id="propertyType">
+                        <option>All Types</option>
+                        <option>House</option>
+                        <option>Apartment</option>
+                        <option>Villa</option>
+                    </select>
+                </div>
+                <div class="search-field">
+                    <label>💰 Price Range</label>
+                    <select id="priceRange">
+                        <option>Any Price</option>
+                        <option>$0 - $100k</option>
+                        <option>$100k - $500k</option>
+                        <option>$500k - $1M</option>
+                        <option>$1M+</option>
+                    </select>
+                </div>
+                <button class="btn btn-dark btn-search" onclick="heroSearch()">
+                    Find Property
+                </button>
             </div>
         </div>
     </header>
 
-    <section class="stats">
+    <!-- Stats Section -->
+    <section class="stats-section">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-card">
+                <div class="stat-item">
                     <div class="stat-number">50+</div>
                     <div class="stat-label">Countries Covered</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-divider"></div>
+                <div class="stat-item">
                     <div class="stat-number">5,000+</div>
                     <div class="stat-label">Cities in Database</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-divider"></div>
+                <div class="stat-item">
                     <div class="stat-number">85%</div>
                     <div class="stat-label">Prediction Accuracy</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">Free</div>
-                    <div class="stat-label">Forever</div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Instant Results</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="featured">
+    <!-- Featured Properties -->
+    <section class="featured-section">
         <div class="container">
-            <h2>Popular Markets</h2>
-            <div class="markets-grid" id="marketsGrid">
-                <!-- Populated by JavaScript -->
+            <div class="section-header">
+                <h2 class="section-title">
+                    Discover Handpicked Markets<br>
+                    <span class="section-title-accent">That Define Value</span>
+                </h2>
+                <div class="filter-tabs">
+                    <button class="tab active">All</button>
+                    <button class="tab">North America</button>
+                    <button class="tab">Europe</button>
+                    <button class="tab">Asia</button>
+                </div>
+            </div>
+            
+            <div class="properties-grid" id="propertiesGrid">
+                <!-- Property cards populated by JS -->
+            </div>
+            
+            <div class="section-footer">
+                <a href="explore.html" class="btn btn-outline">View All Markets →</a>
             </div>
         </div>
     </section>
 
+    <!-- How It Works -->
     <section class="how-it-works">
         <div class="container">
-            <h2>How It Works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
+            <div class="section-header center">
+                <h2 class="section-title">Your Journey To The Perfect<br><span class="section-title-accent">Valuation Starts Here</span></h2>
+                <p class="section-subtitle">Three simple steps to get an accurate property estimate anywhere in the world.</p>
+            </div>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">📍</div>
                     <h3>Select Location</h3>
-                    <p>Choose any city from our database of 5,000+ locations worldwide.</p>
+                    <p>Choose from 5,000+ cities across 50+ countries worldwide.</p>
+                    <div class="step-number">01</div>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
+                <div class="step-card">
+                    <div class="step-icon">🏠</div>
                     <h3>Enter Details</h3>
-                    <p>Provide property specifications like size, bedrooms, and amenities.</p>
+                    <p>Provide property specifications like size, bedrooms, and features.</p>
+                    <div class="step-number">02</div>
                 </div>
-                <div class="step">
-                    <div class="step-number">3</div>
+                <div class="step-card">
+                    <div class="step-icon">💰</div>
                     <h3>Get Estimate</h3>
-                    <p>Receive an instant price estimate based on market data.</p>
+                    <p>Receive an instant, accurate price estimate with confidence range.</p>
+                    <div class="step-number">03</div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-content">
+                    <h2>Make Your Dream Home<br>a Reality</h2>
+                    <p>Get accurate property valuations for any location worldwide. Start your journey today.</p>
+                    <a href="predict.html" class="btn btn-white">Get Started →</a>
+                </div>
+                <div class="cta-image">
+                    <div class="house-illustration">🏡</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="index.html" class="logo">
-                        <span class="logo-icon">🌍</span>
-                        <span class="logo-text">Global Housing</span>
+                        <span class="logo-icon">🏠</span>
+                        <span class="logo-text">Estate<span class="logo-accent">Predict</span></span>
                     </a>
-                    <p>Property valuation using machine learning and market data from around the world.</p>
+                    <p>Accurate property valuations using machine learning and global market data.</p>
+                    <div class="social-links">
+                        <a href="#">📘</a>
+                        <a href="#">🐦</a>
+                        <a href="#">📸</a>
+                        <a href="#">💼</a>
+                    </div>
                 </div>
                 <div class="footer-links">
                     <h4>Product</h4>
                     <ul>
-                        <li><a href="explore.html">Explore</a></li>
-                        <li><a href="predict.html">Predict</a></li>
+                        <li><a href="explore.html">Explore Markets</a></li>
+                        <li><a href="predict.html">Price Predictor</a></li>
                         <li><a href="countries.html">Countries</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
                     <h4>Resources</h4>
                     <ul>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="about.html#data">Data Sources</a></li>
+                        <li><a href="about.html">About Us</a></li>
                         <li><a href="about.html#methodology">Methodology</a></li>
+                        <li><a href="about.html#data">Data Sources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Global Housing Predictor. Open source project.</p>
+                <p>&copy; 2026 EstatePredict. All rights reserved.</p>
             </div>
         </div>
     </footer>
