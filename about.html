@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Global Housing Predictor</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌍</span>
+                <span class="logo-text">Global Housing</span>
+            </a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore.html">Explore</a></li>
+                <li><a href="predict.html">Predict</a></li>
+                <li><a href="countries.html">Countries</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="page-header">
+        <div class="container">
+            <h1>About Global Housing Predictor</h1>
+            <p>Understanding our mission, methodology, and data sources.</p>
+        </div>
+    </main>
+
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-block">
+                    <h2>Our Mission</h2>
+                    <p>
+                        We believe everyone deserves access to transparent property valuation information, 
+                        regardless of where they are in the world. Our goal is to democratize real estate 
+                        data and help people make informed decisions about property investments.
+                    </p>
+                </div>
+
+                <div class="about-block" id="methodology">
+                    <h2>Methodology</h2>
+                    <p>
+                        Our prediction model uses a combination of statistical analysis and machine learning 
+                        techniques trained on housing data from multiple international markets.
+                    </p>
+                    <h3>Key Features We Analyze:</h3>
+                    <ul>
+                        <li><strong>Location:</strong> Country, city, and regional market conditions</li>
+                        <li><strong>Property Size:</strong> Living area in square feet</li>
+                        <li><strong>Bedrooms & Bathrooms:</strong> Room count and configuration</li>
+                        <li><strong>Property Age:</strong> Years since construction</li>
+                        <li><strong>Amenities:</strong> Garage, pool, and other features</li>
+                        <li><strong>Local Economics:</strong> Income levels and market trends</li>
+                    </ul>
+                </div>
+
+                <div class="about-block" id="data">
+                    <h2>Data Sources</h2>
+                    <p>
+                        We aggregate data from multiple publicly available sources including government 
+                        statistics, real estate listings, and economic indicators from around the world.
+                    </p>
+                    <div class="data-sources">
+                        <div class="source-card">
+                            <h4>Government Statistics</h4>
+                            <p>Census data and housing surveys from national statistics offices</p>
+                        </div>
+                        <div class="source-card">
+                            <h4>Market Listings</h4>
+                            <p>Aggregated property listing data from various markets</p>
+                        </div>
+                        <div class="source-card">
+                            <h4>Economic Indicators</h4>
+                            <p>Income, employment, and cost of living data</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-block">
+                    <h2>Limitations</h2>
+                    <p>
+                        While we strive for accuracy, please note that our predictions are estimates based 
+                        on available data. Actual property values can vary based on many factors including:
+                    </p>
+                    <ul>
+                        <li>Specific neighborhood characteristics</li>
+                        <li>Property condition and renovations</li>
+                        <li>Current market conditions and trends</li>
+                        <li>Unique property features not captured in our model</li>
+                    </ul>
+                    <p>
+                        We recommend using our predictions as a starting point for research, not as a 
+                        substitute for professional appraisal.
+                    </p>
+                </div>
+
+                <div class="about-block">
+                    <h2>Open Source</h2>
+                    <p>
+                        This project is open source. You can find the code on GitHub and contribute to 
+                        improving our models and expanding our coverage.
+                    </p>
+                    <a href="https://github.com" target="_blank" class="btn btn-secondary">
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Global Housing Predictor. Open source project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Markets - EstatePredict</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🏠</span>
+                <span class="logo-text">Estate<span class="logo-accent">Predict</span></span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore.html" class="active">Explore</a></li>
+                <li><a href="predict.html">Predict</a></li>
+                <li><a href="countries.html">Countries</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="predict.html" class="btn btn-primary">Get Estimate</a>
+            </div>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>Explore Global Markets</h1>
+            <p>Search and compare property markets across different countries and cities.</p>
+        </div>
+    </header>
+
+    <section class="search-section" style="padding: 2rem 0; background: var(--gray-50);">
+        <div class="container">
+            <div class="search-box" style="max-width: 900px;">
+                <div class="search-field" style="flex: 2;">
+                    <label>🔍 Search</label>
+                    <input type="text" id="searchInput" placeholder="City or country name...">
+                </div>
+                <div class="search-field">
+                    <label>🌍 Region</label>
+                    <select id="regionFilter">
+                        <option value="">All Regions</option>
+                        <option value="North America">North America</option>
+                        <option value="Europe">Europe</option>
+                        <option value="Asia Pacific">Asia Pacific</option>
+                        <option value="Middle East">Middle East</option>
+                        <option value="South America">South America</option>
+                    </select>
+                </div>
+                <button class="btn btn-dark btn-search" onclick="searchLocations()">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-section" style="padding-top: 3rem;">
+        <div class="container">
+            <div id="resultsContainer" class="properties-grid">
+                <!-- Results populated by JS -->
+            </div>
+            <div id="noResults" class="hidden" style="text-align: center; padding: 3rem; color: var(--gray-500);">
+                <p style="font-size: 1.25rem;">No locations found. Try a different search term.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 EstatePredict. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/explore.js"></script>
+</body>
+</html>

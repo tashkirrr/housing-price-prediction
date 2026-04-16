@@ -3,1655 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>California Dream Homes | Price Predictor</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #1a5f7a;
-            --primary-light: #57c5b6;
-            --secondary: #159895;
-            --accent: #e8f6f3;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
-            --gradient-start: #1a5f7a;
-            --gradient-end: #57c5b6;
-            --shadow: 0 10px 40px rgba(26, 95, 122, 0.15);
-            --shadow-hover: 0 20px 60px rgba(26, 95, 122, 0.25);
-            --success: #27ae60;
-            --warning: #f39c12;
-            --error: #e74c3c;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8f6f3 100%);
-            min-height: 100vh;
-            color: var(--dark);
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--dark);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 6rem 2rem 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.3;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            color: white;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .hero-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            color: white;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: rgba(255,255,255,0.9);
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-
-        .hero-story {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .hero-story p {
-            color: rgba(255,255,255,0.95);
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: white;
-            color: var(--primary);
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
-        }
-
-        /* Main Container */
-        .main-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 3rem 1.5rem;
-        }
-
-        /* Section Styling */
-        .section {
-            background: white;
-            border-radius: 24px;
-            padding: 3rem;
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .section:hover {
-            box-shadow: var(--shadow-hover);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .section-header p {
-            color: #666;
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Quick Stats */
-        .quick-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, var(--accent) 0%, white 100%);
-            border-radius: 16px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 2px solid rgba(87, 197, 182, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        /* Prediction Form */
-        .prediction-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: start;
-        }
-
-        @media (max-width: 968px) {
-            .prediction-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .form-section {
-            background: linear-gradient(135deg, var(--accent) 0%, white 100%);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 2px solid rgba(87, 197, 182, 0.2);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .form-group label i {
-            color: var(--primary);
-            width: 20px;
-        }
-
-        .help-text {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 0.25rem;
-            margin-left: 1.5rem;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 4px rgba(87, 197, 182, 0.1);
-        }
-
-        .form-control.error {
-            border-color: var(--error);
-            background: #fdf2f2;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary);
-        }
-
-        select.form-control {
-            padding-left: 1rem;
-            cursor: pointer;
-        }
-
-        .range-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .range-value {
-            background: var(--primary);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            min-width: 100px;
-            text-align: center;
-        }
-
-        input[type="range"] {
-            flex: 1;
-            height: 8px;
-            border-radius: 4px;
-            background: #e0e0e0;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            transition: transform 0.2s ease;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        .error-message {
-            color: var(--error);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: none;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .error-message.show {
-            display: flex;
-        }
-
-        /* Result Card */
-        .result-section {
-            position: sticky;
-            top: 100px;
-        }
-
-        .result-card {
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            border-radius: 24px;
-            padding: 3rem 2rem;
-            text-align: center;
-            color: white;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .result-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(180deg); }
-        }
-
-        .result-label {
-            font-size: 1rem;
-            opacity: 0.9;
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .result-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .result-sublabel {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            position: relative;
-            z-index: 1;
-        }
-
-        .confidence-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            margin-top: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .predict-btn {
-            width: 100%;
-            padding: 1.25rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .predict-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(26, 95, 122, 0.3);
-        }
-
-        .predict-btn:active {
-            transform: translateY(0);
-        }
-
-        .predict-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        /* Insights Panel */
-        .insights-panel {
-            margin-top: 2rem;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .insights-panel h4 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .insight-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            padding: 0.75rem;
-            background: var(--accent);
-            border-radius: 10px;
-        }
-
-        .insight-icon-small {
-            width: 32px;
-            height: 32px;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-
-        .insight-text {
-            color: #555;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* Insights Cards */
-        .insights-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .insight-card {
-            background: linear-gradient(135deg, white 0%, var(--accent) 100%);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 2px solid rgba(87, 197, 182, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .insight-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .insight-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-            margin-bottom: 1.5rem;
-        }
-
-        .insight-card h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary);
-            margin-bottom: 0.75rem;
-            font-size: 1.25rem;
-        }
-
-        .insight-card p {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-
-        /* Feature Importance */
-        .feature-bar {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            background: var(--accent);
-            border-radius: 12px;
-            transition: background 0.3s ease;
-        }
-
-        .feature-bar:hover {
-            background: #d4ede8;
-        }
-
-        .feature-name {
-            width: 150px;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .feature-progress {
-            flex: 1;
-            height: 12px;
-            background: #e0e0e0;
-            border-radius: 6px;
-            overflow: hidden;
-            margin: 0 1rem;
-        }
-
-        .feature-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: 6px;
-            transition: width 1s ease;
-        }
-
-        .feature-value {
-            width: 50px;
-            text-align: right;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        /* Sample Properties */
-        .sample-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .sample-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 2px solid #e0e0e0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .sample-card:hover {
-            border-color: var(--primary-light);
-            box-shadow: var(--shadow);
-            transform: translateY(-3px);
-        }
-
-        .sample-location {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .sample-details {
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-
-        .sample-price {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--success);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-
-        footer a {
-            color: var(--primary-light);
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--dark);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            z-index: 2000;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast.success {
-            background: var(--success);
-        }
-
-        .toast.error {
-            background: var(--error);
-        }
-
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeIn 0.8s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav {
-                padding: 1rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .section {
-                padding: 2rem 1.5rem;
-            }
-
-            .section-header h2 {
-                font-size: 2rem;
-            }
-
-            .result-value {
-                font-size: 2.5rem;
-            }
-
-            .hero-story {
-                padding: 1.5rem;
-            }
-
-            .range-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .range-value {
-                align-self: center;
-            }
-        }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Number input arrows */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            opacity: 1;
-            height: 30px;
-        }
-    </style>
+    <title>Realteak - Real Estate Done Right</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
-        <div class="nav-logo">
-            <i class="fas fa-home"></i>
-            California Dream Homes
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">Realteak</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="explore.html">Buy</a></li>
+                <li><a href="predict.html">Sell</a></li>
+                <li><a href="countries.html">Rent</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="about.html">Contact</a></li>
+            </ul>
+            <a href="predict.html" class="btn btn-login">Login</a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
         </div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#predictor">Predict</a></li>
-            <li><a href="#insights">Insights</a></li>
-            <li><a href="#about">About</a></li>
-        </ul>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <i class="fas fa-magic"></i>
-                Powered by Machine Learning
-            </div>
-            <div class="hero-icon">🏖️</div>
-            <h1>California Dream Homes</h1>
-            <p class="hero-subtitle">Discover the Value of Your Golden State Property</p>
-            
-            <div class="hero-story">
-                <p>
-                    Welcome to a journey through California's housing landscape. From the sun-kissed beaches 
-                    of Malibu to the tech hubs of Silicon Valley, every home tells a story. Our intelligent 
-                    predictor, trained on decades of housing data, helps you uncover the hidden value in 
-                    your California dream home. Whether you're a first-time buyer, a seasoned investor, or 
-                    simply curious about the market, we're here to guide you through the numbers with 
-                    clarity and insight.
-                </p>
-            </div>
-
-            <a href="#predictor" class="cta-button">
-                <i class="fas fa-calculator"></i>
-                Start Predicting
-            </a>
+    <header class="hero">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" alt="City skyline">
         </div>
-        
-        <div class="scroll-indicator" onclick="document.getElementById('predictor').scrollIntoView({behavior: 'smooth'})">
-            <i class="fas fa-chevron-down fa-2x"></i>
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1 class="hero-title">
+                <span class="script-font">Buy. Sell. Rent.</span><br>
+                <span class="sans-font">Real Estate Done Right</span>
+            </h1>
+            
+            <!-- Search Box -->
+            <div class="search-box">
+                <div class="search-field">
+                    <label>Search location</label>
+                    <input type="text" placeholder="Enter location...">
+                </div>
+                <div class="search-divider"></div>
+                <div class="search-field">
+                    <label>Buy</label>
+                    <select>
+                        <option>Property Type</option>
+                        <option>House</option>
+                        <option>Apartment</option>
+                        <option>Villa</option>
+                    </select>
+                </div>
+                <div class="search-divider"></div>
+                <div class="search-field">
+                    <label>Price</label>
+                    <select>
+                        <option>Any Price</option>
+                        <option>$0 - $100k</option>
+                        <option>$100k - $500k</option>
+                        <option>$500k+</option>
+                    </select>
+                </div>
+                <button class="btn btn-find">Find Property</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Featured Properties -->
+    <section class="featured-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    Discover Handpicked Homes<br>
+                    <span class="script-accent">That Define Elegance</span>
+                </h2>
+            </div>
+            
+            <div class="filter-tabs">
+                <button class="tab active">All</button>
+                <button class="tab">Villa</button>
+                <button class="tab">Apartments</button>
+                <button class="tab">Duplex Home</button>
+                <button class="tab">Townhouses</button>
+                <button class="tab">Studio Apartments</button>
+                <button class="tab">Luxury Villa</button>
+                <button class="tab-arrow">→</button>
+            </div>
+            
+            <div class="properties-grid">
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80" alt="Tropical Oasis">
+                        <span class="property-tag">Featured</span>
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Tropical Oasis</h3>
+                        <p class="property-desc">A stunning beachfront villa with modern amenities</p>
+                        <div class="property-price">$2,400,000</div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80" alt="Bali Cliff Retreat">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Bali Cliff Retreat</h3>
+                        <p class="property-desc">Panoramic ocean views, tropical living area</p>
+                        <div class="property-price">$850,000</div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80" alt="Metro Skyline Loft">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Metro Skyline Loft</h3>
+                        <p class="property-desc">Contemporary design, floor-to-ceiling windows</p>
+                        <div class="property-price">$2,150,000</div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Coastal Haven">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Coastal Haven</h3>
+                        <p class="property-desc">Modern luxury with private beach access</p>
+                        <div class="property-price">$3,200,000</div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=80" alt="Garden Estate">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Garden Estate</h3>
+                        <p class="property-desc">Spacious family home with lush gardens</p>
+                        <div class="property-price">$1,850,000</div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80" alt="Urban Penthouse">
+                    </div>
+                    <div class="property-content">
+                        <h3 class="property-name">Urban Penthouse</h3>
+                        <p class="property-desc">Exclusive penthouse with rooftop terrace</p>
+                        <div class="property-price">$4,500,000</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <div class="main-container">
-        <!-- Quick Stats -->
-        <div class="quick-stats">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-database"></i></div>
-                <div class="stat-value">20,640</div>
-                <div class="stat-label">Properties Analyzed</div>
+    <!-- Journey Section -->
+    <section class="journey-section">
+        <div class="container">
+            <div class="section-header center">
+                <h2 class="section-title">
+                    Your Journey To The Perfect<br>
+                    <span class="script-accent">Home Starts With Us</span>
+                </h2>
+                <p class="section-subtitle">We provide personalized guidance through every step of your real estate journey, from initial search to final purchase.</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-bullseye"></i></div>
-                <div class="stat-value">85%</div>
-                <div class="stat-label">Prediction Accuracy</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
-                <div class="stat-value">5</div>
-                <div class="stat-label">Regions Covered</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-brain"></i></div>
-                <div class="stat-value">ML</div>
-                <div class="stat-label">Powered by AI</div>
+            
+            <div class="journey-image">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80" alt="Happy family with new home">
+                <div class="journey-stats">
+                    <div class="stat-box">
+                        <div class="stat-num">1,500+</div>
+                        <div class="stat-label">Happy Families</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num">30+</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num">98%</div>
+                        <div class="stat-label">Client Satisfaction</div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <!-- Prediction Section -->
-        <section class="section fade-in" id="predictor">
-            <div class="section-header">
-                <h2><i class="fas fa-magic"></i> Price Predictor</h2>
-                <p>Tell us about the property, and we'll reveal its estimated market value using our advanced machine learning model.</p>
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header center">
+                <h2 class="section-title">
+                    Hear From Our Awesome<br>
+                    <span class="script-accent">Satisfied Clients</span>
+                </h2>
             </div>
-
-            <!-- Sample Properties -->
-            <div style="margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1rem; color: var(--primary);"><i class="fas fa-lightbulb"></i> Try a Sample Property</h3>
-                <div class="sample-grid">
-                    <div class="sample-card" onclick="loadSample('sf')">
-                        <div class="sample-location"><i class="fas fa-city"></i> San Francisco Bay</div>
-                        <div class="sample-details">Near Bay • High Income • Coastal</div>
-                        <div class="sample-price">~$452,600</div>
-                    </div>
-                    <div class="sample-card" onclick="loadSample('la')">
-                        <div class="sample-location"><i class="fas fa-sun"></i> Los Angeles</div>
-                        <div class="sample-details">Near Ocean • Moderate Income</div>
-                        <div class="sample-price">~$358,500</div>
-                    </div>
-                    <div class="sample-card" onclick="loadSample('inland')">
-                        <div class="sample-location"><i class="fas fa-mountain"></i> Inland Empire</div>
-                        <div class="sample-details">Inland • Family Home • Affordable</div>
-                        <div class="sample-price">~$120,000</div>
-                    </div>
-                    <div class="sample-card" onclick="loadSample('island')">
-                        <div class="sample-location"><i class="fas fa-umbrella-beach"></i> Island Property</div>
-                        <div class="sample-details">Island • Premium • Exclusive</div>
-                        <div class="sample-price">~$380,000</div>
+            
+            <div class="testimonial-card">
+                <p class="testimonial-text">"We Couldn't Be Happier With The Outcome Of Our Renovation Project. From The Initial Consultation To The Final Touches, The Team Demonstrated A High Level Of Professionalism, Creativity."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">👤</div>
+                    <div class="author-info">
+                        <div class="author-name">Sarah Johnson</div>
+                        <div class="author-rating">⭐⭐⭐⭐⭐ 5.0</div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="prediction-container">
-                <!-- Input Form -->
-                <div class="form-section">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">
-                        <i class="fas fa-home"></i> Property Details
-                    </h3>
-
-                    <!-- Location Name -->
-                    <div class="form-group">
-                        <label><i class="fas fa-city"></i> Location Name</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-map-pin input-icon"></i>
-                            <input type="text" class="form-control" id="location_name" placeholder="e.g., San Francisco, Los Angeles, San Diego" style="padding-left: 3rem;">
-                        </div>
-                        <div class="help-text">Enter a city or neighborhood name for your reference (optional)</div>
-                    </div>
-
-                    <!-- Location Coordinates -->
-                    <div class="form-group">
-                        <label><i class="fas fa-globe"></i> GPS Coordinates</label>
-                        <div style="background: linear-gradient(135deg, #e8f6f3 0%, #f0f9f7 100%); padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem;">
-                            <p style="font-size: 0.9rem; color: #555; margin-bottom: 0.5rem;">
-                                <i class="fas fa-info-circle" style="color: var(--primary);"></i> 
-                                <strong>How to find coordinates:</strong>
-                            </p>
-                            <ol style="font-size: 0.85rem; color: #666; margin-left: 1.25rem; line-height: 1.6;">
-                                <li>Go to <a href="https://maps.google.com" target="_blank" style="color: var(--primary);">Google Maps</a></li>
-                                <li>Right-click on your property location</li>
-                                <li>The first number is <strong>Latitude</strong> (e.g., 37.7749)</li>
-                                <li>The second number is <strong>Longitude</strong> (e.g., -122.4194)</li>
-                            </ol>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                            <div>
-                                <div class="input-wrapper">
-                                    <i class="fas fa-arrows-alt-v input-icon"></i>
-                                    <input type="number" class="form-control" id="latitude" placeholder="Latitude (e.g., 37.77)" value="37.88" step="0.01" min="32" max="42">
-                                </div>
-                                <div class="help-text">Range: 32 to 42 (South to North)</div>
-                                <div class="error-message" id="latitude-error"><i class="fas fa-exclamation-circle"></i> Latitude must be between 32 and 42</div>
-                            </div>
-                            <div>
-                                <div class="input-wrapper">
-                                    <i class="fas fa-arrows-alt-h input-icon"></i>
-                                    <input type="number" class="form-control" id="longitude" placeholder="Longitude (e.g., -122.41)" value="-122.23" step="0.01" min="-125" max="-114">
-                                </div>
-                                <div class="help-text">Range: -125 to -114 (West to East)</div>
-                                <div class="error-message" id="longitude-error"><i class="fas fa-exclamation-circle"></i> Longitude must be between -125 and -114</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Ocean Proximity -->
-                    <div class="form-group">
-                        <label><i class="fas fa-water"></i> Ocean Proximity</label>
-                        <select class="form-control" id="ocean_proximity">
-                            <option value="<1H OCEAN">Less than 1 Hour from Ocean</option>
-                            <option value="INLAND">Inland</option>
-                            <option value="ISLAND">Island (Premium)</option>
-                            <option value="NEAR BAY" selected>Near Bay</option>
-                            <option value="NEAR OCEAN">Near Ocean</option>
-                        </select>
-                        <div class="help-text">How close is the property to the ocean?</div>
-                    </div>
-
-                    <!-- Housing Age -->
-                    <div class="form-group">
-                        <label><i class="fas fa-calendar-alt"></i> Housing Median Age</label>
-                        <div class="range-container">
-                            <input type="range" id="housing_median_age" min="1" max="52" value="41">
-                            <span class="range-value" id="ageValue">41 years</span>
-                        </div>
-                        <div class="help-text">Median age of houses in the block (1-52 years)</div>
-                    </div>
-
-                    <!-- Rooms -->
-                    <div class="form-group">
-                        <label><i class="fas fa-door-open"></i> Total Rooms</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-building input-icon"></i>
-                            <input type="number" class="form-control" id="total_rooms" value="880" min="2" max="40000">
-                        </div>
-                        <div class="help-text">Total rooms in the census block (2-40,000)</div>
-                        <div class="error-message" id="rooms-error"><i class="fas fa-exclamation-circle"></i> Must be between 2 and 40,000</div>
-                    </div>
-
-                    <!-- Bedrooms -->
-                    <div class="form-group">
-                        <label><i class="fas fa-bed"></i> Total Bedrooms</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-bed input-icon"></i>
-                            <input type="number" class="form-control" id="total_bedrooms" value="129" min="1" max="6500">
-                        </div>
-                        <div class="help-text">Total bedrooms (1-6,500, must be ≤ rooms)</div>
-                        <div class="error-message" id="bedrooms-error"><i class="fas fa-exclamation-circle"></i> Bedrooms cannot exceed total rooms</div>
-                    </div>
-
-                    <!-- Population -->
-                    <div class="form-group">
-                        <label><i class="fas fa-users"></i> Population</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-users input-icon"></i>
-                            <input type="number" class="form-control" id="population" value="322" min="3" max="36000">
-                        </div>
-                        <div class="help-text">Total population in the block (3-36,000)</div>
-                        <div class="error-message" id="population-error"><i class="fas fa-exclamation-circle"></i> Must be between 3 and 36,000</div>
-                    </div>
-
-                    <!-- Households -->
-                    <div class="form-group">
-                        <label><i class="fas fa-house-user"></i> Households</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-house-user input-icon"></i>
-                            <input type="number" class="form-control" id="households" value="126" min="1" max="6100">
-                        </div>
-                        <div class="help-text">Number of households (1-6,100, must be ≤ population)</div>
-                        <div class="error-message" id="households-error"><i class="fas fa-exclamation-circle"></i> Households cannot exceed population</div>
-                    </div>
-
-                    <!-- Income -->
-                    <div class="form-group">
-                        <label><i class="fas fa-dollar-sign"></i> Median Income</label>
-                        <div class="range-container">
-                            <input type="range" id="median_income" min="0.5" max="15" value="8.3" step="0.1">
-                            <span class="range-value" id="incomeValue">$83,252</span>
-                        </div>
-                        <div class="help-text">Median income in tens of thousands ($5,000 - $150,000)</div>
-                    </div>
-
-                    <button class="predict-btn" id="predictBtn" onclick="predictPrice()">
-                        <i class="fas fa-calculator"></i> Calculate Price
-                    </button>
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-content">
+                    <h2>Make Your Dream<br>Space a Reality</h2>
+                    <p>Start your journey to finding the perfect home today. Our expert team is here to guide you every step of the way.</p>
+                    <a href="predict.html" class="btn btn-white">Get Started</a>
                 </div>
-
-                <!-- Result Section -->
-                <div class="result-section">
-                    <div class="result-card">
-                        <div class="result-label"><i class="fas fa-tag"></i> Estimated House Value</div>
-                        <div class="result-value" id="predictionResult">$452,600</div>
-                        <div class="result-sublabel">Based on 1990 California Census Data</div>
-                        <div class="confidence-badge">
-                            <i class="fas fa-check-circle"></i>
-                            85% Confidence
-                        </div>
-                    </div>
-
-                    <div class="insights-panel">
-                        <h4><i class="fas fa-chart-pie"></i> Property Insights</h4>
-                        <div id="propertyInsights">
-                            <div class="insight-item">
-                                <div class="insight-icon-small"><i class="fas fa-water"></i></div>
-                                <div class="insight-text">
-                                    <strong>Location Premium:</strong> Near Bay areas typically command 25% higher prices than inland properties.
-                                </div>
-                            </div>
-                            <div class="insight-item">
-                                <div class="insight-icon-small"><i class="fas fa-money-bill-wave"></i></div>
-                                <div class="insight-text">
-                                    <strong>Income Factor:</strong> With $83,252 median income, this is an affluent neighborhood.
-                                </div>
-                            </div>
-                            <div class="insight-item">
-                                <div class="insight-icon-small"><i class="fas fa-home"></i></div>
-                                <div class="insight-text">
-                                    <strong>Property Density:</strong> 7.0 rooms per household indicates spacious living.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border-radius: 12px; border-left: 4px solid #f39c12;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: #856404; font-weight: 600; margin-bottom: 0.5rem;">
-                            <i class="fas fa-info-circle"></i> Inflation Note
-                        </div>
-                        <p style="color: #856404; font-size: 0.85rem; line-height: 1.5;">
-                            This prediction is in <strong>1990 dollars</strong>. For 2025 estimates, multiply by approximately <strong>2.5x</strong>.
-                        </p>
-                    </div>
+                <div class="cta-image">
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80" alt="Dream home">
                 </div>
             </div>
-        </section>
-
-        <!-- Insights Section -->
-        <section class="section fade-in delay-1" id="insights">
-            <div class="section-header">
-                <h2><i class="fas fa-chart-line"></i> What Drives California Home Prices?</h2>
-                <p>Understanding the key factors that influence property values across the Golden State.</p>
-            </div>
-
-            <div class="insights-grid">
-                <div class="insight-card">
-                    <div class="insight-icon"><i class="fas fa-money-bill-wave"></i></div>
-                    <h3>Median Income</h3>
-                    <p>The strongest predictor of home prices. Neighborhoods with higher median incomes consistently show elevated property values, reflecting the economic health of the community.</p>
-                </div>
-
-                <div class="insight-card">
-                    <div class="insight-icon"><i class="fas fa-water"></i></div>
-                    <h3>Ocean Proximity</h3>
-                    <p>Properties near the ocean or bay command significant premiums. Island properties average 84% higher prices than inland homes.</p>
-                </div>
-
-                <div class="insight-card">
-                    <div class="insight-icon"><i class="fas fa-map-marked-alt"></i></div>
-                    <h3>Location Matters</h3>
-                    <p>Distance to major cities like San Francisco and Los Angeles significantly impacts values. The Bay Area and coastal regions remain the most expensive markets.</p>
-                </div>
-
-                <div class="insight-card">
-                    <div class="insight-icon"><i class="fas fa-door-closed"></i></div>
-                    <h3>Room Density</h3>
-                    <p>More rooms per household indicates more spacious, valuable properties. This metric often correlates with overall home quality and desirability.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Feature Importance Section -->
-        <section class="section fade-in delay-2">
-            <div class="section-header">
-                <h2><i class="fas fa-brain"></i> Model Insights</h2>
-                <p>Our machine learning model considers these factors when predicting home values.</p>
-            </div>
-
-            <div id="featureImportance">
-                <div class="feature-bar">
-                    <span class="feature-name"><i class="fas fa-dollar-sign"></i> Median Income</span>
-                    <div class="feature-progress">
-                        <div class="feature-fill" style="width: 35%"></div>
-                    </div>
-                    <span class="feature-value">35%</span>
-                </div>
-                <div class="feature-bar">
-                    <span class="feature-name"><i class="fas fa-water"></i> Ocean Proximity</span>
-                    <div class="feature-progress">
-                        <div class="feature-fill" style="width: 18%"></div>
-                    </div>
-                    <span class="feature-value">18%</span>
-                </div>
-                <div class="feature-bar">
-                    <span class="feature-name"><i class="fas fa-location-arrow"></i> Distance to SF</span>
-                    <div class="feature-progress">
-                        <div class="feature-fill" style="width: 12%"></div>
-                    </div>
-                    <span class="feature-value">12%</span>
-                </div>
-                <div class="feature-bar">
-                    <span class="feature-name"><i class="fas fa-expand"></i> Rooms/Household</span>
-                    <div class="feature-progress">
-                        <div class="feature-fill" style="width: 8%"></div>
-                    </div>
-                    <span class="feature-value">8%</span>
-                </div>
-                <div class="feature-bar">
-                    <span class="feature-name"><i class="fas fa-map-pin"></i> Latitude</span>
-                    <div class="feature-progress">
-                        <div class="feature-fill" style="width: 7%"></div>
-                    </div>
-                    <span class="feature-value">7%</span>
-                </div>
-            </div>
-
-            <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--accent) 0%, white 100%); border-radius: 16px; border: 2px solid rgba(87, 197, 182, 0.3);">
-                <h4 style="color: var(--primary); margin-bottom: 1rem;"><i class="fas fa-robot"></i> About the Model</h4>
-                <p style="color: #555; font-size: 0.95rem; line-height: 1.7;">
-                    This predictor uses a <strong>HistGradientBoostingRegressor</strong> trained on 20,640 California census records from 1990. 
-                    The model achieves an <strong>R² score of 0.85</strong>, meaning it explains 85% of price variation. 
-                    We engineered additional features like distance to major cities and room ratios to improve accuracy.
-                </p>
-            </div>
-        </section>
-
-        <!-- Tips Section -->
-        <section class="section fade-in delay-3" id="about">
-            <div class="section-header">
-                <h2><i class="fas fa-lightbulb"></i> Tips for Accurate Predictions</h2>
-            </div>
-
-            <div class="insights-grid">
-                <div class="insight-card">
-                    <div class="insight-icon" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);"><i class="fas fa-chart-line"></i></div>
-                    <h3>Income Correlation</h3>
-                    <p>Higher median income in a neighborhood typically translates to higher home values. This is our model's strongest predictor.</p>
-                </div>
-
-                <div class="insight-card">
-                    <div class="insight-icon" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);"><i class="fas fa-umbrella-beach"></i></div>
-                    <h3>Coastal Premium</h3>
-                    <p>Properties near the ocean or bay are generally more expensive. The "Island" category commands the highest premiums.</p>
-                </div>
-
-                <div class="insight-card">
-                    <div class="insight-icon" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);"><i class="fas fa-expand-arrows-alt"></i></div>
-                    <h3>Space Matters</h3>
-                    <p>More rooms per household indicates more valuable properties. Consider this ratio when evaluating homes.</p>
-                </div>
-
-                <div class="insight-card">
-                    <div class="insight-icon" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);"><i class="fas fa-history"></i></div>
-                    <h3>Historical Context</h3>
-                    <p>The model uses 1990 data. For current values, multiply predictions by approximately 2.5 to account for inflation.</p>
-                </div>
-            </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer>
-        <p style="font-size: 1.1rem; margin-bottom: 1rem;">
-            <i class="fas fa-heart" style="color: #e74c3c;"></i> Made with passion for California Dreamers
-        </p>
-        <p style="opacity: 0.8; font-size: 0.9rem;">
-            Based on the California Housing Prices dataset from the 1990 census | 
-            <a href="https://github.com/tashkirrr/housing-price-prediction" target="_blank">
-                <i class="fab fa-github"></i> View on GitHub
-            </a>
-        </p>
-        <p style="opacity: 0.6; font-size: 0.85rem; margin-top: 1rem;">
-            Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> by <a href="https://github.com/tashkirrr">@tashkirrr</a>
-        </p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                            <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                        </svg>
+                        <span class="logo-text">Realteak</span>
+                    </a>
+                    <p>Your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="explore.html">Properties</a></li>
+                        <li><a href="predict.html">Valuation</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Realteak. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Prediction updated!</span>
-    </div>
-
-    <script>
-        // Web model data (embedded for GitHub Pages)
-        const webModel = {
-            "baseline_price": 207194.6937378876,
-            "weights": {
-                "longitude": -2298.330755899085,
-                "latitude": -7208.013843732871,
-                "housing_median_age": 5281.170624660533,
-                "total_rooms": 6707.655690328134,
-                "total_bedrooms": 2484.30901236731,
-                "population": -1232.4839444447432,
-                "households": 3292.1325285028197,
-                "median_income": 34403.76039792789,
-                "rooms_per_household": 7597.414487073006,
-                "bedrooms_per_room": -12794.007470974933,
-                "population_per_household": -1186.8706478067095,
-                "distance_to_sf": -2046.588759418886,
-                "distance_to_la": -5843.685708060976,
-                "income_per_room": 33263.70867701238
-            },
-            "ocean_multipliers": {
-                "<1H OCEAN": 1.1587376159730112,
-                "INLAND": 0.6023580515006176,
-                "ISLAND": 1.8361474086844956,
-                "NEAR BAY": 1.2510567095811367,
-                "NEAR OCEAN": 1.2038627675580529
-            },
-            "feature_means": {
-                "longitude": -119.58229045542636,
-                "latitude": 35.643149224806194,
-                "housing_median_age": 28.60828488372093,
-                "total_rooms": 2642.0047843992247,
-                "total_bedrooms": 538.4968507751938,
-                "population": 1426.453003875969,
-                "households": 499.9869186046512,
-                "median_income": 3.88075425750969,
-                "rooms_per_household": 5.4352350204875295,
-                "bedrooms_per_room": 0.21285797439441098,
-                "population_per_household": 3.0969611946687525,
-                "distance_to_sf": 3.8646218300138138,
-                "distance_to_la": 2.6572660252151286,
-                "income_per_room": 0.716203651422843
-            }
-        };
-
-        // Sample properties
-        const samples = {
-            sf: {
-                longitude: -122.23,
-                latitude: 37.88,
-                ocean_proximity: "NEAR BAY",
-                housing_median_age: 41,
-                total_rooms: 880,
-                total_bedrooms: 129,
-                population: 322,
-                households: 126,
-                median_income: 8.3252
-            },
-            la: {
-                longitude: -118.24,
-                latitude: 34.05,
-                ocean_proximity: "NEAR OCEAN",
-                housing_median_age: 25,
-                total_rooms: 1500,
-                total_bedrooms: 300,
-                population: 800,
-                households: 300,
-                median_income: 5.5
-            },
-            inland: {
-                longitude: -119.5,
-                latitude: 36.5,
-                ocean_proximity: "INLAND",
-                housing_median_age: 20,
-                total_rooms: 1200,
-                total_bedrooms: 250,
-                population: 600,
-                households: 220,
-                median_income: 2.5
-            },
-            island: {
-                longitude: -119.0,
-                latitude: 33.5,
-                ocean_proximity: "ISLAND",
-                housing_median_age: 30,
-                total_rooms: 2000,
-                total_bedrooms: 400,
-                population: 1000,
-                households: 350,
-                median_income: 6.0
-            }
-        };
-
-        // Load sample property
-        function loadSample(sampleName) {
-            const sample = samples[sampleName];
-            if (!sample) return;
-
-            document.getElementById('longitude').value = sample.longitude;
-            document.getElementById('latitude').value = sample.latitude;
-            document.getElementById('ocean_proximity').value = sample.ocean_proximity;
-            document.getElementById('housing_median_age').value = sample.housing_median_age;
-            document.getElementById('total_rooms').value = sample.total_rooms;
-            document.getElementById('total_bedrooms').value = sample.total_bedrooms;
-            document.getElementById('population').value = sample.population;
-            document.getElementById('households').value = sample.households;
-            document.getElementById('median_income').value = sample.median_income;
-
-            // Update displays
-            document.getElementById('ageValue').textContent = sample.housing_median_age + ' years';
-            document.getElementById('incomeValue').textContent = '$' + Math.round(sample.median_income * 10000).toLocaleString();
-
-            // Clear any errors
-            clearErrors();
-
-            // Predict
-            predictPrice();
-
-            // Show toast
-            showToast('Sample property loaded!', 'success');
-
-            // Scroll to form
-            document.getElementById('predictor').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Update range value displays
-        document.getElementById('housing_median_age').addEventListener('input', function() {
-            document.getElementById('ageValue').textContent = this.value + ' years';
-            predictPrice();
-        });
-
-        document.getElementById('median_income').addEventListener('input', function() {
-            const income = parseFloat(this.value) * 10000;
-            document.getElementById('incomeValue').textContent = '$' + income.toLocaleString();
-            predictPrice();
-        });
-
-        // Real-time prediction on input change
-        ['longitude', 'latitude', 'ocean_proximity', 'total_rooms', 'total_bedrooms', 'population', 'households'].forEach(id => {
-            document.getElementById(id).addEventListener('change', function() {
-                if (validateInputs()) {
-                    predictPrice();
-                }
-            });
-        });
-
-        // Validation
-        function validateInputs() {
-            let isValid = true;
-            clearErrors();
-
-            // Longitude
-            const longitude = parseFloat(document.getElementById('longitude').value);
-            if (isNaN(longitude) || longitude < -125 || longitude > -114) {
-                showError('longitude', 'longitude-error');
-                isValid = false;
-            }
-
-            // Latitude
-            const latitude = parseFloat(document.getElementById('latitude').value);
-            if (isNaN(latitude) || latitude < 32 || latitude > 42) {
-                showError('latitude', 'latitude-error');
-                isValid = false;
-            }
-
-            // Total rooms
-            const totalRooms = parseFloat(document.getElementById('total_rooms').value);
-            if (isNaN(totalRooms) || totalRooms < 2 || totalRooms > 40000) {
-                showError('total_rooms', 'rooms-error');
-                isValid = false;
-            }
-
-            // Bedrooms <= Rooms
-            const totalBedrooms = parseFloat(document.getElementById('total_bedrooms').value);
-            if (totalBedrooms > totalRooms) {
-                showError('total_bedrooms', 'bedrooms-error');
-                isValid = false;
-            }
-
-            // Population
-            const population = parseFloat(document.getElementById('population').value);
-            if (isNaN(population) || population < 3 || population > 36000) {
-                showError('population', 'population-error');
-                isValid = false;
-            }
-
-            // Households <= Population
-            const households = parseFloat(document.getElementById('households').value);
-            if (households > population) {
-                showError('households', 'households-error');
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        function showError(inputId, errorId) {
-            document.getElementById(inputId).classList.add('error');
-            document.getElementById(errorId).classList.add('show');
-        }
-
-        function clearErrors() {
-            document.querySelectorAll('.form-control').forEach(el => el.classList.remove('error'));
-            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
-        }
-
-        // Toast notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            toast.className = 'toast show ' + type;
-            toastMessage.textContent = message;
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // Prediction function
-        function predictPrice() {
-            if (!validateInputs()) {
-                return;
-            }
-
-            // Get input values
-            const longitude = parseFloat(document.getElementById('longitude').value);
-            const latitude = parseFloat(document.getElementById('latitude').value);
-            const housing_median_age = parseFloat(document.getElementById('housing_median_age').value);
-            const total_rooms = parseFloat(document.getElementById('total_rooms').value);
-            const total_bedrooms = parseFloat(document.getElementById('total_bedrooms').value);
-            const population = parseFloat(document.getElementById('population').value);
-            const households = parseFloat(document.getElementById('households').value);
-            const median_income = parseFloat(document.getElementById('median_income').value);
-            const ocean_proximity = document.getElementById('ocean_proximity').value;
-
-            // Calculate engineered features
-            const rooms_per_household = total_rooms / Math.max(households, 1);
-            const bedrooms_per_room = total_bedrooms / Math.max(total_rooms, 1);
-            const population_per_household = population / Math.max(households, 1);
-            const distance_to_sf = Math.sqrt(
-                Math.pow(latitude - 37.7749, 2) + 
-                Math.pow(longitude - (-122.4194), 2)
-            );
-            const distance_to_la = Math.sqrt(
-                Math.pow(latitude - 34.0522, 2) + 
-                Math.pow(longitude - (-118.2437), 2)
-            );
-            const income_per_room = median_income / Math.max(rooms_per_household, 0.1);
-
-            // Calculate prediction using weighted linear model
-            const features = {
-                longitude,
-                latitude,
-                housing_median_age,
-                total_rooms,
-                total_bedrooms,
-                population,
-                households,
-                median_income,
-                rooms_per_household,
-                bedrooms_per_room,
-                population_per_household,
-                distance_to_sf,
-                distance_to_la,
-                income_per_room
-            };
-
-            // Calculate weighted sum of differences from mean
-            let priceAdjustment = 0;
-            for (const [feature, value] of Object.entries(features)) {
-                const mean = webModel.feature_means[feature];
-                const weight = webModel.weights[feature];
-                priceAdjustment += (value - mean) * weight * 0.001;
-            }
-
-            // Apply ocean proximity multiplier
-            const oceanMultiplier = webModel.ocean_multipliers[ocean_proximity] || 1.0;
-            
-            // Calculate final price
-            let predictedPrice = (webModel.baseline_price + priceAdjustment) * oceanMultiplier;
-            
-            // Ensure reasonable bounds
-            predictedPrice = Math.max(15000, Math.min(500000, predictedPrice));
-
-            // Update result with animation
-            const resultElement = document.getElementById('predictionResult');
-            resultElement.style.transform = 'scale(0.95)';
-            resultElement.style.opacity = '0.7';
-            
-            setTimeout(() => {
-                resultElement.textContent = '$' + Math.round(predictedPrice).toLocaleString();
-                resultElement.style.transform = 'scale(1)';
-                resultElement.style.opacity = '1';
-            }, 150);
-
-            // Update insights
-            updateInsights(ocean_proximity, median_income, rooms_per_household, distance_to_sf, bedrooms_per_room, population_per_household);
-        }
-
-        function updateInsights(ocean, income, roomsPerHouse, distToSF, bedRatio, popPerHouse) {
-            const oceanLabels = {
-                "<1H OCEAN": "within 1 hour of the ocean",
-                "INLAND": "inland",
-                "ISLAND": "on an island",
-                "NEAR BAY": "near the bay",
-                "NEAR OCEAN": "near the ocean"
-            };
-
-            const oceanMultipliers = {
-                "<1H OCEAN": 1.16,
-                "INLAND": 0.60,
-                "ISLAND": 1.84,
-                "NEAR BAY": 1.25,
-                "NEAR OCEAN": 1.20
-            };
-
-            const incomeLevel = income > 6 ? "high-income" : income > 3.5 ? "middle-income" : "lower-income";
-            const incomeIcon = income > 6 ? "fa-arrow-up" : income > 3.5 ? "fa-minus" : "fa-arrow-down";
-            const roomDensity = roomsPerHouse > 6 ? "spacious" : roomsPerHouse > 4 ? "moderate" : "compact";
-            const sfProximity = distToSF < 1 ? "very close to San Francisco" : distToSF < 3 ? "within the Bay Area" : "outside the immediate Bay Area";
-            
-            const multiplier = oceanMultipliers[ocean];
-            const premiumText = multiplier > 1.3 ? "significantly increases" : multiplier > 1.1 ? "increases" : multiplier < 0.8 ? "decreases" : "moderately affects";
-
-            const insightsHTML = `
-                <div class="insight-item">
-                    <div class="insight-icon-small"><i class="fas fa-water"></i></div>
-                    <div class="insight-text">
-                        <strong>Location Premium:</strong> Being ${oceanLabels[ocean]} ${premiumText} value by ${Math.abs((multiplier - 1) * 100).toFixed(0)}%.
-                    </div>
-                </div>
-                <div class="insight-item">
-                    <div class="insight-icon-small"><i class="fas fa-dollar-sign"></i></div>
-                    <div class="insight-text">
-                        <strong>Income Factor:</strong> With $${(income * 10000).toLocaleString()} median income, this is a ${incomeLevel} neighborhood.
-                    </div>
-                </div>
-                <div class="insight-item">
-                    <div class="insight-icon-small"><i class="fas fa-home"></i></div>
-                    <div class="insight-text">
-                        <strong>Property Profile:</strong> ${roomsPerHouse.toFixed(1)} rooms/household indicates ${roomDensity} living. Located ${sfProximity}.
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('propertyInsights').innerHTML = insightsHTML;
-        }
-
-        // Initialize with default prediction
-        predictPrice();
-
-        // Animate feature bars on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.querySelectorAll('.feature-fill').forEach((bar, index) => {
-                        const width = bar.style.width;
-                        bar.style.width = '0';
-                        setTimeout(() => {
-                            bar.style.width = width;
-                        }, index * 100);
-                    });
-                }
-            });
-        }, { threshold: 0.5 });
-
-        observer.observe(document.getElementById('featureImportance'));
-    </script>
+    <script src="js/main.js"></script>
 </body>
 </html>
