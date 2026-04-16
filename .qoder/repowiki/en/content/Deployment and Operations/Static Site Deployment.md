@@ -2,8 +2,9 @@
 
 <cite>
 **Referenced Files in This Document**
-- [README.md](file://global-housing-static/README.md)
-- [pages.yml](file://global-housing-static/.github/workflows/pages.yml)
+- [README.md](file://README.md)
+- [.github/workflows/pages.yml](file://.github/workflows/pages.yml)
+- [deploy.ps1](file://deploy.ps1)
 - [index.html](file://global-housing-static/index.html)
 - [explore.html](file://global-housing-static/explore.html)
 - [predict.html](file://global-housing-static/predict.html)
@@ -18,13 +19,12 @@
 
 ## Update Summary
 **Changes Made**
-- Updated project branding from "Global Housing Predictor" to "Realteak" throughout all documentation
-- Added comprehensive documentation for new navigation structure (Buy, Sell, Rent, About Us, Contact)
-- Documented enhanced hero section with integrated search functionality
-- Added new color scheme documentation (#1a1a2e, #e8b923) and Google Fonts integration
-- Updated property card design documentation with images and trend indicators
-- Enhanced CSS framework documentation with new typography system
-- Updated all file references and code examples to reflect Realteak branding
+- Added comprehensive documentation for the new PowerShell deployment script (`deploy.ps1`)
+- Updated CI/CD workflow configuration with enhanced GitHub Actions pipeline
+- Documented three deployment methods: manual upload, Git commands, and PowerShell script
+- Added detailed deployment troubleshooting guide
+- Enhanced deployment security and permission management documentation
+- Updated live demo URL and repository structure information
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -33,17 +33,19 @@
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
 6. [Deployment Pipeline](#deployment-pipeline)
-7. [Performance Considerations](#performance-considerations)
-8. [Troubleshooting Guide](#troubleshooting-guide)
-9. [Conclusion](#conclusion)
+7. [PowerShell Deployment Script](#powershell-deployment-script)
+8. [CI/CD Workflow Configuration](#cicd-workflow-configuration)
+9. [Performance Considerations](#performance-considerations)
+10. [Troubleshooting Guide](#troubleshooting-guide)
+11. [Conclusion](#conclusion)
 
 ## Introduction
 
 Realteak is a comprehensive, fully static, client-side real estate platform designed for seamless deployment on GitHub Pages. This project represents a complete rebranding from the previous Global Housing Predictor, featuring a sophisticated real estate marketplace with integrated property search, valuation tools, and market exploration capabilities.
 
-The application provides advanced property price estimation across 20+ countries with enhanced market data, responsive design, automated deployment through GitHub Actions, and a modern rebranded user experience. Realteak serves as an excellent example of how to build and deploy sophisticated static web applications with enterprise-grade functionality.
+The application provides advanced property price estimation across 50+ countries with enhanced market data, responsive design, automated deployment through GitHub Actions, and a modern rebranded user experience. Realteak serves as an excellent example of how to build and deploy sophisticated static web applications with enterprise-grade functionality.
 
-**Updated** Complete rebranding from Global Housing Predictor to Realteak with enhanced navigation structure and modern design system
+**Updated** Complete rebranding from Global Housing Predictor to Realteak with enhanced navigation structure, modern design system, and comprehensive deployment automation
 
 ## Project Structure
 
@@ -72,22 +74,25 @@ P --> Q[Static Assets]
 Q --> R[Live Realteak Website]
 end
 S[.github/workflows/pages.yml] --> O
+T[deploy.ps1] --> U[Manual Deployment]
+U --> N
 ```
 
 **Diagram sources**
 - [index.html:1-285](file://global-housing-static/index.html#L1-L285)
-- [pages.yml:1-35](file://global-housing-static/.github/workflows/pages.yml#L1-L35)
+- [.github/workflows/pages.yml:1-35](file://.github/workflows/pages.yml#L1-L35)
 
 **Section sources**
-- [README.md:1-83](file://global-housing-static/README.md#L1-L83)
+- [README.md:1-170](file://README.md#L1-L170)
 - [index.html:1-285](file://global-housing-static/index.html#L1-L285)
 
 ## Core Components
 
 ### Enhanced Navigation System
-Realteak features a sophisticated four-tier navigation structure designed for real estate workflows:
+Realteak features a sophisticated five-tier navigation structure designed for real estate workflows:
 
-- **Buy**: Primary navigation for property search and market exploration
+- **Home**: Primary landing page with hero section and property showcase
+- **Buy**: Property search and market exploration functionality
 - **Sell**: Property valuation and listing tools
 - **Rent**: Rental market analysis and tenant resources
 - **About Us**: Company information and methodology
@@ -308,7 +313,7 @@ B --> M
 ```
 
 **Diagram sources**
-- [pages.yml:1-35](file://global-housing-static/.github/workflows/pages.yml#L1-L35)
+- [.github/workflows/pages.yml:1-35](file://.github/workflows/pages.yml#L1-L35)
 
 ### Deployment Configuration
 
@@ -320,7 +325,83 @@ The workflow includes several key security and performance features:
 - **Environment Variables**: Automatic URL generation and environment configuration
 
 **Section sources**
-- [pages.yml:1-35](file://global-housing-static/.github/workflows/pages.yml#L1-L35)
+- [.github/workflows/pages.yml:1-35](file://.github/workflows/pages.yml#L1-L35)
+
+## PowerShell Deployment Script
+
+The PowerShell deployment script provides an automated solution for manual deployments:
+
+```mermaid
+flowchart TD
+A[Run deploy.ps1] --> B[Check Git Installation]
+B --> C{Git Found?}
+C --> |Yes| D[Initialize Repository]
+C --> |No| E[Error: Install Git]
+D --> F[Add All Files]
+F --> G[Commit Changes]
+G --> H[Set Remote URL]
+H --> I[Push to GitHub]
+I --> J[Deployment Complete]
+E --> K[Exit Script]
+```
+
+**Diagram sources**
+- [deploy.ps1:1-46](file://deploy.ps1#L1-L46)
+
+### Script Features
+
+The deployment script includes comprehensive error handling and validation:
+
+- **Git Version Check**: Verifies Git installation before proceeding
+- **Repository Initialization**: Automatically initializes Git if not present
+- **File Management**: Adds all files and commits with descriptive message
+- **Remote Configuration**: Sets up custom repository URL
+- **Force Push**: Handles repository updates with force push option
+- **Progress Feedback**: Provides real-time status updates during deployment
+
+### Usage Instructions
+
+To use the PowerShell deployment script:
+
+1. **Prerequisites**: Ensure Git is installed on your system
+2. **Modify Parameters**: Update the `-RepoUrl` parameter with your GitHub repository URL
+3. **Execute Script**: Run `./deploy.ps1 -RepoUrl "https://github.com/YOUR_USERNAME/REPO_NAME.git"`
+4. **Monitor Progress**: Watch for success messages and deployment completion
+
+**Section sources**
+- [deploy.ps1:1-46](file://deploy.ps1#L1-L46)
+
+## CI/CD Workflow Configuration
+
+The GitHub Actions workflow provides automated deployment with enhanced security and reliability:
+
+### Workflow Triggers
+
+The workflow responds to multiple trigger events:
+
+- **Push Events**: Automatic deployment on code pushes to main/master branches
+- **Manual Dispatch**: Allows manual triggering from GitHub Actions interface
+- **Branch Protection**: Supports both main and master branch configurations
+
+### Security Permissions
+
+The workflow implements minimal required permissions:
+
+- **Content Access**: Read-only access to repository content
+- **Pages Management**: Write access to GitHub Pages deployment
+- **Token Management**: Secure ID token handling for authentication
+
+### Deployment Steps
+
+The workflow executes a standardized deployment pipeline:
+
+1. **Repository Checkout**: Clones the repository to the runner
+2. **Pages Configuration**: Sets up GitHub Pages environment
+3. **Artifact Upload**: Uploads entire repository as static assets
+4. **Deployment Execution**: Deploys to GitHub Pages with generated URL
+
+**Section sources**
+- [.github/workflows/pages.yml:1-35](file://.github/workflows/pages.yml#L1-L35)
 
 ## Performance Considerations
 
@@ -368,6 +449,23 @@ Browser caching is optimized through:
 - Verify GitHub Pages settings in repository configuration
 - Check for workflow concurrency conflicts
 
+### PowerShell Script Issues
+
+**Git Not Found**
+- Install Git from https://git-scm.com/
+- Add Git to system PATH environment variable
+- Restart terminal/command prompt after installation
+
+**Repository Initialization Problems**
+- Ensure you're running the script from the correct directory
+- Check file permissions for the target repository
+- Verify write access to the repository location
+
+**Remote Configuration Errors**
+- Validate the repository URL format
+- Ensure the repository exists and is accessible
+- Check for typos in the repository name or username
+
 ### Development Debugging
 
 **JavaScript Issues**
@@ -381,8 +479,8 @@ Browser caching is optimized through:
 - Test cross-browser compatibility with Google Fonts integration
 
 **Section sources**
-- [pages.yml:8-16](file://global-housing-static/.github/workflows/pages.yml#L8-L16)
-- [README.md:24-34](file://global-housing-static/README.md#L24-L34)
+- [.github/workflows/pages.yml:8-16](file://.github/workflows/pages.yml#L8-L16)
+- [README.md:65-98](file://README.md#L65-L98)
 
 ## Conclusion
 
@@ -394,5 +492,8 @@ Realteak demonstrates a sophisticated approach to static site deployment that ba
 - **Modern Branding**: Sophisticated rebranding with comprehensive navigation and design system
 - **Cross-Platform Compatibility**: Responsive design works across all devices with Realteak's enhanced user experience
 - **Cost-Effective Hosting**: Leverages GitHub Pages free tier with enterprise-grade functionality
+- **Flexible Deployment Options**: Multiple deployment methods including automated CI/CD and manual PowerShell scripts
 
-This project serves as an excellent template for sophisticated static real estate applications, showcasing best practices in client-side architecture, modern design systems, comprehensive GitHub Actions pipelines, and enterprise-level rebranding strategies. The modular JavaScript structure and enhanced deployment workflow provide a solid foundation for future Realteak platform enhancements while maintaining the simplicity that makes static hosting so effective.
+This project serves as an excellent template for sophisticated static real estate applications, showcasing best practices in client-side architecture, modern design systems, comprehensive GitHub Actions pipelines, enterprise-level rebranding strategies, and robust deployment automation. The modular JavaScript structure and enhanced deployment workflow provide a solid foundation for future Realteak platform enhancements while maintaining the simplicity that makes static hosting so effective.
+
+**Live Demo**: [https://tashkirrr.github.io/housing-price-prediction/](https://tashkirrr.github.io/housing-price-prediction/)

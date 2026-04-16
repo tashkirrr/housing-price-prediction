@@ -16,6 +16,14 @@
 - [15_4_house_price_prediction.ipynb](file://15_4_house_price_prediction.ipynb)
 </cite>
 
+## Update Summary
+**Changes Made**
+- Updated project overview to reflect the transition from Python-based ML application to static website implementation
+- Revised deployment section to focus on static site hosting rather than API/web application deployment
+- Updated architecture diagrams to show the simplified static model approach
+- Removed references to Python-based model serving infrastructure
+- Updated practical examples to demonstrate static model implementation
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
@@ -29,12 +37,14 @@
 10. [Appendices](#appendices)
 
 ## Introduction
-This document describes the end-to-end machine learning pipeline implemented for the California Housing Price Prediction project. It covers the complete workflow from raw data ingestion to model training, evaluation, experiment tracking, and production deployment. The pipeline emphasizes robust data processing, principled feature engineering, rigorous model comparison and tuning, and comprehensive evaluation using RMSE, MAE, and R². It also documents model persistence, version management, and deployment considerations for both API and web applications.
+This document describes the end-to-end machine learning pipeline implemented for the California Housing Price Prediction project. The project has evolved from a Python-based machine learning application to a modern static website implementation that demonstrates the complete workflow from raw data processing to model training, evaluation, and production deployment. The pipeline emphasizes robust data processing, principled feature engineering, rigorous model comparison and tuning, and comprehensive evaluation using RMSE, MAE, and R². It also documents model persistence, version management, and deployment considerations for static web hosting.
+
+**Updated** The project now focuses on demonstrating machine learning concepts through a static website implementation rather than a traditional Python-based application stack.
 
 ## Project Structure
-The repository organizes the ML workflow across modules and scripts:
-- Data processing and feature engineering live in a dedicated module.
-- Model training, evaluation, and persistence are implemented in a separate module.
+The repository organizes the ML workflow across modules and scripts, with a focus on static implementation:
+- Data processing and feature engineering live in a dedicated module for historical reference.
+- Model training, evaluation, and persistence are implemented in a separate module for educational purposes.
 - Experiment tracking integrates with MLflow for run comparison and model versioning.
 - Utilities provide logging, model serialization, and convenience functions.
 - Visualization utilities support EDA and model evaluation.
@@ -44,7 +54,12 @@ The repository organizes the ML workflow across modules and scripts:
 
 ```mermaid
 graph TB
-subgraph "Data Layer"
+subgraph "Static Website Implementation"
+STATIC["Static HTML/CSS/JS<br/>Pure client-side implementation"]
+DATA["Static Data Files<br/>model_data.json, web_model.json"]
+ENDUSER["User Interface<br/>predict.html, explore.html"]
+end
+subgraph "Historical ML Components"
 RAW["Raw CSV<br/>housing.csv"]
 DP["DataProcessor<br/>load_data, split_data"]
 FE["FeatureEngineer<br/>ratio & location features"]
@@ -62,16 +77,11 @@ subgraph "Tracking & Artifacts"
 MLFLOW["MLflow ExperimentTracker<br/>log_params, log_metrics, log_model"]
 ART["Artifacts<br/>model, preprocessor, metrics"]
 end
-subgraph "Deployment"
-WEB["Web Export<br/>web_model.json"]
-API["FastAPI App"]
-APP["Streamlit App"]
-end
+STATIC --> DATA
+DATA --> ENDUSER
 RAW --> DP --> FE --> CT --> PRE --> MT --> ME --> PERSIST
 MT --> MLFLOW --> ART
-PERSIST --> WEB
-PERSIST --> API
-PERSIST --> APP
+PERSIST --> DATA
 ```
 
 **Diagram sources**
@@ -88,14 +98,17 @@ PERSIST --> APP
 - [setup.py:22-73](file://setup.py#L22-L73)
 
 ## Core Components
-- DataProcessor: Loads data, identifies column types, analyzes missing values, splits data with stratification, and summarizes dataset characteristics.
-- FeatureEngineer: Creates ratio features (rooms per household, bedrooms per room, population per household), location features (distance to major cities), and builds a preprocessing pipeline with imputation, scaling, and one-hot encoding.
-- ModelTrainer: Compares multiple models using cross-validation, tunes hyperparameters with grid search, and trains the final model with optimal parameters.
-- ModelEvaluator: Computes RMSE, MAE, MAPE, R², analyzes errors by price range, extracts feature importance, and identifies worst predictions.
-- ExperimentTracker: Starts MLflow runs, logs parameters and metrics, logs models and artifacts, compares runs, and manages model versions.
-- Utilities: Provides logging setup, model persistence with metadata, metrics saving, and experiment directory creation.
-- Visualization: Supports EDA plots, geographic distributions, correlation matrices, and evaluation visualizations.
-- Training Script: Demonstrates the full pipeline, exports artifacts for web use, and saves a simplified model representation.
+- DataProcessor: Historical component that loads data, identifies column types, analyzes missing values, splits data with stratification, and summarizes dataset characteristics.
+- FeatureEngineer: Historical component that creates ratio features (rooms per household, bedrooms per room, population per household), location features (distance to major cities), and builds a preprocessing pipeline with imputation, scaling, and one-hot encoding.
+- ModelTrainer: Historical component that compares multiple models using cross-validation, tunes hyperparameters with grid search, and trains the final model with optimal parameters.
+- ModelEvaluator: Historical component that computes RMSE, MAE, MAPE, R², analyzes errors by price range, extracts feature importance, and identifies worst predictions.
+- ExperimentTracker: Historical component that starts MLflow runs, logs parameters and metrics, logs models and artifacts, compares runs, and manages model versions.
+- Utilities: Historical utilities that provide logging setup, model persistence with metadata, metrics saving, and experiment directory creation.
+- Visualization: Historical visualization utilities that support EDA plots, geographic distributions, correlation matrices, and evaluation visualizations.
+- Training Script: Demonstrates the full pipeline, exports artifacts for web use, and saves a simplified model representation for static implementation.
+- Static Model Implementation: Pure JavaScript implementation that mirrors the training process for client-side prediction.
+
+**Updated** The core components now serve as educational examples for static website implementation rather than active application components.
 
 **Section sources**
 - [src/data_processing.py:22-186](file://src/data_processing.py#L22-L186)
@@ -108,14 +121,17 @@ PERSIST --> APP
 - [train_model_for_web.py:23-196](file://train_model_for_web.py#L23-L196)
 
 ## Architecture Overview
-The pipeline follows a modular, testable architecture:
-- Data ingestion and cleaning are encapsulated in DataProcessor.
+The pipeline follows a modular, testable architecture with a focus on static implementation:
+- Data ingestion and cleaning are encapsulated in DataProcessor for historical reference.
 - Feature engineering is handled by FeatureEngineer, which also constructs the preprocessing pipeline.
 - ModelTrainer orchestrates model selection, cross-validation, and hyperparameter tuning.
 - ModelEvaluator provides comprehensive performance analysis.
 - ExperimentTracker integrates MLflow for experiment lifecycle management.
 - Utilities and visualization support persistence, logging, and reporting.
 - The training script ties everything together and exports artifacts for web deployment.
+- Static website implementation provides client-side prediction using exported model data.
+
+**Updated** The architecture now emphasizes static implementation with client-side model execution.
 
 ```mermaid
 sequenceDiagram
@@ -127,6 +143,7 @@ participant MT as "ModelTrainer"
 participant ME as "ModelEvaluator"
 participant ET as "ExperimentTracker"
 participant FS as "Filesystem"
+participant STATIC as "Static Website"
 Raw->>DP : load_data()
 DP->>DP : get_column_types()
 DP->>DP : analyze_missing_values()
@@ -141,6 +158,8 @@ MT-->>ME : best_model
 ME->>ME : evaluate(y_true, y_pred)
 MT->>ET : log_params, log_metrics, log_model
 ET->>FS : artifacts (model, preprocessor, metrics)
+FS->>STATIC : model_data.json, web_model.json
+STATIC->>STATIC : client-side prediction
 ```
 
 **Diagram sources**
@@ -284,10 +303,13 @@ ET->>REG : create_model_version()
 **Section sources**
 - [src/experiment_tracking.py:19-307](file://src/experiment_tracking.py#L19-L307)
 
-### Model Persistence and Deployment
+### Model Persistence and Static Deployment
 - Persistence: Saves models and preprocessors using joblib; utilities support metadata and timestamps.
-- Web export: Training script exports a simplified model representation and statistics for browser-based prediction.
-- API and web apps: The project includes FastAPI and Streamlit applications for serving predictions.
+- Static export: Training script exports a simplified model representation and statistics for browser-based prediction.
+- Static model execution: JavaScript implementation that mirrors the training process for client-side prediction.
+- Web deployment: Static files hosted on GitHub Pages without server requirements.
+
+**Updated** The deployment now focuses on static hosting rather than traditional web application deployment.
 
 ```mermaid
 graph LR
@@ -295,10 +317,10 @@ TRAIN["Trained Model"] --> SAVE["save_model()"]
 PREP["Fitted Preprocessor"] --> SAVE
 SAVE --> FS["Disk"]
 FS --> LOAD["load_model()"]
-TRAIN --> WEB["Export web_model.json"]
+TRAIN --> WEB["Export model_data.json"]
 PREP --> WEB
-LOAD --> API["FastAPI App"]
-LOAD --> APP["Streamlit App"]
+LOAD --> STATIC["Static Website"]
+STATIC --> CLIENT["Client-Side Prediction"]
 ```
 
 **Diagram sources**
@@ -321,7 +343,9 @@ The Jupyter notebook demonstrates the complete workflow:
 - Model comparison with cross-validation
 - Hyperparameter tuning
 - Final evaluation and interpretation
-- Persistence and artifact export
+- Persistence and artifact export for static implementation
+
+**Updated** The workflow now culminates in static model export rather than traditional model serving.
 
 ```mermaid
 flowchart TD
@@ -332,7 +356,8 @@ PREP --> COMPARE["Model Comparison (CV)"]
 COMPARE --> TUNE["Hyperparameter Tuning"]
 TUNE --> EVAL["Final Evaluation"]
 EVAL --> SAVE["Persist Models & Artifacts"]
-SAVE --> DEPLOY["Deploy via API/Web"]
+SAVE --> STATIC["Static Model Export"]
+STATIC --> DEPLOY["GitHub Pages Deployment"]
 ```
 
 **Diagram sources**
@@ -342,14 +367,15 @@ SAVE --> DEPLOY["Deploy via API/Web"]
 - [15_4_house_price_prediction.ipynb:1-800](file://15_4_house_price_prediction.ipynb#L1-L800)
 
 ## Dependency Analysis
-The project relies on a clear set of dependencies:
+The project relies on a clear set of dependencies for both historical ML components and static implementation:
 - Core ML: scikit-learn, numpy, pandas
 - Visualization: matplotlib, seaborn, plotly
-- API: fastapi, uvicorn, pydantic
-- Web app: streamlit
+- Static implementation: pure HTML, CSS, JavaScript
 - Experiment tracking: mlflow
 - Testing: pytest, httpx
 - Utilities: joblib, python-dotenv, pyyaml
+
+**Updated** Dependencies now include static web technologies alongside historical ML libraries.
 
 ```mermaid
 graph TB
@@ -358,12 +384,12 @@ NP["numpy"] --> MOD
 PD["pandas"] --> MOD
 MAT["matplotlib"] --> VIS["src/visualization.py"]
 SEA["seaborn"] --> VIS
-FAST["fastapi"] --> API["api/main.py"]
-UV["uvicorn"] --> API
-STR["streamlit"] --> APP["app/app.py"]
 MLF["mlflow"] --> EXP["src/experiment_tracking.py"]
 JOB["joblib"] --> UTIL["src/utils.py"]
 JOB --> MOD
+HTML["HTML5"] --> STATIC["Static Website"]
+CSS["CSS3"] --> STATIC
+JS["JavaScript"] --> STATIC
 ```
 
 **Diagram sources**
@@ -381,8 +407,9 @@ JOB --> MOD
 - Preprocessing: Consistent imputation and scaling prevent data leakage and improve stability.
 - Hyperparameter tuning: Grid search with RMSE scoring targets optimal predictive performance.
 - Interpretability: Feature importance extraction aids model understanding and potential drift monitoring.
+- Static performance: Client-side prediction eliminates server latency and reduces hosting costs.
 
-[No sources needed since this section provides general guidance]
+**Updated** Performance considerations now include static implementation benefits.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -391,6 +418,9 @@ Common issues and resolutions:
 - Preprocessor not fitted: Always fit the preprocessor on training data before transforming test data.
 - Model persistence: Use provided save/load functions to maintain metadata and timestamps; verify file paths and permissions.
 - MLflow connectivity: Configure tracking URI if using a remote MLflow server; verify experiment names and run IDs.
+- Static deployment: Ensure all static files (model_data.json, web_model.json) are properly uploaded to GitHub Pages.
+
+**Updated** Added troubleshooting for static deployment issues.
 
 **Section sources**
 - [src/data_processing.py:52-157](file://src/data_processing.py#L52-L157)
@@ -399,9 +429,9 @@ Common issues and resolutions:
 - [src/experiment_tracking.py:30-51](file://src/experiment_tracking.py#L30-L51)
 
 ## Conclusion
-The machine learning pipeline delivers a production-ready, end-to-end workflow for California housing price prediction. It combines robust data processing, thoughtful feature engineering, principled model selection and tuning, comprehensive evaluation, and strong experiment tracking. The modular design, extensive tests, and clear persistence and deployment pathways enable reliable operation across development, experimentation, and production environments.
+The machine learning pipeline delivers a production-ready, end-to-end workflow for California housing price prediction with a focus on static implementation. It combines robust data processing, thoughtful feature engineering, principled model selection and tuning, comprehensive evaluation, and strong experiment tracking. The modular design, extensive tests, and clear persistence and deployment pathways enable reliable operation across development, experimentation, and production environments. The transition to static implementation demonstrates how machine learning concepts can be effectively presented through modern web technologies without server infrastructure.
 
-[No sources needed since this section summarizes without analyzing specific files]
+**Updated** The conclusion now emphasizes the successful transition to static implementation.
 
 ## Appendices
 
@@ -411,8 +441,8 @@ The machine learning pipeline delivers a production-ready, end-to-end workflow f
 - Experiment tracking: [src/experiment_tracking.py:19-307](file://src/experiment_tracking.py#L19-L307)
 - Utilities and persistence: [src/utils.py:16-137](file://src/utils.py#L16-L137)
 - Visualization: [src/visualization.py:23-261](file://src/visualization.py#L23-L261)
-- Training script for web export: [train_model_for_web.py:23-196](file://train_model_for_web.py#L23-L196)
+- Training script for static export: [train_model_for_web.py:23-196](file://train_model_for_web.py#L23-L196)
 - Tests: [tests/test_models.py:1-229](file://tests/test_models.py#L1-L229), [tests/test_data_processing.py:1-202](file://tests/test_data_processing.py#L1-L202)
 - Jupyter notebook walkthrough: [15_4_house_price_prediction.ipynb:1-800](file://15_4_house_price_prediction.ipynb#L1-L800)
 
-[No sources needed since this appendix lists references already cited above]
+**Updated** References now include static implementation components.

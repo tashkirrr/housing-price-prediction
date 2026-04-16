@@ -3,21 +3,30 @@
 <cite>
 **Referenced Files in This Document**
 - [README.md](file://README.md)
-- [requirements.txt](file://requirements.txt)
-- [src/__init__.py](file://src/__init__.py)
-- [src/models.py](file://src/models.py)
-- [src/data_processing.py](file://src/data_processing.py)
-- [src/experiment_tracking.py](file://src/experiment_tracking.py)
-- [src/utils.py](file://src/utils.py)
-- [api/main.py](file://api/main.py)
-- [app/app.py](file://app/app.py)
-- [Dockerfile](file://Dockerfile)
-- [docker-compose.yml](file://docker-compose.yml)
-- [data/README.md](file://data/README.md)
-- [docs/architecture.md](file://docs/architecture.md)
-- [tests/conftest.py](file://tests/conftest.py)
-- [tests/test_models.py](file://tests/test_models.py)
+- [index.html](file://index.html)
+- [predict.html](file://predict.html)
+- [explore.html](file://explore.html)
+- [countries.html](file://countries.html)
+- [css/style.css](file://css/style.css)
+- [js/main.js](file://js/main.js)
+- [js/predict.js](file://js/predict.js)
+- [js/explore.js](file://js/explore.js)
+- [js/countries.js](file://js/countries.js)
+- [global-housing-predictor/package.json](file://global-housing-predictor/package.json)
+- [global-housing-predictor/src/app/page.tsx](file://global-housing-predictor/src/app/page.tsx)
+- [global-housing-predictor/next.config.js](file://global-housing-predictor/next.config.js)
+- [global-housing-predictor/tailwind.config.ts](file://global-housing-predictor/tailwind.config.ts)
+- [global-housing-static/README.md](file://global-housing-static/README.md)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Complete transformation from machine learning Python application to modern static website Realteak
+- Updated project description to reflect consumer-facing real estate platform with global coverage
+- Removed all machine learning components (Python scripts, ML models, API services)
+- Added comprehensive documentation for static website architecture and client-side processing
+- Updated technology stack to reflect HTML, CSS, JavaScript, and modern web development tools
+- Added new sections covering real estate platform features, global market coverage, and client-side prediction algorithms
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -25,381 +34,373 @@
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [Dependency Analysis](#dependency-analysis)
-7. [Performance Considerations](#performance-considerations)
-8. [Troubleshooting Guide](#troubleshooting-guide)
-9. [Conclusion](#conclusion)
-10. [Appendices](#appendices)
+6. [Technology Stack](#technology-stack)
+7. [Global Market Coverage](#global-market-coverage)
+8. [Client-Side Processing](#client-side-processing)
+9. [Deployment and Customization](#deployment-and-customization)
+10. [Business Value Proposition](#business-value-proposition)
+11. [Target Audience](#target-audience)
+12. [Conclusion](#conclusion)
 
 ## Introduction
-This project is a production-ready machine learning application designed to predict median house values in California using advanced regression techniques. It serves as both an educational resource for learners exploring end-to-end ML workflows and a practical reference implementation for practitioners building scalable ML systems.
+Realteak is a modern, professional real estate platform built as a consumer-facing static website for predicting property prices across 50+ countries worldwide. This transformation represents a complete shift from a machine learning Python application to a production-ready, client-side real estate platform that leverages pure HTML, CSS, and JavaScript for fast, responsive performance on GitHub Pages.
 
-Key goals:
-- Demonstrate a complete ML lifecycle: data preparation, feature engineering, model selection, tuning, evaluation, and deployment.
-- Provide multiple user-facing interfaces: an interactive Streamlit web app and a FastAPI REST service for programmatic access.
-- Offer production-grade capabilities: experiment tracking, logging, testing, and containerized deployment.
-- Deliver strong real-world performance on the California Housing dataset from the 1990 census.
+The platform provides an intuitive interface for property valuation with global market coverage, featuring 20+ countries and 95+ cities in its database. Built with modern web standards, Realteak delivers exceptional user experience through responsive design, client-side calculations, and comprehensive market data visualization.
 
-Business value:
-- Enables stakeholders to quickly prototype and deploy pricing models for real estate analytics.
-- Supports batch inference for property portfolios and integration into larger systems.
-- Provides interpretability through feature importance and residual analysis.
-
-Real-world applicability:
-- The dataset captures geographic, demographic, and economic signals that correlate with housing values.
-- Predictions are contextualized for 1990 values; users can adjust expectations for current markets.
-
-Target audience:
-- Beginners: step-by-step notebooks and interactive apps guide you through the ML pipeline.
-- Practitioners: clean APIs, experiment tracking, and containerization offer a reference architecture for production systems.
+**Updated** Complete transformation from machine learning application to consumer-focused real estate platform
 
 **Section sources**
-- [README.md:36-56](file://README.md#L36-L56)
-- [README.md:290-320](file://README.md#L290-L320)
-- [data/README.md:11-28](file://data/README.md#L11-L28)
+- [README.md:1-170](file://README.md#L1-L170)
+- [global-housing-static/README.md:1-170](file://global-housing-static/README.md#L1-L170)
 
 ## Project Structure
-The repository follows a modular, feature-based organization with clear separation between data, modeling, serving, and deployment assets.
+The repository now contains a modern static website architecture with clear separation between presentation, logic, and data layers.
 
 ```mermaid
 graph TB
-subgraph "Interfaces"
-API["FastAPI REST API<br/>api/main.py"]
-APP["Streamlit Web App<br/>app/app.py"]
+subgraph "Static Website Structure"
+HOME["index.html<br/>Homepage with hero, search, properties"]
+PREDICT["predict.html<br/>Price prediction calculator"]
+EXPLORE["explore.html<br/>Market exploration interface"]
+COUNTRIES["countries.html<br/>Global coverage listing"]
+ABOUT["about.html<br/>Methodology and data sources"]
 end
-subgraph "Core ML Package"
-DP["Data Processing<br/>src/data_processing.py"]
-MODELS["Model Training/Evaluation<br/>src/models.py"]
-EXP["Experiment Tracking<br/>src/experiment_tracking.py"]
-UTILS["Utilities<br/>src/utils.py"]
+subgraph "Styling Layer"
+STYLE["css/style.css<br/>Modern real estate design system"]
 end
-subgraph "Assets"
-DATA["Raw Data<br/>data/housing.csv"]
-MODELS_DIR["Saved Models<br/>models/*.pkl"]
-DOCS["Docs<br/>docs/architecture.md"]
-TESTS["Tests<br/>tests/*"]
+subgraph "Logic Layer"
+MAIN["js/main.js<br/>Global data and utilities"]
+PREDICT_JS["js/predict.js<br/>Client-side prediction engine"]
+EXPLORE_JS["js/explore.js<br/>Market search functionality"]
+COUNTRIES_JS["js/countries.js<br/>Country-specific logic"]
 end
-subgraph "Deployment"
-DF["Dockerfile"]
-DC["docker-compose.yml"]
+subgraph "Data Layer"
+GLOBAL_DATA["Global market data<br/>Countries, cities, pricing"]
+FEATURED["Featured properties<br/>Sample listings"]
 end
-API --> MODELS_DIR
-APP --> MODELS_DIR
-API --> DP
-APP --> DP
-MODELS --> DP
-EXP --> MODELS
-UTILS --> MODELS
-UTILS --> DP
-DP --> DATA
-MODELS_DIR --> MODELS
-DOCS --> API
-DOCS --> APP
-DF --> API
-DF --> APP
-DC --> API
-DC --> APP
+subgraph "Modern Platform"
+NEXT_APP["Next.js App<br/>Alternative React implementation"]
+NEXT_PKG["package.json<br/>React dependencies"]
+NEXT_CONFIG["next.config.js<br/>Configuration"]
+TAILWIND["tailwind.config.ts<br/>Design system"]
+end
+HOME --> STYLE
+PREDICT --> STYLE
+EXPLORE --> STYLE
+COUNTRIES --> STYLE
+HOME --> MAIN
+PREDICT --> MAIN
+EXPLORE --> MAIN
+COUNTRIES --> MAIN
+PREDICT --> PREDICT_JS
+EXPLORE --> EXPLORE_JS
+COUNTRIES --> COUNTRIES_JS
+MAIN --> GLOBAL_DATA
+GLOBAL_DATA --> FEATURED
+NEXT_APP --> NEXT_PKG
+NEXT_APP --> NEXT_CONFIG
+NEXT_APP --> TAILWIND
 ```
 
 **Diagram sources**
-- [docs/architecture.md:7-60](file://docs/architecture.md#L7-L60)
-- [api/main.py:186-231](file://api/main.py#L186-L231)
-- [app/app.py:72-82](file://app/app.py#L72-L82)
-- [src/data_processing.py:22-51](file://src/data_processing.py#L22-L51)
-- [src/models.py:30-53](file://src/models.py#L30-L53)
-- [src/experiment_tracking.py:19-51](file://src/experiment_tracking.py#L19-L51)
-- [src/utils.py:16-55](file://src/utils.py#L16-L55)
-- [Dockerfile:58-86](file://Dockerfile#L58-L86)
-- [docker-compose.yml:10-57](file://docker-compose.yml#L10-L57)
+- [index.html:1-285](file://index.html#L1-L285)
+- [predict.html:1-126](file://predict.html#L1-L126)
+- [explore.html:1-84](file://explore.html#L1-L84)
+- [countries.html:1-280](file://countries.html#L1-L280)
+- [css/style.css:1-827](file://css/style.css#L1-L827)
+- [js/main.js:1-210](file://js/main.js#L1-L210)
+- [js/predict.js:1-122](file://js/predict.js#L1-L122)
+- [global-housing-predictor/package.json:1-44](file://global-housing-predictor/package.json#L1-L44)
+- [global-housing-predictor/next.config.js:1-25](file://global-housing-predictor/next.config.js#L1-L25)
+- [global-housing-predictor/tailwind.config.ts:1-87](file://global-housing-predictor/tailwind.config.ts#L1-L87)
 
 **Section sources**
-- [README.md:88-139](file://README.md#L88-L139)
-- [docs/architecture.md:62-169](file://docs/architecture.md#L62-L169)
+- [README.md:36-55](file://README.md#L36-L55)
+- [index.html:36-74](file://index.html#L36-L74)
+- [predict.html:42-97](file://predict.html#L42-L97)
+- [explore.html:38-59](file://explore.html#L38-L59)
+- [countries.html:39-232](file://countries.html#L39-L232)
 
 ## Core Components
-- Data Processing: Loads, validates, splits, and summarizes data; builds preprocessing pipelines with imputation, scaling, and encoding.
-- Feature Engineering: Creates ratio features, distance metrics, and derived variables to improve model understanding.
-- Model Training/Evaluation: Implements multiple regressors, cross-validation, hyperparameter tuning, and comprehensive evaluation.
-- Experiment Tracking: Integrates MLflow to log runs, parameters, metrics, and artifacts.
-- Serving: FastAPI REST API for single and batch predictions; Streamlit app for interactive exploration.
-- Utilities: Logging, persistence helpers, and convenience functions.
-- Packaging: Public API exports for programmatic use.
+Realteak consists of several interconnected components working together to deliver a seamless real estate experience:
 
-Practical examples:
-- Train and compare models, tune hyperparameters, and persist the best model.
-- Serve predictions via API or Streamlit with automatic feature engineering.
-- Track experiments and compare runs using MLflow.
+- **Homepage Interface**: Modern hero section with property search, featured listings, testimonials, and call-to-action elements
+- **Price Prediction Engine**: Client-side calculation system using global market data and property characteristics
+- **Market Explorer**: Comprehensive search and filter system for discovering properties across different regions
+- **Global Coverage System**: Structured database of countries, cities, and pricing multipliers for international markets
+- **Responsive Design System**: CSS-based design system with custom properties, animations, and mobile-first approach
+- **Interactive Navigation**: Mobile-responsive navigation with smooth transitions and accessibility features
+- **Property Showcase**: Dynamic property cards with hover effects, pricing displays, and market trend indicators
 
 **Section sources**
-- [src/data_processing.py:22-157](file://src/data_processing.py#L22-L157)
-- [src/data_processing.py:189-341](file://src/data_processing.py#L189-L341)
-- [src/models.py:30-206](file://src/models.py#L30-L206)
-- [src/models.py:208-351](file://src/models.py#L208-L351)
-- [src/experiment_tracking.py:19-307](file://src/experiment_tracking.py#L19-L307)
-- [src/utils.py:58-99](file://src/utils.py#L58-L99)
-- [src/__init__.py:14-26](file://src/__init__.py#L14-L26)
+- [index.html:97-166](file://index.html#L97-L166)
+- [predict.html:42-112](file://predict.html#L42-L112)
+- [explore.html:61-70](file://explore.html#L61-L70)
+- [countries.html:48-214](file://countries.html#L48-L214)
+- [css/style.css:360-430](file://css/style.css#L360-L430)
+- [js/main.js:167-210](file://js/main.js#L167-L210)
 
 ## Architecture Overview
-The system is layered: clients (notebook, Streamlit, API) interact with the interface layer (FastAPI), which delegates to services (data processing, feature engineering, model training/evaluation), and persists models and experiment metadata.
+The system follows a modern static website architecture with client-side processing and comprehensive data management:
 
 ```mermaid
 graph TB
-Client["Client Layer<br/>Jupyter / Streamlit / API Clients"]
-IF["Interface Layer<br/>FastAPI REST API"]
-SVC["Service Layer<br/>Data Processing<br/>Feature Engineering<br/>Model Training/Evaluation"]
-MODEL["Model Layer<br/>Trained HistGradientBoostingRegressor"]
-STORE["Storage Layer<br/>CSV Data<br/>joblib Models<br/>MLflow Experiments"]
-Client --> IF
-IF --> SVC
-SVC --> MODEL
-MODEL --> STORE
-SVC --> STORE
+Client["User Browser<br/>Desktop/Mobile/Tablet"]
+Router["Navigation Router<br/>Single Page Navigation"]
+DataLayer["Data Management<br/>Global market database"]
+Calculation["Prediction Engine<br/>Client-side calculations"]
+UIComponents["UI Components<br/>Dynamic content rendering"]
+Template["Template System<br/>HTML structure + CSS styling"]
+Client --> Router
+Router --> DataLayer
+DataLayer --> Calculation
+Calculation --> UIComponents
+UIComponents --> Template
+Template --> Client
+DataLayer --> GlobalData["Global market data<br/>Countries, cities, pricing"]
+DataLayer --> Featured["Featured properties<br/>Sample listings"]
+Calculation --> PriceFormula["Price calculation formula<br/>sqft × avgPrice × multiplier"]
+Calculation --> Adjustments["Property adjustments<br/>bedrooms, bathrooms, age, features"]
+UIComponents --> PropertyCards["Property cards<br/>Hover effects, pricing"]
+UIComponents --> SearchForms["Search forms<br/>Location, type, price filters"]
+UIComponents --> CountryGrid["Country grid<br/>Regional organization"]
 ```
 
 **Diagram sources**
-- [docs/architecture.md:130-169](file://docs/architecture.md#L130-L169)
-- [api/main.py:237-384](file://api/main.py#L237-L384)
-- [src/data_processing.py:22-341](file://src/data_processing.py#L22-L341)
-- [src/models.py:30-351](file://src/models.py#L30-L351)
+- [js/main.js:20-133](file://js/main.js#L20-L133)
+- [js/predict.js:46-113](file://js/predict.js#L46-L113)
+- [css/style.css:360-430](file://css/style.css#L360-L430)
+- [index.html:97-166](file://index.html#L97-L166)
 
 ## Detailed Component Analysis
 
-### Data Processing and Feature Engineering
-- DataProcessor: Loads CSV, detects types, analyzes missing values, performs stratified train/test split, and summarizes dataset characteristics.
-- FeatureEngineer: Creates ratio features (rooms per household, bedrooms per room, population per household), distance features to major California cities, and constructs a preprocessing pipeline with imputation and scaling/encoding.
+### Global Market Database
+The platform maintains a comprehensive database of international real estate markets with structured data organization:
+
+- **Country Information**: ISO codes, currency specifications, regional classifications, and average pricing per square foot
+- **City-Level Data**: Price multipliers, emoji representations, and local market characteristics
+- **Featured Properties**: Sample listings demonstrating platform capabilities with market trends
+- **Regional Organization**: Geographic grouping for intuitive navigation and market discovery
 
 ```mermaid
 flowchart TD
-StartDP["Start Data Processing"] --> Load["Load CSV"]
-Load --> Types["Detect Numerical/Categorical Columns"]
-Types --> Missing["Analyze Missing Values"]
-Missing --> Split["Stratified Train/Test Split"]
-Split --> Summ["Generate Dataset Summary"]
-Summ --> FE["Feature Engineering"]
-FE --> Ratios["Create Ratio Features"]
-FE --> Dist["Compute Distance Features"]
-FE --> Prep["Build Preprocessing Pipeline"]
-Prep --> EndDP["Ready for Modeling"]
+Start["Market Data Initialization"] --> Countries["Load Country Data<br/>ISO codes, currencies, regions"]
+Countries --> Cities["Load City Data<br/>Multipliers, emojis, local info"]
+Cities --> Properties["Load Featured Properties<br/>Sample listings with trends"]
+Properties --> Ready["Market Database Ready<br/>Global coverage enabled"]
 ```
 
 **Diagram sources**
-- [src/data_processing.py:52-186](file://src/data_processing.py#L52-L186)
-- [src/data_processing.py:202-305](file://src/data_processing.py#L202-L305)
+- [js/main.js:20-133](file://js/main.js#L20-L133)
 
 **Section sources**
-- [src/data_processing.py:22-157](file://src/data_processing.py#L22-L157)
-- [src/data_processing.py:189-341](file://src/data_processing.py#L189-L341)
+- [js/main.js:20-133](file://js/main.js#L20-L133)
 
-### Model Training and Evaluation
-- ModelTrainer: Defines baseline and candidate models, compares via cross-validation, tunes hyperparameters, and trains the final model.
-- ModelEvaluator: Computes robust metrics, analyzes errors by value ranges, extracts feature importance, and identifies worst predictions.
+### Price Prediction Algorithm
+The client-side prediction engine calculates property values using sophisticated market data and property characteristics:
+
+- **Base Calculation**: Living area × average price per square foot × city multiplier
+- **Adjustment Factors**: Bedrooms bonus, bathrooms bonus, property age discount, special features
+- **Income Factor**: Market purchasing power adjustment based on user income
+- **Confidence Scoring**: Quality assessment based on market data availability
+- **Range Calculation**: ±15% confidence interval for price estimates
 
 ```mermaid
 flowchart TD
-StartMT["Start Model Training"] --> Init["Initialize Models"]
-Init --> CV["Cross-Validation Comparison"]
-CV --> Tune["Hyperparameter Tuning"]
-Tune --> Train["Train Final Model"]
-Train --> Eval["Evaluate on Test Set"]
-Eval --> Metrics["Compute Metrics & Residuals"]
-Metrics --> Import["Feature Importance"]
-Import --> Worst["Worst Predictions Analysis"]
-Worst --> Persist["Persist Model & Preprocessor"]
+Input["Property Inputs<br/>Location, size, features"] --> Base["Base Calculation<br/>sqft × avgPrice × multiplier"]
+Base --> Adjustments["Apply Adjustments<br/>bedrooms, bathrooms, age, features"]
+Adjustments --> Income["Income Factor<br/>purchasing power adjustment"]
+Income --> Formula["Final Formula<br/>base + bonuses - discounts + income factor"]
+Formula --> Range["Calculate Range<br/>±15% confidence interval"]
+Range --> Output["Price Estimate<br/>Formatted with currency"]
 ```
 
 **Diagram sources**
-- [src/models.py:54-178](file://src/models.py#L54-L178)
-- [src/models.py:224-351](file://src/models.py#L224-L351)
+- [js/predict.js:62-74](file://js/predict.js#L62-L74)
+- [js/predict.js:76-90](file://js/predict.js#L76-L90)
 
 **Section sources**
-- [src/models.py:30-206](file://src/models.py#L30-L206)
-- [src/models.py:208-351](file://src/models.py#L208-L351)
+- [js/predict.js:46-113](file://js/predict.js#L46-L113)
 
-### Experiment Tracking with MLflow
-- ExperimentTracker: Manages runs, logs parameters/metrics/artifacts, compares runs, and registers model versions.
-- Convenience function tracks a full experiment end-to-end.
+### Responsive Design System
+The platform implements a comprehensive CSS-based design system optimized for all devices:
 
-```mermaid
-sequenceDiagram
-participant Dev as "Developer"
-participant Tracker as "ExperimentTracker"
-participant MLflow as "MLflow Server"
-participant FS as "Filesystem"
-Dev->>Tracker : start_run()
-Dev->>Tracker : log_params()/log_metrics()
-Dev->>Tracker : log_model()/log_artifact()
-Dev->>Tracker : end_run()
-Tracker->>MLflow : Create/Update Run
-Tracker->>FS : Save artifacts locally
-Dev->>Tracker : compare_runs()/get_best_run()
-Tracker->>MLflow : Search Runs & Metrics
-```
-
-**Diagram sources**
-- [src/experiment_tracking.py:53-220](file://src/experiment_tracking.py#L53-L220)
-- [src/experiment_tracking.py:254-307](file://src/experiment_tracking.py#L254-L307)
+- **Custom Properties**: CSS variables for consistent theming across components
+- **Typography System**: Google Fonts integration with Great Vibes and Inter fonts
+- **Component Library**: Reusable UI components with hover effects and animations
+- **Mobile-First Approach**: Progressive enhancement for desktop experiences
+- **Color Palette**: Professional real estate color scheme with accent colors
 
 **Section sources**
-- [src/experiment_tracking.py:19-307](file://src/experiment_tracking.py#L19-L307)
+- [css/style.css:3-30](file://css/style.css#L3-L30)
+- [css/style.css:360-430](file://css/style.css#L360-L430)
+- [css/style.css:639-728](file://css/style.css#L639-L728)
 
-### API Service (FastAPI)
-- Endpoints: root info, health check, model info, single prediction, batch prediction.
-- Validation: Pydantic models enforce input constraints; custom validators ensure logical consistency.
-- Lifecycle: loads model and preprocessor on startup; supports graceful shutdown.
+### Interactive Navigation
+The navigation system provides seamless user experience across all pages:
 
-```mermaid
-sequenceDiagram
-participant Client as "Client"
-participant API as "FastAPI App"
-participant State as "ModelState"
-participant FS as "Disk"
-Client->>API : GET /health
-API-->>Client : HealthResponse
-Client->>API : POST /predict
-API->>State : load() on startup
-State->>FS : joblib.load(models/*.pkl)
-API->>State : predict(features)
-State->>State : engineer features
-State->>FS : transform via preprocessor
-State-->>API : prediction
-API-->>Client : PredictionResponse
-```
-
-**Diagram sources**
-- [api/main.py:248-384](file://api/main.py#L248-L384)
-- [api/main.py:126-180](file://api/main.py#L126-L180)
+- **Mobile Responsiveness**: Collapsible navigation for smaller screens
+- **Active State Management**: Visual indicators for current page location
+- **Smooth Transitions**: CSS animations for navigation state changes
+- **Accessibility Features**: Keyboard navigation and screen reader support
 
 **Section sources**
-- [api/main.py:31-121](file://api/main.py#L31-L121)
-- [api/main.py:237-384](file://api/main.py#L237-L384)
+- [index.html:11-31](file://index.html#L11-L31)
+- [css/style.css:68-179](file://css/style.css#L68-L179)
 
-### Web Application (Streamlit)
-- Interactive sliders and inputs for property features.
-- Real-time prediction with formatted currency display.
-- Map visualization and contextual insights.
-- Loads model and preprocessor from disk.
+## Technology Stack
+Realteak utilizes modern web technologies for optimal performance and developer experience:
 
-```mermaid
-flowchart TD
-StartUI["Open Streamlit App"] --> Load["Load Model & Preprocessor"]
-Load --> Inputs["Collect User Inputs"]
-Inputs --> Eng["Engineer Features"]
-Eng --> Predict["Predict Price"]
-Predict --> Display["Display Prediction & Map"]
-Display --> Insights["Show Insights & Tips"]
-```
+**Frontend Technologies:**
+- **HTML5**: Semantic markup with progressive enhancement
+- **CSS3**: Custom properties, animations, responsive design
+- **JavaScript**: Pure vanilla JS with no framework dependencies
+- **Fonts**: Google Fonts (Great Vibes, Inter) for typography
+- **Images**: Unsplash integration for high-quality property visuals
 
-**Diagram sources**
-- [app/app.py:72-82](file://app/app.py#L72-L82)
-- [app/app.py:197-203](file://app/app.py#L197-L203)
-- [app/app.py:220-399](file://app/app.py#L220-L399)
+**Development Tools:**
+- **GitHub Pages**: Zero-configuration deployment
+- **GitHub Actions**: Automated deployment workflows
+- **PowerShell Scripts**: Automated deployment automation
+- **Git Commands**: Version control and collaboration
 
-**Section sources**
-- [app/app.py:84-194](file://app/app.py#L84-L194)
-- [app/app.py:220-399](file://app/app.py#L220-L399)
-
-### Utilities and Packaging
-- setup_logging: Centralized logging configuration.
-- save_model/load_model: Persistent storage with metadata.
-- Public API exports in package init.
+**Optional Modern Implementation:**
+- **Next.js**: Alternative React-based implementation
+- **Tailwind CSS**: Utility-first styling system
+- **TypeScript**: Type safety and development experience
+- **Mapbox Integration**: Interactive property location mapping
 
 **Section sources**
-- [src/utils.py:16-55](file://src/utils.py#L16-L55)
-- [src/utils.py:58-99](file://src/utils.py#L58-L99)
-- [src/__init__.py:14-26](file://src/__init__.py#L14-L26)
+- [README.md:57-64](file://README.md#L57-L64)
+- [global-housing-predictor/package.json:11-42](file://global-housing-predictor/package.json#L11-L42)
+- [global-housing-predictor/next.config.js:1-25](file://global-housing-predictor/next.config.js#L1-L25)
 
-## Dependency Analysis
-Technology stack overview:
-- Core: Python, NumPy, Pandas, scikit-learn, joblib
-- Visualization: Matplotlib, Seaborn, Plotly
-- API: FastAPI, Uvicorn, Pydantic
-- Web App: Streamlit
-- Experiment Tracking: MLflow
-- Testing: pytest, httpx
-- Utilities: python-dotenv, PyYAML
+## Global Market Coverage
+Realteak provides comprehensive international real estate coverage across six continents:
 
-```mermaid
-graph TB
-P["Python 3.8+"] --> SK["scikit-learn >=1.3"]
-P --> NP["numpy >=1.24"]
-P --> PD["pandas >=2.0"]
-P --> JOB["joblib >=1.3"]
-P --> MATP["matplotlib >=3.7"]
-P --> SEA["seaborn >=0.12"]
-P --> PLOT["plotly >=5.15"]
-P --> FA["fastapi >=0.104"]
-P --> UV["uvicorn >=0.24"]
-P --> PYD["pydantic >=2.5"]
-P --> STR["streamlit >=1.28"]
-P --> MLF["mlflow >=2.8"]
-P --> PTS["pytest >=7.4"]
-P --> COV["pytest-cov >=4.1"]
-P --> HTTPX["httpx >=0.25"]
-P --> DOT["python-dotenv >=1.0"]
-P --> YAM["pyyaml >=6.0.1"]
-```
+**North America:**
+- United States: New York, Los Angeles, San Francisco, Chicago, Boston, Seattle, Miami, Austin
+- Canada: Toronto, Vancouver, Montreal, Calgary, Ottawa
+- Mexico: Mexico City, Guadalajara, Monterrey, Cancun, Tijuana
 
-**Diagram sources**
-- [requirements.txt:2-36](file://requirements.txt#L2-L36)
+**Europe:**
+- United Kingdom: London, Manchester, Birmingham, Edinburgh, Glasgow
+- Germany: Berlin, Munich, Hamburg, Frankfurt, Cologne
+- France: Paris, Lyon, Marseille, Nice, Toulouse
+- Spain: Madrid, Barcelona, Valencia, Seville, Malaga
+- Italy: Rome, Milan, Naples, Turin, Florence
+- Netherlands: Amsterdam, Rotterdam, The Hague, Utrecht, Eindhoven
+- Sweden: Stockholm, Gothenburg, Malmö, Uppsala, Linkoping
+- Switzerland: Zurich, Geneva, Basel, Bern, Lausanne
+
+**Asia Pacific:**
+- Japan: Tokyo, Osaka, Yokohama, Nagoya, Kyoto
+- Singapore: Singapore Central, Marina Bay, Orchard, Sentosa
+- Australia: Sydney, Melbourne, Brisbane, Perth, Adelaide
+- China: Shanghai, Beijing, Shenzhen, Guangzhou, Hangzhou
+- South Korea: Seoul, Busan, Incheon, Daegu, Daejeon
+- India: Mumbai, Delhi, Bangalore, Hyderabad, Chennai
+- Thailand: Bangkok, Chiang Mai, Phuket, Pattaya, Koh Samui
+
+**Other Regions:**
+- UAE: Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah
+- Brazil: Sao Paulo, Rio de Janeiro, Brasilia, Salvador, Fortaleza
 
 **Section sources**
-- [requirements.txt:2-36](file://requirements.txt#L2-L36)
+- [js/main.js:21-122](file://js/main.js#L21-L122)
+- [countries.html:48-214](file://countries.html#L48-L214)
 
-## Performance Considerations
-- Model performance on test set: R² around 0.81; RMSE ~$45,000; MAE ~$32,000; MAPE ~16.2%.
-- Feature importance highlights median income, ocean proximity, and spatial features as strong predictors.
-- Cross-validation and hyperparameter tuning contribute to robust generalization.
-- For production, consider monitoring latency, throughput, and model drift; leverage caching and batching for batch endpoints.
+## Client-Side Processing
+The platform emphasizes client-side processing for optimal performance and user experience:
 
-[No sources needed since this section provides general guidance]
+**Benefits of Client-Side Processing:**
+- **Instant Response**: No server round-trips for basic functionality
+- **Offline Capability**: Functionality available without network connectivity
+- **Scalability**: Zero server costs and infrastructure requirements
+- **Privacy**: Sensitive user data never leaves the browser
+- **Performance**: Reduced latency and improved user experience
 
-## Troubleshooting Guide
-Common issues and resolutions:
-- Model files not found: Ensure the trained model and preprocessor are saved to the models directory before launching the API or Streamlit app.
-- Input validation errors: Verify constraints (e.g., total bedrooms ≤ total rooms; households ≤ population; ocean proximity enum).
-- Health check failures: Confirm the model loads successfully during application startup.
-- Docker deployment: Use docker-compose to orchestrate API, Streamlit, and optionally MLflow; ensure volume mounts for models and data are read-only as configured.
+**Processing Capabilities:**
+- **Real-time Calculations**: Instant property price estimates
+- **Dynamic Filtering**: Live property search and filtering
+- **Interactive Maps**: Client-side location visualization
+- **Responsive Updates**: Dynamic content updates without page reloads
 
 **Section sources**
-- [api/main.py:135-154](file://api/main.py#L135-L154)
-- [api/main.py:323-347](file://api/main.py#L323-L347)
-- [docker-compose.yml:21-34](file://docker-compose.yml#L21-L34)
-- [docker-compose.yml:49-57](file://docker-compose.yml#L49-L57)
+- [js/predict.js:46-113](file://js/predict.js#L46-L113)
+- [js/explore.js:1-827](file://js/explore.js#L1-L827)
+
+## Deployment and Customization
+Realteak offers multiple deployment options and extensive customization capabilities:
+
+**Deployment Methods:**
+- **Manual Upload**: Direct file upload to GitHub repository
+- **Git Commands**: Command-line deployment workflow
+- **PowerShell Script**: Automated deployment automation
+- **GitHub Actions**: Continuous deployment through workflows
+
+**Customization Options:**
+- **Color Theming**: CSS variable modifications for brand consistency
+- **Content Updates**: Easy modification of property listings and market data
+- **Image Replacement**: Custom property imagery integration
+- **Feature Extensions**: Additional property attributes and market data
+
+**Section sources**
+- [README.md:65-98](file://README.md#L65-L98)
+- [README.md:100-139](file://README.md#L100-L139)
+
+## Business Value Proposition
+Realteak delivers significant value across multiple business dimensions:
+
+**For Real Estate Professionals:**
+- **Lead Generation**: High-quality property valuations attract qualified leads
+- **Market Intelligence**: Comprehensive international market data for strategic decisions
+- **Client Education**: Transparent pricing algorithms build trust and credibility
+- **Competitive Advantage**: Advanced market coverage differentiates service offerings
+
+**For Homebuyers and Sellers:**
+- **Informed Decision Making**: Accurate property valuations support buying and selling decisions
+- **Market Transparency**: Clear pricing mechanisms eliminate uncertainty
+- **Global Accessibility**: International market coverage for expatriates and investors
+- **Time Efficiency**: Instant valuations reduce traditional consultation time
+
+**For Developers and Organizations:**
+- **Low Maintenance**: Static site requires minimal ongoing maintenance
+- **Cost Effective**: Zero server costs and infrastructure overhead
+- **Brand Building**: Professional real estate platform enhances brand image
+- **Scalable Solution**: Foundation for future feature expansion
+
+**Section sources**
+- [README.md:7-25](file://README.md#L7-L25)
+- [README.md:140-156](file://README.md#L140-L156)
+
+## Target Audience
+Realteak serves diverse audiences across the real estate ecosystem:
+
+**Primary Users:**
+- **Homebuyers**: Individuals seeking property valuations and market insights
+- **Homeowners**: Sellers evaluating property worth and market timing
+- **Real Estate Agents**: Professionals needing market intelligence and lead generation
+- **Investors**: Buyers targeting international property investments
+
+**Secondary Users:**
+- **Real Estate Companies**: Organizations requiring market data and valuation tools
+- **Property Managers**: Professionals managing rental properties and portfolios
+- **Mortgage Brokers**: Financial professionals providing loan qualification assistance
+- **Moving Companies**: Services supporting relocation decisions
+
+**Skill Levels:**
+- **Beginners**: Simple property search and basic valuation functionality
+- **Intermediate**: Market comparison and investment analysis tools
+- **Advanced**: Comprehensive market research and international property evaluation
+
+**Section sources**
+- [README.md:26-35](file://README.md#L26-L35)
+- [README.md:158-163](file://README.md#L158-L163)
 
 ## Conclusion
-This project delivers a production-ready, end-to-end solution for California housing price prediction. It combines rigorous ML practices with accessible interfaces, enabling both learning and practical deployment. The modular design, comprehensive testing, and containerized setup make it a robust foundation for similar regression tasks.
+Realteak represents a paradigm shift from traditional machine learning applications to modern, consumer-focused real estate platforms. This transformation demonstrates the power of client-side processing, static site architecture, and comprehensive international market coverage in delivering exceptional user experiences.
 
-[No sources needed since this section summarizes without analyzing specific files]
+The platform successfully combines technical excellence with business practicality, offering a scalable, cost-effective solution for real estate valuation services. Its modern architecture, comprehensive feature set, and global market coverage position it as a leading example of contemporary web application development.
 
-## Appendices
-
-### Technology Stack and Goals
-- Technology stack: Python, scikit-learn, pandas, numpy, joblib, FastAPI, Streamlit, MLflow, pytest, Docker.
-- Goals: Educate on ML workflows, provide production APIs and apps, enable experiment tracking, and support scalable deployment.
-
-**Section sources**
-- [requirements.txt:2-36](file://requirements.txt#L2-L36)
-- [README.md:47-56](file://README.md#L47-L56)
-
-### Dataset Context and Business Value
-- Dataset: California Housing (1990 census); 20,640 records, 9 predictive features plus median house value.
-- Business value: Predictive pricing models inform real estate analytics, portfolio valuation, and policy studies.
-
-**Section sources**
-- [data/README.md:11-28](file://data/README.md#L11-L28)
-- [README.md:397-399](file://README.md#L397-L399)
-
-### Deployment Options
-- Local: Run Jupyter notebook, Streamlit app, or FastAPI server directly.
-- Docker: Multi-stage build with separate API and Streamlit services; optional MLflow server and Jupyter dev service.
-
-**Section sources**
-- [Dockerfile:7-86](file://Dockerfile#L7-L86)
-- [docker-compose.yml:10-101](file://docker-compose.yml#L10-L101)
-
-### Testing Framework
-- Pytest fixtures provide sample data and features; tests cover model training, evaluation, and persistence.
-
-**Section sources**
-- [tests/conftest.py:13-76](file://tests/conftest.py#L13-L76)
-- [tests/test_models.py:24-197](file://tests/test_models.py#L24-L197)
+Through its innovative approach to client-side processing, Realteak proves that complex functionality can be delivered efficiently without traditional server infrastructure, setting new standards for real estate technology solutions.

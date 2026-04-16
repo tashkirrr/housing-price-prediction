@@ -9,7 +9,22 @@
 - [app/app.py](file://app/app.py)
 - [requirements.txt](file://requirements.txt)
 - [15_4_house_price_prediction.ipynb](file://15_4_house_price_prediction.ipynb)
+- [global-housing-static/index.html](file://global-housing-static/index.html)
+- [global-housing-static/explore.html](file://global-housing-static/explore.html)
+- [global-housing-static/predict.html](file://global-housing-static/predict.html)
+- [global-housing-static/js/main.js](file://global-housing-static/js/main.js)
+- [global-housing-static/js/explore.js](file://global-housing-static/js/explore.js)
+- [global-housing-static/js/predict.js](file://global-housing-static/js/predict.js)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Removed all references to matplotlib-based EDA visualizations and model evaluation plots
+- Removed references to static plotting functionality in the visualization module
+- Updated architecture diagrams to reflect the shift to static website presentation
+- Removed sections on report generation and figure export capabilities
+- Updated dependency analysis to focus on web-based visualization tools
+- Revised troubleshooting guide to address static website deployment concerns
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -24,46 +39,56 @@
 10. [Appendices](#appendices)
 
 ## Introduction
-This document focuses on the visualization and analysis capabilities of the project, covering exploratory data analysis (EDA) visualizations and model evaluation diagnostics. It explains how static plots are produced with Matplotlib and Seaborn, how interactive visualizations are integrated with Plotly in the Streamlit web app, and how these visuals support model interpretation and feature engineering insights. It also documents the report generation process, figure export capabilities, customization options, and the relationship between visualizations and model understanding.
+This document focuses on the visualization and analysis capabilities of the project, which have been transitioned from data visualization components to a static website presentation approach. The project now emphasizes interactive web-based visualizations and static HTML/CSS/JavaScript implementations for property market exploration and price prediction interfaces. This represents a strategic shift from generating static plots with matplotlib/seaborn to delivering interactive experiences through modern web technologies.
 
 ## Project Structure
-The visualization and analysis functionality spans several modules:
-- Static plotting for EDA and model evaluation lives in the dedicated visualization module.
-- The Streamlit web app integrates interactive Plotly visualizations for user-facing insights.
-- The notebook demonstrates EDA workflows and includes static plotting examples.
-- Dependencies for visualization libraries are declared in requirements.
+The visualization and analysis functionality has been restructured around static website presentation:
+- Static HTML pages for property market exploration and price prediction
+- JavaScript-based interactive features for location search and property valuation
+- CSS styling for responsive design and visual appeal
+- Streamlit web app maintains interactive Plotly visualizations for real-time user engagement
+- The standalone visualization module still contains matplotlib-based plotting functions but is no longer actively used
 
 ```mermaid
 graph TB
-subgraph "Visualization Layer"
-Viz["src/visualization.py"]
-App["app/app.py"]
-NB["15_4_house_price_prediction.ipynb"]
+subgraph "Static Website Presentation"
+Index["index.html<br/>Homepage with property showcase"]
+Explore["explore.html<br/>Global market exploration"]
+Predict["predict.html<br/>Price prediction interface"]
+JSMain["js/main.js<br/>Global data and utilities"]
+JSPredict["js/predict.js<br/>Prediction calculations"]
+JSExplore["js/explore.js<br/>Market search functionality"]
+CSS["css/style.css<br/>Responsive styling"]
 end
-subgraph "Core ML"
-Models["src/models.py"]
-DP["src/data_processing.py"]
+subgraph "Interactive Streamlit App"
+App["app/app.py<br/>Plotly visualizations"]
+end
+subgraph "Legacy Visualization"
+Viz["src/visualization.py<br/>Matplotlib-based plots"]
 end
 subgraph "Dependencies"
-Mpl["matplotlib"]
-Sns["seaborn"]
-Plt["plotly"]
-Req["requirements.txt"]
+Req["requirements.txt<br/>Web and ML dependencies"]
 end
-Viz --> Models
-Viz --> DP
-App --> Plt
-NB --> Mpl
-NB --> Sns
-Req --> Mpl
-Req --> Sns
-Req --> Plt
+Index --> JSMain
+Explore --> JSExplore
+Predict --> JSPredict
+JSMain --> CSS
+JSExplore --> CSS
+JSPredict --> CSS
+App --> Viz
+Req --> App
+Req --> Viz
 ```
 
 **Diagram sources**
-- [src/visualization.py](file://src/visualization.py)
+- [global-housing-static/index.html](file://global-housing-static/index.html)
+- [global-housing-static/explore.html](file://global-housing-static/explore.html)
+- [global-housing-static/predict.html](file://global-housing-static/predict.html)
+- [global-housing-static/js/main.js](file://global-housing-static/js/main.js)
+- [global-housing-static/js/explore.js](file://global-housing-static/js/explore.js)
+- [global-housing-static/js/predict.js](file://global-housing-static/js/predict.js)
 - [app/app.py](file://app/app.py)
-- [15_4_house_price_prediction.ipynb](file://15_4_house_price_prediction.ipynb)
+- [src/visualization.py](file://src/visualization.py)
 - [requirements.txt](file://requirements.txt)
 
 **Section sources**
@@ -71,150 +96,139 @@ Req --> Plt
 - [requirements.txt](file://requirements.txt)
 
 ## Core Components
-This section outlines the primary visualization components and their responsibilities:
-- EDAVisualizer: Produces static EDA plots including target distribution, correlation matrix, feature distributions, geographic distribution, and categorical distributions.
-- ModelVisualizer: Produces static model evaluation plots including predictions vs actual, residual analysis (residuals vs predicted/actual, distribution, Q-Q), feature importance, and cross-validation comparison charts.
-- Streamlit app: Integrates interactive Plotly visualizations for real-time user engagement and insights.
-- Notebook: Demonstrates EDA workflows and static plotting examples.
+This section outlines the current visualization components and their responsibilities:
+- **Static Website Pages**: HTML pages for property market exploration, price prediction, and homepage showcasing with responsive design
+- **JavaScript Interactions**: Client-side functionality for location search, property valuation calculations, and dynamic content updates
+- **Streamlit App**: Maintains interactive Plotly visualizations for real-time user engagement and insights
+- **Legacy Visualization Module**: Contains matplotlib-based plotting functions that are no longer actively used
 
 Key capabilities:
-- Static plots with Matplotlib and Seaborn, exported at high DPI to a standardized output directory.
-- Interactive plots with Plotly embedded in the Streamlit web app.
-- Report generation via saved figures and metrics.
+- **Static HTML/CSS/JavaScript**: Modern web-based presentation layer with responsive design
+- **Interactive JavaScript Features**: Dynamic property search, price estimation, and market comparison
+- **Streamlit Plotly Integration**: Interactive visualizations for real-time user engagement
+- **Legacy Plotting Functions**: Matplotlib-based visualizations retained for historical reference
 
 **Section sources**
-- [src/visualization.py](file://src/visualization.py)
+- [global-housing-static/index.html](file://global-housing-static/index.html)
+- [global-housing-static/explore.html](file://global-housing-static/explore.html)
+- [global-housing-static/predict.html](file://global-housing-static/predict.html)
+- [global-housing-static/js/main.js](file://global-housing-static/js/main.js)
+- [global-housing-static/js/explore.js](file://global-housing-static/js/explore.js)
+- [global-housing-static/js/predict.js](file://global-housing-static/js/predict.js)
 - [app/app.py](file://app/app.py)
-- [15_4_house_price_prediction.ipynb](file://15_4_house_price_prediction.ipynb)
+- [src/visualization.py](file://src/visualization.py)
 
 ## Architecture Overview
-The visualization architecture combines static and interactive rendering:
-- Static plots are generated by the visualization module and saved to disk for inclusion in reports.
-- Interactive plots are embedded in the Streamlit app using Plotly for dynamic user exploration.
-- The notebook provides a learning-oriented environment for EDA and static plotting.
+The visualization architecture has evolved to prioritize static website presentation:
+- **Static Website Layer**: Pure HTML/CSS/JavaScript implementation for fast loading and SEO optimization
+- **Interactive Streamlit Layer**: Maintains Plotly visualizations for dynamic user engagement
+- **Legacy Visualization Layer**: Matplotlib-based plotting functions preserved for reference
+- **Data Management**: JavaScript global data objects provide market information and calculations
 
 ```mermaid
 graph TB
-subgraph "Static Visualization"
-EV["EDAVisualizer<br/>Target, Correlation, Distributions, Geo, Categorical"]
-MV["ModelVisualizer<br/>Pred vs Actual, Residuals, Feature Importance, CV Comparison"]
-OUT["reports/figures/<filename>.png"]
+subgraph "Static Website Architecture"
+HTML["HTML Templates<br/>index.html, explore.html, predict.html"]
+CSS["CSS Styling<br/>responsive design, animations"]
+JS["JavaScript Logic<br/>main.js, explore.js, predict.js"]
+DATA["Global Data Objects<br/>countries, cities, featured properties"]
 end
-subgraph "Interactive Visualization"
-SA["Streamlit App"]
-PLE["Plotly Express/GraphObjects"]
-UI["User Interaction"]
+subgraph "Interactive App Architecture"
+STREAMLIT["Streamlit Application<br/>app/app.py"]
+PLOTLY["Plotly Visualizations<br/>interactive charts"]
+CACHE["Streamlit Caching<br/>model loading optimization"]
 end
-subgraph "ML Pipeline"
-TR["ModelTrainer"]
-EVL["ModelEvaluator"]
-FE["FeatureEngineer"]
+subgraph "Legacy Architecture"
+MATPLOTLIB["Matplotlib/Seaborn<br/>static plotting functions"]
+NOTEBOOK["Jupyter Notebook<br/>EDA demonstrations"]
 end
-EV --> OUT
-MV --> OUT
-TR --> EVL
-FE --> TR
-SA --> PLE
-UI --> SA
+HTML --> DATA
+CSS --> HTML
+JS --> DATA
+STREAMLIT --> PLOTLY
+STREAMLIT --> CACHE
+MATPLOTLIB --> NOTEBOOK
 ```
 
 **Diagram sources**
-- [src/visualization.py](file://src/visualization.py)
-- [src/models.py](file://src/models.py)
-- [src/data_processing.py](file://src/data_processing.py)
+- [global-housing-static/index.html](file://global-housing-static/index.html)
+- [global-housing-static/explore.html](file://global-housing-static/explore.html)
+- [global-housing-static/predict.html](file://global-housing-static/predict.html)
+- [global-housing-static/js/main.js](file://global-housing-static/js/main.js)
+- [global-housing-static/js/explore.js](file://global-housing-static/js/explore.js)
+- [global-housing-static/js/predict.js](file://global-housing-static/js/predict.js)
 - [app/app.py](file://app/app.py)
+- [src/visualization.py](file://src/visualization.py)
+- [15_4_house_price_prediction.ipynb](file://15_4_house_price_prediction.ipynb)
 
 ## Detailed Component Analysis
 
-### EDA Visualizations with Matplotlib and Seaborn
-The EDAVisualizer class centralizes static EDA plotting:
-- Target distribution: Histogram and box plot with overlayed mean and median lines.
-- Correlation matrix: Triangular masked heatmap with annotated correlations and centered colormap.
-- Feature distributions: Faceted histograms for all numerical features with automatic subplot sizing.
-- Geographic distribution: Scatter plot colored by target variable with bubble size representing population.
-- Categorical distributions: Bar plots for each categorical feature.
+### Static Website Pages and JavaScript Interactions
+The static website implementation provides comprehensive property market visualization through modern web technologies:
+- **Homepage (index.html)**: Features property showcase, search functionality, testimonials, and call-to-action sections
+- **Explore Page (explore.html)**: Interactive market exploration with search filters, country selectors, and property listings
+- **Prediction Page (predict.html)**: Advanced property valuation interface with location selection, property details, and real-time estimates
+
+JavaScript functionality includes:
+- **Global Data Management**: Centralized data objects containing country information, city mappings, and property features
+- **Dynamic Content Loading**: Client-side rendering of property cards and market data
+- **Form Handling**: Real-time validation and calculation of property estimates
+- **Search Functionality**: Filtering of properties based on location and criteria
 
 Implementation highlights:
-- Uses Seaborn for statistical plots and Matplotlib for layout control.
-- Saves figures at high DPI with tight bounding boxes to a configurable output directory.
-- Applies consistent styling defaults for readability.
-
-Interpretation guidance:
-- Target distribution informs skewness and potential transformations.
-- Correlation matrix reveals multicollinearity and feature relevance.
-- Geographic distribution highlights spatial trends and outliers.
-- Categorical distributions expose class imbalance and rare categories.
+- **Responsive Design**: CSS Grid and Flexbox layouts adapt to mobile and desktop screens
+- **Performance Optimization**: Static assets loaded without server-side processing
+- **User Experience**: Smooth animations, loading states, and intuitive navigation
 
 **Section sources**
-- [src/visualization.py](file://src/visualization.py)
+- [global-housing-static/index.html](file://global-housing-static/index.html)
+- [global-housing-static/explore.html](file://global-housing-static/explore.html)
+- [global-housing-static/predict.html](file://global-housing-static/predict.html)
+- [global-housing-static/js/main.js](file://global-housing-static/js/main.js)
+- [global-housing-static/js/explore.js](file://global-housing-static/js/explore.js)
+- [global-housing-static/js/predict.js](file://global-housing-static/js/predict.js)
 
-### Model Evaluation Visualizations with Matplotlib and Seaborn
-The ModelVisualizer class produces diagnostic plots:
-- Predictions vs actual: Scatter plot with a perfect prediction reference line and currency formatting.
-- Residual analysis: Four-panel layout including residuals vs predicted, residuals vs actual, residual distribution, and Q-Q plot for normality.
-- Feature importance: Horizontal bar chart of top N features derived from model coefficients or importances.
-- Cross-validation comparison: Side-by-side bar charts for RMSE, MAE, and R² across models.
-
-Interpretation guidance:
-- Predictions vs actual assess calibration and scale of errors.
-- Residual plots diagnose homoscedasticity, normality, and systematic bias.
-- Feature importance supports feature engineering decisions and model interpretability.
-- CV comparison charts guide model selection and tuning focus.
-
-**Section sources**
-- [src/visualization.py](file://src/visualization.py)
-
-### Interactive Visualizations with Plotly in Streamlit
-The Streamlit app integrates Plotly for interactive experiences:
-- Property location map: Real-time map centered on user-entered coordinates.
-- Model insights: Bar chart of average house values by ocean proximity with color coding.
-- Responsive layout: Uses container-width chart rendering for adaptability.
+### Streamlit App with Interactive Plotly Visualizations
+The Streamlit application maintains interactive visualizations for real-time user engagement:
+- **Property Location Maps**: Real-time map visualization centered on user-entered coordinates
+- **Model Insights Dashboard**: Bar charts showing average house values by ocean proximity with color coding
+- **Interactive Controls**: Sliders and dropdowns for dynamic property parameter adjustment
 
 Implementation highlights:
-- Plotly Express for quick chart creation and GraphObjects for fine-grained control.
-- Streamlit caching for efficient model and preprocessor loading.
-- Styling via custom CSS and Plotly layout updates.
-
-Interpretation guidance:
-- Interactive maps enable spatial reasoning and scenario exploration.
-- Grouped bar charts highlight categorical effects and policy-relevant insights.
+- **Plotly Express**: Quick chart creation for scatter maps and bar charts
+- **Streamlit Caching**: Efficient model and preprocessor loading with @st.cache_resource decorator
+- **Responsive Layout**: Container-width chart rendering for adaptive sizing
+- **Custom Styling**: Tailored CSS for enhanced visual presentation
 
 **Section sources**
 - [app/app.py](file://app/app.py)
 
-### Notebook Demonstrations and Static Plotting
-The notebook demonstrates EDA workflows and static plotting:
-- Histograms for feature distributions arranged in a grid.
-- Correlation heatmap with annotated values and diverging colormap.
-- Correlation with target to rank feature relevance.
+### Legacy Visualization Module (Retained for Reference)
+The visualization module maintains matplotlib-based plotting functions for historical reference:
+- **EDAVisualizer Class**: Contains static EDA plotting functions including target distribution, correlation matrices, feature distributions, geographic plots, and categorical distributions
+- **ModelVisualizer Class**: Includes model evaluation plots such as predictions vs actual, residual analysis, feature importance, and cross-validation comparisons
+- **Export Functionality**: High-DPI figure saving with tight bounding boxes
 
-These examples illustrate best practices for static visualization and serve as templates for custom analyses.
+**Updated** These functions are no longer actively used in the current workflow but remain available for educational purposes and historical reference.
+
+**Section sources**
+- [src/visualization.py](file://src/visualization.py)
+
+### Notebook Demonstrations (Educational Purpose)
+The Jupyter notebook continues to demonstrate EDA workflows and static plotting examples:
+- **Histograms and Statistical Plots**: Feature distribution visualizations using matplotlib and seaborn
+- **Correlation Analysis**: Heatmaps and correlation matrices for feature relationships
+- **Statistical Visualizations**: Best practices for publication-ready static plots
 
 **Section sources**
 - [15_4_house_price_prediction.ipynb](file://15_4_house_price_prediction.ipynb)
 
-### Report Generation and Figure Export
-The visualization module saves figures to a standardized directory with high resolution and tight bounding boxes. This enables:
-- Automated report generation by including saved images.
-- Publication-ready assets with consistent DPI and layout.
-- Versioning-friendly outputs for documentation and presentations.
-
-Customization options:
-- Output directory is configurable in the visualization classes.
-- Figure sizes and DPI are set for print-quality exports.
-- Color schemes and styles are applied globally via Seaborn and Matplotlib rcParams.
-
-**Section sources**
-- [src/visualization.py](file://src/visualization.py)
-- [requirements.txt](file://requirements.txt)
-
 ### Relationship Between Visualizations and Model Interpretation
-Visualizations inform model interpretation and feature engineering:
-- EDA plots guide feature selection and preprocessing choices (e.g., transformations, encoding).
-- Correlation and geographic plots reveal spatial and relational signals captured by the model.
-- Residual plots validate modeling assumptions and highlight problematic regions or categories.
-- Feature importance aligns engineering efforts with predictive power.
-- Interactive dashboards enable stakeholders to explore scenarios and understand model behavior.
+The current static website approach emphasizes accessibility and broad reach:
+- **Static Pages**: Provide comprehensive market information without requiring model training or complex dependencies
+- **Interactive Elements**: Enable users to explore property markets and get instant valuations
+- **Educational Content**: Streamlit app maintains model insights and interpretation capabilities
+- **Historical Reference**: Legacy visualization functions preserve analytical methodologies
 
 **Section sources**
 - [src/models.py](file://src/models.py)
@@ -222,22 +236,25 @@ Visualizations inform model interpretation and feature engineering:
 - [README.md](file://README.md)
 
 ## Dependency Analysis
-The visualization stack relies on:
-- Matplotlib and Seaborn for static plotting.
-- Plotly for interactive visualizations in the web app.
-- Streamlit for the web interface hosting interactive charts.
+The dependency structure reflects the current static website approach:
+- **Static Website Dependencies**: HTML, CSS, JavaScript with minimal external libraries
+- **Streamlit Dependencies**: Plotly for interactive visualizations and Streamlit for web interface
+- **Legacy Dependencies**: Matplotlib and Seaborn for historical plotting reference
+- **Development Tools**: Jupyter for notebook-based demonstrations
 
 ```mermaid
 graph TB
 Req["requirements.txt"]
-Mpl["matplotlib"]
-Sns["seaborn"]
-Plt["plotly"]
-Stl["streamlit"]
-Req --> Mpl
-Req --> Sns
-Req --> Plt
-Req --> Stl
+STATIC["Static Website<br/>HTML, CSS, JavaScript"]
+STREAMLIT["Streamlit<br/>web interface"]
+PLOTLY["Plotly<br/>interactive charts"]
+LEGACY["Legacy Libraries<br/>matplotlib, seaborn"]
+JUPYTER["Jupyter<br/>notebook environment"]
+Req --> STATIC
+Req --> STREAMLIT
+Req --> PLOTLY
+Req --> LEGACY
+Req --> JUPYTER
 ```
 
 **Diagram sources**
@@ -247,34 +264,36 @@ Req --> Stl
 - [requirements.txt](file://requirements.txt)
 
 ## Performance Considerations
-- Static plots are computed once during analysis or reporting; keep figure sizes reasonable to balance clarity and file size.
-- Interactive charts in the Streamlit app render client-side; simplify traces and avoid excessive interactivity for responsiveness.
-- Use caching for model and preprocessor loads to minimize repeated computation.
-- Export at appropriate DPI for the intended output medium (screen vs print).
+- **Static Website Performance**: Fast loading times with cached assets and minimal server requests
+- **Interactive App Performance**: Streamlit caching reduces model loading overhead; optimize Plotly chart complexity
+- **Mobile Responsiveness**: CSS Grid and Flexbox ensure optimal viewing across devices
+- **Data Management**: JavaScript global objects eliminate server round-trips for market data
+- **Legacy Code**: Matplotlib functions remain available but don't impact current performance
 
 ## Troubleshooting Guide
-Common issues and resolutions:
-- Missing output directory: Ensure the reports/figures path exists or configure a writable directory.
-- Empty or missing data: Validate DataFrame shapes and column names before plotting.
-- High-DPI export artifacts: Confirm DPI settings and tight bounding boxes for crisp exports.
-- Interactive chart sizing: Use container-width rendering and responsive layout updates in Streamlit.
-- Dependency conflicts: Align versions with requirements.txt to avoid rendering or compatibility issues.
+Common issues and resolutions for the static website approach:
+- **Static Asset Loading**: Ensure CSS and JavaScript files are properly linked and accessible
+- **JavaScript Functionality**: Verify global data objects are loaded before DOM manipulation
+- **Responsive Design**: Test layouts across different screen sizes and orientations
+- **Form Validation**: Check JavaScript event listeners and form submission handling
+- **Streamlit App Issues**: Validate model file paths and dependency versions for interactive visualizations
+- **Legacy Visualization**: Matplotlib functions require proper environment setup if used independently
 
 **Section sources**
-- [src/visualization.py](file://src/visualization.py)
+- [global-housing-static/index.html](file://global-housing-static/index.html)
+- [global-housing-static/js/main.js](file://global-housing-static/js/main.js)
 - [app/app.py](file://app/app.py)
 - [requirements.txt](file://requirements.txt)
 
 ## Conclusion
-The project’s visualization toolkit combines robust static EDA and model evaluation plots with interactive dashboards for stakeholder engagement. By leveraging Matplotlib/Seaborn for publication-ready static assets and Plotly within Streamlit for interactive exploration, the system supports both rigorous analysis and accessible communication. Proper use of these visualizations enhances model interpretation, guides feature engineering, and strengthens reporting.
+The project's visualization approach has successfully transitioned from data visualization components to a modern static website presentation. This evolution prioritizes accessibility, performance, and broad reach while maintaining interactive capabilities through the Streamlit application. The static website provides comprehensive property market exploration and valuation services, while the legacy visualization module preserves analytical methodologies for educational reference. This hybrid approach ensures both immediate user value and historical continuity in analytical practices.
 
 ## Appendices
 
 ### Example Interpretations for Feature Engineering and Model Understanding
-- Target distribution: If skewed, consider log transformation or robust models.
-- Correlation matrix: Remove highly collinear features to reduce variance and improve interpretability.
-- Geographic distribution: Investigate spatial clustering and consider neighborhood or regional features.
-- Residuals vs predicted: Look for funnel shapes indicating heteroscedasticity; consider robust regression or weighted loss.
-- Feature importance: Focus engineering on top contributors; validate impact with cross-validation.
+- **Static Website Approach**: Focus on user accessibility and market education rather than complex statistical analysis
+- **Interactive Streamlit Features**: Leverage real-time visualizations for stakeholder engagement and model explanation
+- **Legacy Methods**: Historical plotting techniques remain valuable for understanding analytical foundations
+- **Market Data Patterns**: Static pages effectively communicate pricing trends and regional variations
 
 [No sources needed since this section provides general guidance]

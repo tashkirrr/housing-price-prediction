@@ -10,10 +10,18 @@
 - [api/requirements.txt](file://api/requirements.txt)
 - [docker-compose.yml](file://docker-compose.yml)
 - [Dockerfile](file://Dockerfile)
+- [docs/architecture.md](file://docs/architecture.md)
 - [docs/model_data.json](file://docs/model_data.json)
 - [docs/web_model.json](file://docs/web_model.json)
 - [setup.py](file://setup.py)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Updated to reflect the current state where the FastAPI service still exists alongside the static website
+- Added clarification about the dual architecture approach
+- Updated architecture diagrams to show both API and static website components
+- Modified troubleshooting guidance to address both deployment scenarios
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -28,18 +36,23 @@
 10. [Appendices](#appendices)
 
 ## Introduction
-This document describes the production-ready REST API service built with FastAPI. It exposes endpoints for service information, health checks, model metadata, single predictions, and batch predictions. The API leverages Pydantic models for strict request/response schemas, automatic validation, and auto-generated documentation via Swagger UI and ReDoc. It includes guidance on authentication, rate limiting, security, versioning, performance optimization, client integration, monitoring, and testing.
+This document describes the production-ready REST API service built with FastAPI and the accompanying static website architecture. The system provides both traditional API-based predictions and client-side processing through a modern static website. The API exposes endpoints for service information, health checks, model metadata, single predictions, and batch predictions, while the static website delivers instant price estimates through client-side calculations.
+
+**Updated** The system now operates with a dual architecture: a FastAPI service for programmatic access and a static website for client-side processing. Both approaches serve the same prediction functionality but through different implementation patterns.
 
 ## Project Structure
-The API is implemented in the api/ directory and integrates with shared source code in src/, trained models in models/, and supporting documentation in docs/.
+The system includes both the FastAPI service in the api/ directory and a static website implementation. The API integrates with shared source code in src/, trained models in models/, and supporting documentation in docs/.
 
 ```mermaid
 graph TB
 subgraph "API Layer"
 A["api/main.py<br/>FastAPI app, endpoints, Pydantic models"]
 end
+subgraph "Static Website"
+S["predict.html<br/>Client-side prediction interface"]
+end
 subgraph "Shared Code"
-S["src/*<br/>data processing, models, utils"]
+SH["src/*<br/>data processing, models, utils"]
 end
 subgraph "Models"
 M["models/<br/>house_price_model.pkl<br/>preprocessor.pkl"]
@@ -47,13 +60,17 @@ end
 subgraph "Docs"
 D["docs/<br/>model_data.json<br/>web_model.json"]
 end
-A --> S
+A --> SH
 A --> M
 A --> D
+S --> SH
+S --> M
+S --> D
 ```
 
 **Diagram sources**
 - [api/main.py:1-403](file://api/main.py#L1-L403)
+- [predict.html:1-126](file://predict.html#L1-L126)
 - [src/__init__.py](file://src/__init__.py)
 
 **Section sources**
@@ -67,6 +84,7 @@ A --> D
 - Endpoint handlers for root, health, model info, single prediction, and batch prediction.
 - Global model state encapsulated in a class to manage model and preprocessor lifecycle.
 - Auto-generated docs at /docs (Swagger UI) and /redoc (ReDoc).
+- Static website with client-side prediction logic and global data management.
 
 Key implementation references:
 - Application creation and docs URLs: [api/main.py:201-221](file://api/main.py#L201-L221)
@@ -74,14 +92,16 @@ Key implementation references:
 - Lifespan handler: [api/main.py:186-195](file://api/main.py#L186-L195)
 - Pydantic models: [api/main.py:31-120](file://api/main.py#L31-L120)
 - Endpoints: [api/main.py:237-383](file://api/main.py#L237-L383)
+- Static website prediction logic: [predict.html:46-113](file://predict.html#L46-L113)
 
 **Section sources**
 - [api/main.py:201-231](file://api/main.py#L201-L231)
 - [api/main.py:31-120](file://api/main.py#L31-L120)
 - [api/main.py:237-383](file://api/main.py#L237-L383)
+- [predict.html:46-113](file://predict.html#L46-L113)
 
 ## Architecture Overview
-The API initializes at startup, loads the model and preprocessor, and exposes endpoints. Requests are validated by Pydantic models, processed through a feature engineering pipeline, and transformed by the preprocessor before inference.
+The system operates with two distinct deployment patterns: traditional API-based predictions and client-side static website processing. The API initializes at startup, loads the model and preprocessor, and exposes endpoints. The static website loads global data locally and performs client-side calculations for instant price estimates.
 
 ```mermaid
 sequenceDiagram
@@ -102,15 +122,22 @@ G->>M : "predict(processed)"
 M-->>G : "prediction"
 G-->>F : "predicted_price"
 F-->>C : "200 OK PredictionResponse"
+Note over C,S : Alternative : Static Website Client
+C->>C : "Client-side Calculation"
+C->>C : "Load globalData"
+C->>C : "Calculate price locally"
+C-->>C : "Display instant results"
 ```
 
 **Diagram sources**
 - [api/main.py:290-347](file://api/main.py#L290-L347)
 - [api/main.py:155-179](file://api/main.py#L155-L179)
+- [predict.html:46-113](file://predict.html#L46-L113)
 
 **Section sources**
 - [api/main.py:290-347](file://api/main.py#L290-L347)
 - [api/main.py:155-179](file://api/main.py#L155-L179)
+- [predict.html:46-113](file://predict.html#L46-L113)
 
 ## Detailed Component Analysis
 
@@ -234,8 +261,6 @@ References:
 ### Rate Limiting
 - Not implemented in the current API. Consider integrating rate limiting middleware or external proxies for production.
 
-[No sources needed since this section provides general guidance]
-
 ### Auto-generated Documentation
 - Swagger UI: GET /docs
 - ReDoc: GET /redoc
@@ -247,9 +272,24 @@ References:
 **Section sources**
 - [api/main.py:218-219](file://api/main.py#L218-L219)
 
+### Static Website Client Implementation
+- The static website provides client-side prediction functionality through JavaScript.
+- Uses globalData object containing country and city information.
+- Performs instant calculations without server requests.
+- Provides responsive design and instant feedback.
+
+References:
+- [predict.html:46-113](file://predict.html#L46-L113)
+- [js/main.js:20-133](file://js/main.js#L20-L133)
+
+**Section sources**
+- [predict.html:46-113](file://predict.html#L46-L113)
+- [js/main.js:20-133](file://js/main.js#L20-L133)
+
 ### Practical Usage Examples
 
-- curl examples are documented in the project README under the Usage section for the FastAPI service.
+- curl examples for FastAPI service are documented in the project README under the Usage section for the FastAPI service.
+- Static website provides instant client-side predictions through form submission.
 
 References:
 - [README.md:239-263](file://README.md#L239-L263)
@@ -258,23 +298,27 @@ References:
 - [README.md:239-263](file://README.md#L239-L263)
 
 ### Client Implementation Guidelines
-- Use the Pydantic models as reference for constructing requests and parsing responses.
+- Use the Pydantic models as reference for constructing requests and parsing responses for API clients.
 - Validate inputs client-side to reduce server errors.
 - Implement retry/backoff for transient failures (503/500).
 - For batch requests, handle per-item statuses and aggregate results.
+- Static website users benefit from instant client-side calculations with no server dependency.
 
 References:
 - [api/main.py:31-120](file://api/main.py#L31-L120)
 - [api/main.py:350-383](file://api/main.py#L350-L383)
+- [predict.html:46-113](file://predict.html#L46-L113)
 
 **Section sources**
 - [api/main.py:31-120](file://api/main.py#L31-L120)
 - [api/main.py:350-383](file://api/main.py#L350-L383)
+- [predict.html:46-113](file://predict.html#L46-L113)
 
 ### Monitoring and Observability
 - Health endpoint: GET /health for liveness/readiness checks.
 - Docker healthcheck configured to probe /health.
 - Consider adding logging, metrics, and tracing libraries for production.
+- Static website provides client-side analytics through browser tools.
 
 References:
 - [api/main.py:26-27](file://api/main.py#L26-L27)
@@ -286,7 +330,7 @@ References:
 - [Dockerfile:80-82](file://Dockerfile#L80-L82)
 
 ## Dependency Analysis
-External dependencies for the API include FastAPI, Uvicorn, Pydantic, NumPy, Pandas, scikit-learn, and joblib. The Docker image is multi-stage, building dependencies in a builder stage and running in a slim production stage.
+External dependencies for the API include FastAPI, Uvicorn, Pydantic, NumPy, Pandas, scikit-learn, and joblib. The Docker image is multi-stage, building dependencies in a builder stage and running in a slim production stage. The static website relies on vanilla JavaScript with no external dependencies.
 
 ```mermaid
 graph LR
@@ -307,6 +351,11 @@ DF --> PD
 DF --> SK
 DF --> JL
 DC --> DF
+subgraph "Static Website"
+SW["predict.html<br/>Vanilla JS"]
+GD["js/main.js<br/>Global Data"]
+end
+SW --> GD
 ```
 
 **Diagram sources**
@@ -314,6 +363,8 @@ DC --> DF
 - [requirements.txt:16-21](file://requirements.txt#L16-L21)
 - [Dockerfile:7-37](file://Dockerfile#L7-L37)
 - [docker-compose.yml:10-34](file://docker-compose.yml#L10-L34)
+- [predict.html:122-123](file://predict.html#L122-L123)
+- [js/main.js:1-210](file://js/main.js#L1-L210)
 
 **Section sources**
 - [requirements.txt:16-21](file://requirements.txt#L16-L21)
@@ -322,12 +373,11 @@ DC --> DF
 - [docker-compose.yml:10-34](file://docker-compose.yml#L10-L34)
 
 ## Performance Considerations
-- Model loading occurs once at startup via lifespan.
+- Model loading occurs once at startup via lifespan for API service.
 - Preprocessing and prediction are performed per request; consider caching or batching strategies for high throughput.
 - Docker healthchecks and readiness probes help orchestration-level scaling.
-- For production, consider adding rate limiting, connection pooling, and asynchronous workers.
-
-[No sources needed since this section provides general guidance]
+- Static website provides instant client-side calculations with zero server overhead.
+- For production, consider adding rate limiting, connection pooling, and asynchronous workers for API service.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -343,6 +393,10 @@ Common issues and resolutions:
   - Symptoms: 500 responses from /predict.
   - Causes: Unexpected runtime errors during prediction.
   - Resolution: Inspect logs and input data; verify model compatibility.
+- Static website issues:
+  - Symptoms: Client-side calculations not working.
+  - Causes: JavaScript errors or missing globalData.
+  - Resolution: Check browser console for errors; ensure all JavaScript files are loaded.
 
 References:
 - [api/main.py:323-347](file://api/main.py#L323-L347)
@@ -350,6 +404,7 @@ References:
 - [api/main.py:270-274](file://api/main.py#L270-L274)
 - [tests/test_api.py:89-102](file://tests/test_api.py#L89-L102)
 - [tests/test_api.py:104-147](file://tests/test_api.py#L104-L147)
+- [predict.html:46-113](file://predict.html#L46-L113)
 
 **Section sources**
 - [api/main.py:323-347](file://api/main.py#L323-L347)
@@ -357,11 +412,10 @@ References:
 - [api/main.py:270-274](file://api/main.py#L270-L274)
 - [tests/test_api.py:89-102](file://tests/test_api.py#L89-L102)
 - [tests/test_api.py:104-147](file://tests/test_api.py#L104-L147)
+- [predict.html:46-113](file://predict.html#L46-L113)
 
 ## Conclusion
-The FastAPI service provides a robust, production-ready foundation for house price predictions. It enforces strict input validation, offers clear responses, and auto-generates documentation. For production, add authentication, rate limiting, and observability; ensure reliable model persistence and health monitoring.
-
-[No sources needed since this section summarizes without analyzing specific files]
+The system provides a flexible dual-architecture approach for house price predictions. The FastAPI service offers robust programmatic access with strict input validation, clear responses, and auto-generated documentation. The static website delivers instant client-side predictions with zero server dependency. For production, add authentication, rate limiting, and observability to the API service; ensure reliable model persistence and health monitoring for both components.
 
 ## Appendices
 
@@ -406,6 +460,7 @@ References:
 - Unit tests with pytest and TestClient
 - Coverage with pytest-cov
 - Example test scripts for manual verification
+- Static website testing through browser automation
 
 References:
 - [tests/test_api.py:1-199](file://tests/test_api.py#L1-L199)
@@ -447,6 +502,7 @@ References:
 - Docker multi-stage build for optimized images.
 - docker-compose orchestrates API, Streamlit, and optional services.
 - Setup configuration defines package metadata and extras.
+- Static website deployment requires no server infrastructure.
 
 References:
 - [Dockerfile:1-86](file://Dockerfile#L1-L86)
@@ -457,3 +513,17 @@ References:
 - [Dockerfile:1-86](file://Dockerfile#L1-L86)
 - [docker-compose.yml:1-109](file://docker-compose.yml#L1-L109)
 - [setup.py:1-73](file://setup.py#L1-L73)
+
+### Static Website Architecture
+- Client-side prediction engine with global data management
+- Responsive design with instant feedback
+- No server dependency for basic functionality
+- Enhanced user experience through immediate results
+
+References:
+- [predict.html:1-126](file://predict.html#L1-L126)
+- [js/main.js:1-210](file://js/main.js#L1-L210)
+
+**Section sources**
+- [predict.html:1-126](file://predict.html#L1-L126)
+- [js/main.js:1-210](file://js/main.js#L1-L210)

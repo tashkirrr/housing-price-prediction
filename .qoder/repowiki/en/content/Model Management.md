@@ -10,11 +10,21 @@
 - [app/app.py](file://app/app.py)
 - [docs/model_data.json](file://docs/model_data.json)
 - [docs/web_model.json](file://docs/web_model.json)
+- [docs/architecture.md](file://docs/architecture.md)
 - [tests/test_models.py](file://tests/test_models.py)
 - [tests/test_api.py](file://tests/test_api.py)
 - [requirements.txt](file://requirements.txt)
 - [setup.py](file://setup.py)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Removed all model training and management components from documentation
+- Updated architecture overview to reflect current deployment-only state
+- Revised model persistence section to focus on deployment artifacts
+- Removed experiment tracking and model evaluation sections
+- Updated deployment architecture to show static model artifacts
+- Removed training pipeline and model versioning references
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -29,61 +39,49 @@
 10. [Appendices](#appendices)
 
 ## Introduction
-This document explains the model management lifecycle for the California Housing Price Prediction project, focusing on model persistence, loading, and deployment strategies. It covers:
-- Saving and loading models using joblib
-- Preprocessor serialization and integration
-- Model versioning and metadata tracking via MLflow
-- Deployment preparation for both API and web applications
-- Training-to-production integration, validation, and QA
+This document explains the model management lifecycle for the California Housing Price Prediction project, focusing on model deployment and artifact management. The project now operates in a deployment-focused mode where trained models and preprocessors are persisted as static artifacts for consumption by API and web applications. Key aspects covered:
+- Static model artifact management using joblib serialization
+- Preprocessor integration for consistent feature transformation
+- Deployment preparation for FastAPI service and Streamlit application
 - Artifact structure, file organization, and storage best practices
 - Programmatic loading and prediction execution
-- Update procedures, rollback strategies, and A/B testing considerations
-- Relationship between training models and web-deployable models
+- Model update procedures and deployment strategies
+
+**Updated** The project has transitioned from a training-centric to a deployment-centric model management approach, removing all model training and experimentation components.
 
 ## Project Structure
-The model management system spans training, experimentation, persistence, and deployment layers:
-- Training and preprocessing: centralized in dedicated scripts and modules
-- Persistence: joblib-based serialization for models and preprocessors
-- Experimentation: MLflow-backed tracking of parameters, metrics, and artifacts
-- Deployment: FastAPI service and Streamlit app consuming persisted artifacts
-- Metadata: JSON artifacts exported for lightweight web prediction
+The model management system now focuses on deployment and artifact consumption:
+- Static model artifacts: persisted models and preprocessors ready for immediate use
+- Deployment layer: FastAPI service and Streamlit app consuming persisted artifacts
+- Metadata: JSON artifacts for lightweight web prediction and model information
+- Training artifacts: historical training scripts and notebooks retained for reference
 
 ```mermaid
 graph TB
-subgraph "Training and Experimentation"
-T1["train_model_for_web.py"]
-DP["src/data_processing.py"]
-ET["src/experiment_tracking.py"]
+subgraph "Static Model Artifacts"
+MODELS["models/"]
+PREPROC["preprocessor.pkl"]
+MODEL["house_price_model.pkl"]
 end
-subgraph "Persistence"
-JOB["joblib"]
-MODELS_DIR["models/"]
-DOCS["docs/"]
-end
-subgraph "Deployment"
+subgraph "Deployment Layer"
 API["api/main.py"]
 APP["app/app.py"]
 WEB["docs/web_model.json"]
 META["docs/model_data.json"]
 end
-T1 --> JOB
-DP --> JOB
-ET --> JOB
-JOB --> MODELS_DIR
-MODELS_DIR --> API
-MODELS_DIR --> APP
-DOCS --> WEB
-DOCS --> META
+MODELS --> API
+MODELS --> APP
 WEB --> APP
 META --> API
+PREPROC --> API
+PREPROC --> APP
+MODEL --> API
+MODEL --> APP
 ```
 
 **Diagram sources**
-- [train_model_for_web.py:1-196](file://train_model_for_web.py#L1-L196)
-- [src/data_processing.py:1-341](file://src/data_processing.py#L1-L341)
-- [src/experiment_tracking.py:1-307](file://src/experiment_tracking.py#L1-L307)
-- [api/main.py:1-403](file://api/main.py#L1-L403)
-- [app/app.py:1-399](file://app/app.py#L1-L399)
+- [api/main.py:126-180](file://api/main.py#L126-L180)
+- [app/app.py:72-82](file://app/app.py#L72-L82)
 - [docs/web_model.json:1-129](file://docs/web_model.json#L1-L129)
 - [docs/model_data.json:1-171](file://docs/model_data.json#L1-L171)
 
@@ -92,198 +90,143 @@ META --> API
 - [setup.py:1-73](file://setup.py#L1-L73)
 
 ## Core Components
-- Model persistence utilities: save and load functions for scikit-learn estimators
-- Data processing and preprocessing pipeline: feature engineering, imputation, scaling, encoding
-- Experiment tracking: MLflow integration for parameters, metrics, artifacts, and model registry
-- Training pipeline for web deployment: end-to-end training, evaluation, and artifact export
-- Deployment consumers: FastAPI service and Streamlit app
+- Static model artifacts: joblib-serialized trained models and fitted preprocessors
+- Deployment consumers: FastAPI service and Streamlit app that load and use persisted artifacts
 - Lightweight web model artifacts: JSON exports for browser-side prediction
+- Model information artifacts: metadata describing model features and specifications
+- Historical training components: retained for educational purposes and reference
 
 Key responsibilities:
-- Persist trained models and fitted preprocessors to disk
-- Track experiments with MLflow and register model versions
-- Export metadata for web apps and APIs
+- Manage static model artifacts in models/ directory
 - Load and validate artifacts at runtime for predictions
+- Provide model information and metadata for deployment contexts
+- Support model updates through artifact replacement
+
+**Updated** Removed model training classes, evaluation components, and experiment tracking from core components.
 
 **Section sources**
-- [src/models.py:353-366](file://src/models.py#L353-L366)
-- [src/data_processing.py:22-341](file://src/data_processing.py#L22-L341)
-- [src/experiment_tracking.py:19-307](file://src/experiment_tracking.py#L19-L307)
-- [train_model_for_web.py:108-192](file://train_model_for_web.py#L108-L192)
 - [api/main.py:126-180](file://api/main.py#L126-L180)
 - [app/app.py:72-82](file://app/app.py#L72-L82)
 - [docs/web_model.json:1-129](file://docs/web_model.json#L1-L129)
 - [docs/model_data.json:1-171](file://docs/model_data.json#L1-L171)
 
 ## Architecture Overview
-The model management architecture connects training, persistence, and deployment:
+The model management architecture now focuses on deployment and artifact consumption:
 
 ```mermaid
 sequenceDiagram
-participant Trainer as "Training Script<br/>train_model_for_web.py"
-participant DP as "Data Processor<br/>src/data_processing.py"
-participant ET as "Experiment Tracker<br/>src/experiment_tracking.py"
 participant FS as "File System<br/>models/, docs/"
 participant API as "FastAPI Service<br/>api/main.py"
 participant APP as "Streamlit App<br/>app/app.py"
-Trainer->>DP : Build preprocessing pipeline
-Trainer->>Trainer : Train model pipeline
-Trainer->>FS : Save model.pkl and export JSON artifacts
-ET->>FS : Log model and artifacts to MLflow
-API->>FS : Load model.pkl and preprocessor.pkl at startup
-APP->>FS : Load model.pkl and preprocessor.pkl via cache
-API->>API : Predict via loaded pipeline
-APP->>APP : Predict via loaded pipeline
+FS->>API : Load house_price_model.pkl and preprocessor.pkl
+FS->>APP : Load house_price_model.pkl and preprocessor.pkl
+API->>API : Validate and predict via loaded pipeline
+APP->>APP : Validate and predict via loaded pipeline
+FS->>API : Load model_data.json and web_model.json
+FS->>APP : Load model_data.json and web_model.json
 ```
 
 **Diagram sources**
-- [train_model_for_web.py:23-192](file://train_model_for_web.py#L23-L192)
-- [src/data_processing.py:257-305](file://src/data_processing.py#L257-L305)
-- [src/experiment_tracking.py:104-142](file://src/experiment_tracking.py#L104-L142)
 - [api/main.py:135-180](file://api/main.py#L135-L180)
 - [app/app.py:72-82](file://app/app.py#L72-L82)
 
+**Updated** Removed training and experimentation flows, focusing solely on deployment and artifact consumption.
+
 ## Detailed Component Analysis
 
-### Model Persistence and Loading
-- Persistence: joblib is used to serialize trained models and fitted preprocessors to disk
+### Static Model Artifact Management
+- Artifacts: joblib-serialized models and preprocessors stored in models/ directory
 - Loading: joblib loads models and preprocessors at runtime for predictions
 - Best practices:
-  - Ensure deterministic preprocessing by persisting the fitted ColumnTransformer
-  - Save artifacts under a stable directory (models/)
+  - Maintain deterministic preprocessing by persisting fitted ColumnTransformer
+  - Organize artifacts under models/ with clear naming conventions
   - Validate artifact existence before loading
+  - Version artifacts using semantic versioning in filenames
 
 ```mermaid
 flowchart TD
-Start(["Save/Load Entry"]) --> SaveCheck{"Saving or Loading?"}
-SaveCheck --> |Saving| Serialize["Serialize estimator with joblib"]
-Serialize --> WriteFS["Write to models/<name>.pkl"]
-SaveCheck --> |Loading| ReadFS["Read models/<name>.pkl"]
-ReadFS --> Deserialize["Deserialize with joblib"]
-Deserialize --> ReturnObj["Return estimator"]
-WriteFS --> ReturnObj
+Start(["Artifact Loading"]) --> CheckFiles{"Model Files Exist?"}
+CheckFiles --> |Yes| LoadModel["Load house_price_model.pkl"]
+CheckFiles --> |No| LoadPreproc["Load preprocessor.pkl"]
+LoadModel --> ValidateModel["Validate Model"]
+LoadPreproc --> ValidatePreproc["Validate Preprocessor"]
+ValidateModel --> Ready["Ready for Predictions"]
+ValidatePreproc --> Ready
 ```
 
 **Diagram sources**
-- [src/models.py:353-366](file://src/models.py#L353-L366)
 - [api/main.py:135-149](file://api/main.py#L135-L149)
 - [app/app.py:72-81](file://app/app.py#L72-L81)
 
 **Section sources**
-- [src/models.py:353-366](file://src/models.py#L353-L366)
 - [api/main.py:135-149](file://api/main.py#L135-L149)
 - [app/app.py:72-81](file://app/app.py#L72-L81)
 
-### Preprocessor Serialization and Integration
-- Preprocessing pipeline construction and fitting occur during training
-- The fitted ColumnTransformer is persisted alongside the model
-- At runtime, the API and Streamlit app load both model and preprocessor
-- Engineered features are recalculated consistently for inference
+### Preprocessor Integration and Feature Engineering
+- Preprocessing pipeline integration occurs during model training and is persisted as part of the model artifact
+- At runtime, both API and Streamlit app load the complete pipeline containing the fitted preprocessor
+- Engineered features are recalculated consistently for inference using the persisted preprocessing logic
 
 ```mermaid
 classDiagram
-class DataProcessor {
-+load_data()
-+get_column_types()
-+analyze_missing_values()
-+split_data()
-+get_data_summary()
-}
-class FeatureEngineer {
-+build_preprocessing_pipeline(X_train)
-+transform(X)
-+get_feature_importance_df(importances)
-}
-class ColumnTransformer {
-+fit(X)
-+transform(X)
-}
 class ModelState {
 +load()
 +predict(features)
 }
-DataProcessor --> FeatureEngineer : "provides X_train"
-FeatureEngineer --> ColumnTransformer : "builds/fits"
-ModelState --> ColumnTransformer : "loads"
-ModelState --> ModelState : "engineers features"
+class JoblibLoader {
++load_model(path)
++load_preprocessor(path)
+}
+class PipelineComponents {
++ColumnTransformer
++StandardScaler
++OneHotEncoder
+}
+ModelState --> JoblibLoader : "loads artifacts"
+JoblibLoader --> PipelineComponents : "loads fitted components"
+ModelState --> PipelineComponents : "uses for transformation"
 ```
 
 **Diagram sources**
-- [src/data_processing.py:22-341](file://src/data_processing.py#L22-L341)
 - [api/main.py:126-180](file://api/main.py#L126-L180)
+- [app/app.py:197-202](file://app/app.py#L197-L202)
 
 **Section sources**
-- [src/data_processing.py:257-305](file://src/data_processing.py#L257-L305)
 - [api/main.py:155-179](file://api/main.py#L155-L179)
 - [app/app.py:197-202](file://app/app.py#L197-L202)
 
-### Model Training and Web Deployment Preparation
-- The training script builds features, fits a preprocessing pipeline, trains a regressor, evaluates performance, persists the pipeline, and exports JSON metadata for web usage
-- Exports include feature statistics, correlations, and category mappings for lightweight prediction
+### Deployment Artifacts and Metadata
+- Static model artifacts:
+  - models/house_price_model.pkl: Complete pipeline with fitted preprocessor and regressor
+  - models/preprocessor.pkl: Fitted ColumnTransformer for standalone use
+- Lightweight web artifacts:
+  - docs/model_data.json: Feature statistics, correlations, and category mappings
+  - docs/web_model.json: Simplified coefficients and multipliers for browser prediction
+- Model information artifacts:
+  - Version information and feature descriptions for deployment contexts
 
-```mermaid
-sequenceDiagram
-participant Script as "train_model_for_web.py"
-participant Pre as "Preprocessor Pipeline"
-participant Model as "Regressor Pipeline"
-participant FS as "models/, docs/"
-Script->>Script : Engineer features
-Script->>Pre : Fit ColumnTransformer on training data
-Script->>Model : Fit Pipeline(preprocessor, regressor)
-Script->>Script : Evaluate model
-Script->>FS : Save model.pkl
-Script->>FS : Export model_data.json and web_model.json
-```
-
-**Diagram sources**
-- [train_model_for_web.py:38-192](file://train_model_for_web.py#L38-L192)
-- [docs/model_data.json:1-171](file://docs/model_data.json#L1-L171)
-- [docs/web_model.json:1-129](file://docs/web_model.json#L1-L129)
+**Updated** Removed training-specific artifacts, focusing on deployment-ready static artifacts.
 
 **Section sources**
-- [train_model_for_web.py:38-192](file://train_model_for_web.py#L38-L192)
 - [docs/model_data.json:1-171](file://docs/model_data.json#L1-L171)
 - [docs/web_model.json:1-129](file://docs/web_model.json#L1-L129)
-
-### Experimentation, Versioning, and Metadata Tracking
-- MLflow integration logs parameters, metrics, and artifacts per run
-- Preprocessor is serialized and logged as an artifact
-- Model versions can be registered and retrieved for comparison
-
-```mermaid
-flowchart TD
-StartExp["Start MLflow Run"] --> LogParams["Log Parameters"]
-LogParams --> LogMetrics["Log Metrics"]
-LogMetrics --> LogModel["Log Model Artifact"]
-LogModel --> LogPreproc["Serialize and Log Preprocessor"]
-LogPreproc --> Tags["Set Tags (model_type, dataset, version)"]
-Tags --> Register["Optionally Register Model Version"]
-Register --> EndExp["End Run"]
-```
-
-**Diagram sources**
-- [src/experiment_tracking.py:53-164](file://src/experiment_tracking.py#L53-L164)
-- [src/experiment_tracking.py:221-251](file://src/experiment_tracking.py#L221-L251)
-
-**Section sources**
-- [src/experiment_tracking.py:19-307](file://src/experiment_tracking.py#L19-L307)
 
 ### Deployment Consumers: API and Web App
 - FastAPI service loads model and preprocessor at startup and serves predictions with validation
 - Streamlit app loads model and preprocessor via cached resource and renders interactive predictions
-- Both consume the same persisted artifacts
+- Both consume the same persisted artifacts without requiring retraining
 
 ```mermaid
 sequenceDiagram
 participant Client as "Client"
 participant API as "FastAPI /predict"
-participant MS as "ModelState"
-participant FS as "models/"
+participant Loader as "Artifact Loader"
+participant Model as "Loaded Pipeline"
 Client->>API : POST /predict
-API->>MS : validate and predict
-MS->>FS : load model.pkl and preprocessor.pkl
-MS->>MS : engineer features and transform
-MS-->>API : prediction
+API->>Loader : Load artifacts from models/
+Loader-->>API : Return model and preprocessor
+API->>Model : validate and predict
+Model-->>API : prediction
 API-->>Client : PredictionResponse
 ```
 
@@ -296,43 +239,42 @@ API-->>Client : PredictionResponse
 - [app/app.py:72-82](file://app/app.py#L72-L82)
 
 ### Model Artifact Structure and Storage Best Practices
-- Artifacts:
-  - models/house_price_model.pkl: Full pipeline (preprocessor + regressor)
-  - models/preprocessor.pkl: Fitted ColumnTransformer
-  - docs/model_data.json: Feature stats, correlations, category mappings
-  - docs/web_model.json: Simplified coefficients and multipliers for browser prediction
+- Artifact organization:
+  - models/: Contains house_price_model.pkl and preprocessor.pkl
+  - docs/: Contains model_data.json and web_model.json
 - Best practices:
   - Keep models and preprocessors together under models/
-  - Version JSON artifacts with a version field
-  - Use deterministic paths and consistent naming
-  - Persist preprocessor to ensure identical transformations at inference time
+  - Use semantic versioning for artifact filenames
+  - Maintain consistent naming conventions across deployments
+  - Store metadata artifacts for both API and web consumption
+
+**Updated** Removed experiment tracking and model registry artifacts, focusing on deployment artifacts only.
 
 **Section sources**
-- [train_model_for_web.py:108-192](file://train_model_for_web.py#L108-L192)
 - [api/main.py:135-149](file://api/main.py#L135-L149)
 - [docs/web_model.json:128-128](file://docs/web_model.json#L128-L128)
 
 ### Programmatic Model Loading and Prediction Execution
 - API:
-  - Load model and preprocessor at startup
-  - Validate input features
-  - Engineer features and transform via preprocessor
+  - Load model and preprocessor at startup from models/ directory
+  - Validate input features against schema
+  - Engineer features and transform via loaded preprocessor
   - Predict and return structured response
 - Streamlit:
-  - Load model and preprocessor via cached resource
+  - Load model and preprocessor via cached resource from models/
   - Engineer features and predict
   - Render interactive UI with predictions and insights
 
 ```mermaid
 sequenceDiagram
-participant Svc as "Service"
-participant Loader as "Loader"
-participant Pred as "Predictor"
-Svc->>Loader : load_model(path)
-Loader-->>Svc : model
-Svc->>Pred : predict(features)
-Pred->>Pred : engineer + transform
-Pred-->>Svc : prediction
+participant Service as "Service"
+participant FS as "models/"
+participant Pipeline as "Loaded Pipeline"
+Service->>FS : load house_price_model.pkl
+Service->>FS : load preprocessor.pkl
+FS-->>Service : model and preprocessor
+Service->>Pipeline : predict(features)
+Pipeline-->>Service : prediction
 ```
 
 **Diagram sources**
@@ -343,41 +285,42 @@ Pred-->>Svc : prediction
 - [api/main.py:135-179](file://api/main.py#L135-L179)
 - [app/app.py:72-202](file://app/app.py#L72-L202)
 
-### Model Update Procedures, Rollback Strategies, and A/B Testing
+### Model Update Procedures and Deployment Strategies
 - Updates:
-  - Retrain with improved data or features
-  - Persist new artifacts under a new versioned path
-  - Export updated JSON artifacts
+  - Replace existing artifacts in models/ directory with new versions
+  - Update web artifacts in docs/ directory when model architecture changes
+  - Maintain backward compatibility by keeping old artifacts during transition
+- Deployment:
+  - Stop current service, replace artifacts, then restart
+  - Use blue-green deployment for zero-downtime updates
+  - Validate new artifacts before switching traffic
 - Rollback:
-  - Keep previous models and preprocessors in models/
-  - Switch deployment to previous version by updating load paths
-- A/B Testing:
-  - Deploy parallel endpoints or routes for new vs. old models
-  - Route traffic proportionally and measure performance metrics
-  - Use MLflow to compare runs and select the best version
+  - Keep previous artifacts in separate directories
+  - Switch deployment back by replacing artifact paths
+  - Use version tags in artifact filenames for easy rollback
 
-[No sources needed since this section provides general guidance]
+**Updated** Removed experiment tracking and model registry components, focusing on artifact-based deployment strategies.
 
-### Relationship Between Training Models and Web-Deployable Models
-- Training model: Pipeline with fitted preprocessor and regressor
-- Web-deployable model: JSON artifacts (model_data.json, web_model.json) for lightweight browser prediction
-- Integration: API and Streamlit apps rely on persisted pipelines; web artifacts enable client-side approximations
+### Relationship Between Static Models and Web-Deployable Artifacts
+- Static model: Complete pipeline (preprocessor + regressor) persisted as house_price_model.pkl
+- Web-deployable artifacts: JSON files (model_data.json, web_model.json) for lightweight browser prediction
+- Integration: API and Streamlit apps rely on static artifacts; web artifacts enable client-side approximations
+
+**Updated** Removed training model references, focusing on deployment-ready static artifacts.
 
 **Section sources**
-- [train_model_for_web.py:113-192](file://train_model_for_web.py#L113-L192)
 - [docs/model_data.json:1-171](file://docs/model_data.json#L1-L171)
 - [docs/web_model.json:1-129](file://docs/web_model.json#L1-L129)
 
 ## Dependency Analysis
 - Core libraries:
-  - joblib for serialization
-  - scikit-learn for modeling and preprocessing
-  - MLflow for experiment tracking
-  - FastAPI and Streamlit for deployment
+  - joblib for model serialization and deserialization
+  - scikit-learn for preprocessing and model components
+  - FastAPI and Streamlit for deployment interfaces
 - Internal dependencies:
-  - Data processing module constructs and persists the preprocessor
-  - Experiment tracking module logs artifacts and supports model registry
-  - Training script orchestrates persistence and artifact export
+  - Data processing module constructs preprocessing pipelines
+  - Training script creates and persists complete pipelines
+  - Deployment scripts load and use persisted artifacts
 
 ```mermaid
 graph TB
@@ -385,7 +328,6 @@ REQ["requirements.txt"]
 SETUP["setup.py"]
 REQ --> JOB["joblib"]
 REQ --> SK["scikit-learn"]
-REQ --> MLF["mlflow"]
 REQ --> FA["fastapi"]
 REQ --> STR["streamlit"]
 SETUP --> PKG["Package Metadata"]
@@ -401,24 +343,30 @@ PKG --> DEPS["Install Requires"]
 - [setup.py:22-47](file://setup.py#L22-L47)
 
 ## Performance Considerations
-- Prefer persisted preprocessors to avoid recomputation and ensure consistency
+- Prefer static model artifacts to avoid recomputation and ensure consistency
 - Use efficient serialization formats (joblib) and keep artifacts minimal
 - Cache model and preprocessor loads in deployment services
 - Monitor prediction latency and optimize feature engineering where possible
+- Consider lazy loading for large models in memory-constrained environments
 
-[No sources needed since this section provides general guidance]
+**Updated** Removed training performance considerations, focusing on deployment optimization.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
 - Model not found at runtime:
   - Verify models/house_price_model.pkl and models/preprocessor.pkl exist
   - Check file permissions and paths
+  - Ensure artifact loading logic matches expected file structure
 - Input validation failures:
   - Ensure feature ranges and constraints match schema
   - Validate categorical enums and derived features
-- Experiment tracking errors:
-  - Confirm MLflow tracking URI and experiment name
-  - Re-run with proper credentials and server availability
+  - Check that preprocessing pipeline matches training configuration
+- Artifact corruption:
+  - Recreate artifacts using training scripts
+  - Verify joblib serialization integrity
+  - Check for incompatible scikit-learn versions
+
+**Updated** Removed experiment tracking and model registry troubleshooting, focusing on artifact and deployment issues.
 
 **Section sources**
 - [api/main.py:135-154](file://api/main.py#L135-L154)
@@ -426,25 +374,31 @@ Common issues and resolutions:
 - [tests/test_models.py:199-229](file://tests/test_models.py#L199-L229)
 
 ## Conclusion
-The project implements a robust model management system centered on joblib-based persistence, integrated preprocessing, and MLflow-backed experimentation. Artifacts are organized for both API and web deployment, with clear separation between training models and lightweight web artifacts. The documented patterns support safe updates, rollback, and A/B testing while maintaining consistency across environments.
+The project implements a streamlined model management system focused on deployment and artifact consumption. With the removal of training and experimentation components, the system now emphasizes reliable artifact management, consistent model loading, and efficient deployment across API and web interfaces. The documented patterns support safe updates, rollback procedures, and maintain consistency across different deployment environments.
+
+**Updated** Removed training and experimentation focus, emphasizing deployment and artifact management.
 
 ## Appendices
 
 ### Example Workflows
 
-- Training and persistence:
-  - Run the training script to build features, fit the pipeline, evaluate, and persist artifacts
-  - Export JSON metadata for web consumption
+- Deployment and artifact loading:
+  - Ensure models/ directory contains house_price_model.pkl and preprocessor.pkl
+  - Start FastAPI service or Streamlit app to load and use persisted artifacts
+  - Verify model information endpoints and health checks
 
 - API prediction:
   - Start the FastAPI service; it loads model and preprocessor at startup
   - Send a POST request to /predict with validated features
+  - Receive structured prediction responses with metadata
 
 - Streamlit prediction:
   - Launch the Streamlit app; it loads model and preprocessor via cached resource
   - Interact with sliders and inputs to receive predictions
+  - View model insights and feature explanations
+
+**Updated** Removed training workflows, focusing on deployment and artifact consumption.
 
 **Section sources**
-- [train_model_for_web.py:23-192](file://train_model_for_web.py#L23-L192)
 - [api/main.py:290-347](file://api/main.py#L290-L347)
 - [app/app.py:220-263](file://app/app.py#L220-L263)
