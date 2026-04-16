@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Prediction - Global Housing Predictor</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌍</span>
+                <span class="logo-text">Global Housing</span>
+            </a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore.html">Explore</a></li>
+                <li><a href="predict.html" class="active">Predict</a></li>
+                <li><a href="countries.html">Countries</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="page-header">
+        <div class="container">
+            <h1>Property Price Prediction</h1>
+            <p>Get an instant estimate for any property worldwide.</p>
+        </div>
+    </main>
+
+    <section class="prediction-section">
+        <div class="container">
+            <div class="prediction-form-wrapper">
+                <form id="predictionForm" class="prediction-form">
+                    <div class="form-section">
+                        <h3>📍 Location</h3>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select id="country" name="country" required>
+                                <option value="">Select a country</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <select id="city" name="city" required disabled>
+                                <option value="">First select a country</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>🏠 Property Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sqft">Living Area (sq ft)</label>
+                                <input type="number" id="sqft" name="sqft" min="100" max="50000" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bedrooms">Bedrooms</label>
+                                <input type="number" id="bedrooms" name="bedrooms" min="0" max="20" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bathrooms">Bathrooms</label>
+                                <input type="number" id="bathrooms" name="bathrooms" min="0.5" max="20" step="0.5" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Property Age (years)</label>
+                                <input type="number" id="age" name="age" min="0" max="500" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>📊 Additional Features</h3>
+                        <div class="form-row">
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="garage" name="garage">
+                                    <span>Has Garage</span>
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="pool" name="pool">
+                                    <span>Has Pool</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="income">Average Income in Area (USD/year)</label>
+                            <input type="number" id="income" name="income" min="1000" max="1000000">
+                            <small>Optional - helps improve prediction accuracy</small>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large">
+                        Get Price Estimate
+                    </button>
+                </form>
+
+                <div id="resultSection" class="result-section hidden">
+                    <div class="result-card">
+                        <h3>Estimated Property Value</h3>
+                        <div class="price-display" id="priceDisplay">--</div>
+                        <div class="price-range" id="priceRange">--</div>
+                        <div class="confidence" id="confidence">--</div>
+                        <div class="market-context" id="marketContext">
+                            <!-- Market comparison data -->
+                        </div>
+                    </div>
+                    <button onclick="resetForm()" class="btn btn-secondary">
+                        Calculate Another
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Global Housing Predictor. Open source project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/predict.js"></script>
+</body>
+</html>

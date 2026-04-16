@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Markets - Global Housing Predictor</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌍</span>
+                <span class="logo-text">Global Housing</span>
+            </a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore.html" class="active">Explore</a></li>
+                <li><a href="predict.html">Predict</a></li>
+                <li><a href="countries.html">Countries</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="page-header">
+        <div class="container">
+            <h1>Explore Global Markets</h1>
+            <p>Search and compare property markets across different countries and cities.</p>
+        </div>
+    </main>
+
+    <section class="search-section">
+        <div class="container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search for a city or country..." class="search-input">
+                <select id="countryFilter" class="filter-select">
+                    <option value="">All Countries</option>
+                </select>
+                <button onclick="searchLocations()" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="container">
+            <div id="resultsContainer" class="results-grid">
+                <!-- Results populated by JavaScript -->
+            </div>
+            <div id="noResults" class="no-results hidden">
+                <p>No locations found. Try a different search term.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Global Housing Predictor. Open source project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/explore.js"></script>
+</body>
+</html>
