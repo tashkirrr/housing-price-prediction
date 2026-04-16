@@ -1,0 +1,171 @@
+{
+  "numerical_features": [
+    "longitude",
+    "latitude",
+    "housing_median_age",
+    "total_rooms",
+    "total_bedrooms",
+    "population",
+    "households",
+    "median_income",
+    "rooms_per_household",
+    "bedrooms_per_room",
+    "population_per_household",
+    "distance_to_sf",
+    "distance_to_la",
+    "income_per_room"
+  ],
+  "categorical_features": [
+    "ocean_proximity"
+  ],
+  "num_stats": {
+    "longitude": {
+      "mean": -119.56970445736432,
+      "std": 2.0035317235025882,
+      "min": -124.35,
+      "max": -114.31
+    },
+    "latitude": {
+      "mean": 35.63186143410852,
+      "std": 2.1359523974571153,
+      "min": 32.54,
+      "max": 41.95
+    },
+    "housing_median_age": {
+      "mean": 28.639486434108527,
+      "std": 12.58555761211165,
+      "min": 1.0,
+      "max": 52.0
+    },
+    "total_rooms": {
+      "mean": 2635.7630813953488,
+      "std": 2181.615251582795,
+      "min": 2.0,
+      "max": 39320.0
+    },
+    "total_bedrooms": {
+      "mean": 537.8705525375618,
+      "std": 421.3850700740323,
+      "min": 1.0,
+      "max": 6445.0
+    },
+    "population": {
+      "mean": 1425.4767441860465,
+      "std": 1132.462121765341,
+      "min": 3.0,
+      "max": 35682.0
+    },
+    "households": {
+      "mean": 499.5396802325581,
+      "std": 382.32975283161073,
+      "min": 1.0,
+      "max": 6082.0
+    },
+    "median_income": {
+      "mean": 3.8706710029069766,
+      "std": 1.8998217179452688,
+      "min": 0.4999,
+      "max": 15.0001
+    },
+    "rooms_per_household": {
+      "mean": 5.428999742190376,
+      "std": 2.4741731394243187,
+      "min": 0.8461538461538461,
+      "max": 141.9090909090909
+    },
+    "bedrooms_per_room": {
+      "mean": 0.2130388304808513,
+      "std": 0.057982674080982274,
+      "min": 0.1,
+      "max": 1.0
+    },
+    "population_per_household": {
+      "mean": 3.0706551594363742,
+      "std": 10.386049562213618,
+      "min": 0.6923076923076923,
+      "max": 1243.3333333333333
+    },
+    "distance_to_sf": {
+      "mean": 3.878928974461959,
+      "std": 2.4987212686810554,
+      "min": 0.004936598018878931,
+      "max": 9.310052973533503
+    },
+    "distance_to_la": {
+      "mean": 2.644990352880617,
+      "std": 2.4153557169275075,
+      "min": 0.004304648650015044,
+      "max": 9.865525760444802
+    },
+    "income_per_room": {
+      "mean": 0.715457357410112,
+      "std": 0.25533093695126763,
+      "min": 0.013212684176809738,
+      "max": 5.168025
+    }
+  },
+  "ocean_price_map": {
+    "<1H OCEAN": 240084.28546409807,
+    "INLAND": 124805.39200122119,
+    "ISLAND": 380440.0,
+    "NEAR BAY": 259212.31179039303,
+    "NEAR OCEAN": 249433.97742663656
+  },
+  "correlations": {
+    "longitude": -0.0459666151179817,
+    "latitude": -0.1441602768746574,
+    "housing_median_age": 0.10562341249321065,
+    "total_rooms": 0.1341531138065627,
+    "total_bedrooms": 0.0496861802473462,
+    "population": -0.024649678888894865,
+    "households": 0.0658426505700564,
+    "median_income": 0.6880752079585577,
+    "rooms_per_household": 0.15194828974146013,
+    "bedrooms_per_room": -0.25588014941949866,
+    "population_per_household": -0.02373741295613419,
+    "distance_to_sf": -0.04093177518837772,
+    "distance_to_la": -0.11687371416121953,
+    "income_per_room": 0.6652741735402475
+  },
+  "target_mean": 206855.81690891474,
+  "target_std": 115395.61587441387,
+  "feature_means": {
+    "longitude": -119.58229045542636,
+    "latitude": 35.643149224806194,
+    "housing_median_age": 28.60828488372093,
+    "total_rooms": 2642.0047843992247,
+    "total_bedrooms": 538.4968507751938,
+    "population": 1426.453003875969,
+    "households": 499.9869186046512,
+    "median_income": 3.88075425750969,
+    "rooms_per_household": 5.4352350204875295,
+    "bedrooms_per_room": 0.21285797439441098,
+    "population_per_household": 3.0969611946687525,
+    "distance_to_sf": 3.8646218300138138,
+    "distance_to_la": 2.6572660252151286,
+    "income_per_room": 0.716203651422843
+  },
+  "feature_stds": {
+    "longitude": 2.0056535406966307,
+    "latitude": 2.136665296399592,
+    "housing_median_age": 12.60249935225392,
+    "total_rooms": 2174.6467436367866,
+    "total_bedrooms": 419.0070958700483,
+    "population": 1137.056379781029,
+    "households": 380.96796387145355,
+    "median_income": 1.9042939225591973,
+    "rooms_per_household": 2.3873748729350015,
+    "bedrooms_per_room": 0.057995391407493165,
+    "population_per_household": 11.578744131196324,
+    "distance_to_sf": 2.499218464018642,
+    "distance_to_la": 2.4186153048000225,
+    "income_per_room": 0.2562410003221209
+  },
+  "ocean_categories": [
+    "NEAR BAY",
+    "<1H OCEAN",
+    "INLAND",
+    "NEAR OCEAN",
+    "ISLAND"
+  ]
+}

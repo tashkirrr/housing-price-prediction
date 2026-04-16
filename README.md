@@ -13,6 +13,7 @@ A comprehensive, production-ready machine learning solution for predicting Calif
 ## Table of Contents
 
 - [Overview](#overview)
+- [Live Demo](#live-demo)
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
@@ -21,6 +22,14 @@ A comprehensive, production-ready machine learning solution for predicting Calif
 - [API Documentation](#api-documentation)
 - [Contributing](#contributing)
 - [License](#license)
+
+---
+
+## Live Demo
+
+Try the interactive web predictor: **[California Dream Homes Price Predictor](https://tashkirrr.github.io/housing-price-prediction/)**
+
+A beautiful, humanistic web interface where you can enter property details and get instant price predictions powered by machine learning.
 
 ---
 
