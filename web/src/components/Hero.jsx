@@ -5,7 +5,7 @@ const stats = [
   { icon: Home, value: '20,640', label: 'Properties Analyzed' },
   { icon: TrendingUp, value: '85%', label: 'Prediction Accuracy' },
   { icon: MapPin, value: '58', label: 'Counties Covered' },
-  { icon: Brain, value: 'AI', label: 'Powered by ML' },
+  { icon: Brain, value: 'ML', label: 'Machine Learning' },
 ];
 
 export const Hero = () => {
@@ -36,7 +36,7 @@ export const Hero = () => {
             className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white/90 text-sm mb-6 border border-white/20"
           >
             <span className="w-2 h-2 bg-teal-400 rounded-full animate-pulse"></span>
-            Now with Real-Time Census Data
+            Real-Time Census Data
           </motion.div>
 
           <motion.h1
@@ -57,7 +57,7 @@ export const Hero = () => {
             transition={{ delay: 0.4 }}
             className="text-xl text-white/80 max-w-2xl mx-auto mb-8"
           >
-            Discover your property's value using AI-powered predictions combined with 
+            Discover your property's value using advanced machine learning combined with 
             real-time Census Bureau data and precise geocoding.
           </motion.p>
 
