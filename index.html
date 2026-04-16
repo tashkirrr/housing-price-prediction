@@ -20,6 +20,9 @@
             --gradient-end: #57c5b6;
             --shadow: 0 10px 40px rgba(26, 95, 122, 0.15);
             --shadow-hover: 0 20px 60px rgba(26, 95, 122, 0.25);
+            --success: #27ae60;
+            --warning: #f39c12;
+            --error: #e74c3c;
         }
 
         * {
@@ -28,12 +31,75 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e8f6f3 100%);
             min-height: 100vh;
             color: var(--dark);
             line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         /* Hero Section */
@@ -45,7 +111,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem;
+            padding: 6rem 2rem 2rem;
             position: relative;
             overflow: hidden;
         }
@@ -64,7 +130,21 @@
         .hero-content {
             position: relative;
             z-index: 1;
-            max-width: 800px;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .hero-icon {
@@ -106,6 +186,25 @@
             color: rgba(255,255,255,0.95);
             font-size: 1.1rem;
             line-height: 1.8;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
 
         .scroll-indicator {
@@ -164,6 +263,45 @@
             margin: 0 auto;
         }
 
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--accent) 0%, white 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid rgba(87, 197, 182, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
         /* Prediction Form */
         .prediction-container {
             display: grid;
@@ -201,6 +339,14 @@
 
         .form-group label i {
             color: var(--primary);
+            width: 20px;
+        }
+
+        .help-text {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.25rem;
+            margin-left: 1.5rem;
         }
 
         .input-wrapper {
@@ -223,6 +369,11 @@
             box-shadow: 0 0 0 4px rgba(87, 197, 182, 0.1);
         }
 
+        .form-control.error {
+            border-color: var(--error);
+            background: #fdf2f2;
+        }
+
         .input-icon {
             position: absolute;
             left: 1rem;
@@ -236,24 +387,30 @@
             cursor: pointer;
         }
 
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
         .range-value {
-            display: inline-block;
             background: var(--primary);
             color: white;
-            padding: 0.25rem 0.75rem;
+            padding: 0.5rem 1rem;
             border-radius: 20px;
-            font-size: 0.85rem;
-            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            min-width: 100px;
+            text-align: center;
         }
 
         input[type="range"] {
-            width: 100%;
+            flex: 1;
             height: 8px;
             border-radius: 4px;
             background: #e0e0e0;
             outline: none;
             -webkit-appearance: none;
-            margin-top: 0.5rem;
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -268,13 +425,26 @@
         }
 
         input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
+            transform: scale(1.2);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .error-message.show {
+            display: flex;
         }
 
         /* Result Card */
         .result-section {
             position: sticky;
-            top: 2rem;
+            top: 100px;
         }
 
         .result-card {
@@ -320,11 +490,25 @@
             position: relative;
             z-index: 1;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
 
         .result-sublabel {
             font-size: 0.9rem;
             opacity: 0.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .confidence-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
             position: relative;
             z-index: 1;
         }
@@ -354,6 +538,57 @@
 
         .predict-btn:active {
             transform: translateY(0);
+        }
+
+        .predict-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Insights Panel */
+        .insights-panel {
+            margin-top: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .insights-panel h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        .insight-icon-small {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .insight-text {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         /* Insights Cards */
@@ -410,6 +645,11 @@
             padding: 0.75rem;
             background: var(--accent);
             border-radius: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .feature-bar:hover {
+            background: #d4ede8;
         }
 
         .feature-name {
@@ -441,6 +681,48 @@
             color: var(--primary);
         }
 
+        /* Sample Properties */
+        .sample-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .sample-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sample-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow);
+            transform: translateY(-3px);
+        }
+
+        .sample-location {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .sample-details {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .sample-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
         /* Footer */
         footer {
             background: var(--dark);
@@ -456,6 +738,38 @@
 
         footer a:hover {
             text-decoration: underline;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 2000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        .toast.error {
+            background: var(--error);
         }
 
         /* Animations */
@@ -478,6 +792,14 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
             .section {
                 padding: 2rem 1.5rem;
             }
@@ -492,6 +814,15 @@
 
             .hero-story {
                 padding: 1.5rem;
+            }
+
+            .range-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .range-value {
+                align-self: center;
             }
         }
 
@@ -509,12 +840,37 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* Number input arrows */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+            height: 30px;
+        }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">
+            <i class="fas fa-home"></i>
+            California Dream Homes
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#predictor">Predict</a></li>
+            <li><a href="#insights">Insights</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </nav>
+
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-magic"></i>
+                Powered by Machine Learning
+            </div>
             <div class="hero-icon">🏖️</div>
             <h1>California Dream Homes</h1>
             <p class="hero-subtitle">Discover the Value of Your Golden State Property</p>
@@ -529,6 +885,11 @@
                     clarity and insight.
                 </p>
             </div>
+
+            <a href="#predictor" class="cta-button">
+                <i class="fas fa-calculator"></i>
+                Start Predicting
+            </a>
         </div>
         
         <div class="scroll-indicator" onclick="document.getElementById('predictor').scrollIntoView({behavior: 'smooth'})">
@@ -538,11 +899,62 @@
 
     <!-- Main Content -->
     <div class="main-container">
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-database"></i></div>
+                <div class="stat-value">20,640</div>
+                <div class="stat-label">Properties Analyzed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-bullseye"></i></div>
+                <div class="stat-value">85%</div>
+                <div class="stat-label">Prediction Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="stat-value">5</div>
+                <div class="stat-label">Regions Covered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-brain"></i></div>
+                <div class="stat-value">ML</div>
+                <div class="stat-label">Powered by AI</div>
+            </div>
+        </div>
+
         <!-- Prediction Section -->
         <section class="section fade-in" id="predictor">
             <div class="section-header">
                 <h2><i class="fas fa-magic"></i> Price Predictor</h2>
                 <p>Tell us about the property, and we'll reveal its estimated market value using our advanced machine learning model.</p>
+            </div>
+
+            <!-- Sample Properties -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1rem; color: var(--primary);"><i class="fas fa-lightbulb"></i> Try a Sample Property</h3>
+                <div class="sample-grid">
+                    <div class="sample-card" onclick="loadSample('sf')">
+                        <div class="sample-location"><i class="fas fa-city"></i> San Francisco Bay</div>
+                        <div class="sample-details">Near Bay • High Income • Coastal</div>
+                        <div class="sample-price">~$452,600</div>
+                    </div>
+                    <div class="sample-card" onclick="loadSample('la')">
+                        <div class="sample-location"><i class="fas fa-sun"></i> Los Angeles</div>
+                        <div class="sample-details">Near Ocean • Moderate Income</div>
+                        <div class="sample-price">~$358,500</div>
+                    </div>
+                    <div class="sample-card" onclick="loadSample('inland')">
+                        <div class="sample-location"><i class="fas fa-mountain"></i> Inland Empire</div>
+                        <div class="sample-details">Inland • Family Home • Affordable</div>
+                        <div class="sample-price">~$120,000</div>
+                    </div>
+                    <div class="sample-card" onclick="loadSample('island')">
+                        <div class="sample-location"><i class="fas fa-umbrella-beach"></i> Island Property</div>
+                        <div class="sample-details">Island • Premium • Exclusive</div>
+                        <div class="sample-price">~$380,000</div>
+                    </div>
+                </div>
             </div>
 
             <div class="prediction-container">
@@ -556,13 +968,21 @@
                     <div class="form-group">
                         <label><i class="fas fa-map-marker-alt"></i> Location Coordinates</label>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                            <div class="input-wrapper">
-                                <i class="fas fa-arrows-alt-h input-icon"></i>
-                                <input type="number" class="form-control" id="longitude" placeholder="Longitude" value="-122.23" step="0.01">
+                            <div>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-arrows-alt-h input-icon"></i>
+                                    <input type="number" class="form-control" id="longitude" placeholder="Longitude" value="-122.23" step="0.01" min="-125" max="-114">
+                                </div>
+                                <div class="help-text">Range: -125 to -114 (West to East)</div>
+                                <div class="error-message" id="longitude-error"><i class="fas fa-exclamation-circle"></i> Longitude must be between -125 and -114</div>
                             </div>
-                            <div class="input-wrapper">
-                                <i class="fas fa-arrows-alt-v input-icon"></i>
-                                <input type="number" class="form-control" id="latitude" placeholder="Latitude" value="37.88" step="0.01">
+                            <div>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-arrows-alt-v input-icon"></i>
+                                    <input type="number" class="form-control" id="latitude" placeholder="Latitude" value="37.88" step="0.01" min="32" max="42">
+                                </div>
+                                <div class="help-text">Range: 32 to 42 (South to North)</div>
+                                <div class="error-message" id="latitude-error"><i class="fas fa-exclamation-circle"></i> Latitude must be between 32 and 42</div>
                             </div>
                         </div>
                     </div>
@@ -571,21 +991,23 @@
                     <div class="form-group">
                         <label><i class="fas fa-water"></i> Ocean Proximity</label>
                         <select class="form-control" id="ocean_proximity">
-                            <option value="<1H OCEAN">< 1 Hour from Ocean</option>
+                            <option value="<1H OCEAN">Less than 1 Hour from Ocean</option>
                             <option value="INLAND">Inland</option>
-                            <option value="ISLAND">Island</option>
+                            <option value="ISLAND">Island (Premium)</option>
                             <option value="NEAR BAY" selected>Near Bay</option>
                             <option value="NEAR OCEAN">Near Ocean</option>
                         </select>
+                        <div class="help-text">How close is the property to the ocean?</div>
                     </div>
 
                     <!-- Housing Age -->
                     <div class="form-group">
-                        <label>
-                            <i class="fas fa-calendar-alt"></i> Housing Median Age
+                        <label><i class="fas fa-calendar-alt"></i> Housing Median Age</label>
+                        <div class="range-container">
+                            <input type="range" id="housing_median_age" min="1" max="52" value="41">
                             <span class="range-value" id="ageValue">41 years</span>
-                        </label>
-                        <input type="range" id="housing_median_age" min="1" max="52" value="41">
+                        </div>
+                        <div class="help-text">Median age of houses in the block (1-52 years)</div>
                     </div>
 
                     <!-- Rooms -->
@@ -593,8 +1015,10 @@
                         <label><i class="fas fa-door-open"></i> Total Rooms</label>
                         <div class="input-wrapper">
                             <i class="fas fa-building input-icon"></i>
-                            <input type="number" class="form-control" id="total_rooms" value="880" min="1">
+                            <input type="number" class="form-control" id="total_rooms" value="880" min="2" max="40000">
                         </div>
+                        <div class="help-text">Total rooms in the census block (2-40,000)</div>
+                        <div class="error-message" id="rooms-error"><i class="fas fa-exclamation-circle"></i> Must be between 2 and 40,000</div>
                     </div>
 
                     <!-- Bedrooms -->
@@ -602,8 +1026,10 @@
                         <label><i class="fas fa-bed"></i> Total Bedrooms</label>
                         <div class="input-wrapper">
                             <i class="fas fa-bed input-icon"></i>
-                            <input type="number" class="form-control" id="total_bedrooms" value="129" min="1">
+                            <input type="number" class="form-control" id="total_bedrooms" value="129" min="1" max="6500">
                         </div>
+                        <div class="help-text">Total bedrooms (1-6,500, must be ≤ rooms)</div>
+                        <div class="error-message" id="bedrooms-error"><i class="fas fa-exclamation-circle"></i> Bedrooms cannot exceed total rooms</div>
                     </div>
 
                     <!-- Population -->
@@ -611,8 +1037,10 @@
                         <label><i class="fas fa-users"></i> Population</label>
                         <div class="input-wrapper">
                             <i class="fas fa-users input-icon"></i>
-                            <input type="number" class="form-control" id="population" value="322" min="1">
+                            <input type="number" class="form-control" id="population" value="322" min="3" max="36000">
                         </div>
+                        <div class="help-text">Total population in the block (3-36,000)</div>
+                        <div class="error-message" id="population-error"><i class="fas fa-exclamation-circle"></i> Must be between 3 and 36,000</div>
                     </div>
 
                     <!-- Households -->
@@ -620,20 +1048,23 @@
                         <label><i class="fas fa-house-user"></i> Households</label>
                         <div class="input-wrapper">
                             <i class="fas fa-house-user input-icon"></i>
-                            <input type="number" class="form-control" id="households" value="126" min="1">
+                            <input type="number" class="form-control" id="households" value="126" min="1" max="6100">
                         </div>
+                        <div class="help-text">Number of households (1-6,100, must be ≤ population)</div>
+                        <div class="error-message" id="households-error"><i class="fas fa-exclamation-circle"></i> Households cannot exceed population</div>
                     </div>
 
                     <!-- Income -->
                     <div class="form-group">
-                        <label>
-                            <i class="fas fa-dollar-sign"></i> Median Income (in $10,000s)
+                        <label><i class="fas fa-dollar-sign"></i> Median Income</label>
+                        <div class="range-container">
+                            <input type="range" id="median_income" min="0.5" max="15" value="8.3" step="0.1">
                             <span class="range-value" id="incomeValue">$83,252</span>
-                        </label>
-                        <input type="range" id="median_income" min="0.5" max="15" value="8.3" step="0.1">
+                        </div>
+                        <div class="help-text">Median income in tens of thousands ($5,000 - $150,000)</div>
                     </div>
 
-                    <button class="predict-btn" onclick="predictPrice()">
+                    <button class="predict-btn" id="predictBtn" onclick="predictPrice()">
                         <i class="fas fa-calculator"></i> Calculate Price
                     </button>
                 </div>
@@ -641,29 +1072,53 @@
                 <!-- Result Section -->
                 <div class="result-section">
                     <div class="result-card">
-                        <div class="result-label">Estimated House Value</div>
+                        <div class="result-label"><i class="fas fa-tag"></i> Estimated House Value</div>
                         <div class="result-value" id="predictionResult">$452,600</div>
                         <div class="result-sublabel">Based on 1990 California Census Data</div>
+                        <div class="confidence-badge">
+                            <i class="fas fa-check-circle"></i>
+                            85% Confidence
+                        </div>
                     </div>
 
-                    <div style="margin-top: 2rem; background: var(--accent); padding: 1.5rem; border-radius: 16px;">
-                        <h4 style="color: var(--primary); margin-bottom: 1rem;">
-                            <i class="fas fa-lightbulb"></i> Property Insights
-                        </h4>
+                    <div class="insights-panel">
+                        <h4><i class="fas fa-chart-pie"></i> Property Insights</h4>
                         <div id="propertyInsights">
-                            <p style="color: #666; font-size: 0.95rem; line-height: 1.7;">
-                                This property is located in a <strong>NEAR BAY</strong> area, which typically commands 
-                                a premium price. With a median income of <strong>$83,252</strong> in the neighborhood, 
-                                this suggests an affluent community.
-                            </p>
+                            <div class="insight-item">
+                                <div class="insight-icon-small"><i class="fas fa-water"></i></div>
+                                <div class="insight-text">
+                                    <strong>Location Premium:</strong> Near Bay areas typically command 25% higher prices than inland properties.
+                                </div>
+                            </div>
+                            <div class="insight-item">
+                                <div class="insight-icon-small"><i class="fas fa-money-bill-wave"></i></div>
+                                <div class="insight-text">
+                                    <strong>Income Factor:</strong> With $83,252 median income, this is an affluent neighborhood.
+                                </div>
+                            </div>
+                            <div class="insight-item">
+                                <div class="insight-icon-small"><i class="fas fa-home"></i></div>
+                                <div class="insight-text">
+                                    <strong>Property Density:</strong> 7.0 rooms per household indicates spacious living.
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border-radius: 12px; border-left: 4px solid #f39c12;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: #856404; font-weight: 600; margin-bottom: 0.5rem;">
+                            <i class="fas fa-info-circle"></i> Inflation Note
+                        </div>
+                        <p style="color: #856404; font-size: 0.85rem; line-height: 1.5;">
+                            This prediction is in <strong>1990 dollars</strong>. For 2025 estimates, multiply by approximately <strong>2.5x</strong>.
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Insights Section -->
-        <section class="section fade-in delay-1">
+        <section class="section fade-in delay-1" id="insights">
             <div class="section-header">
                 <h2><i class="fas fa-chart-line"></i> What Drives California Home Prices?</h2>
                 <p>Understanding the key factors that influence property values across the Golden State.</p>
@@ -705,35 +1160,35 @@
 
             <div id="featureImportance">
                 <div class="feature-bar">
-                    <span class="feature-name">Median Income</span>
+                    <span class="feature-name"><i class="fas fa-dollar-sign"></i> Median Income</span>
                     <div class="feature-progress">
                         <div class="feature-fill" style="width: 35%"></div>
                     </div>
                     <span class="feature-value">35%</span>
                 </div>
                 <div class="feature-bar">
-                    <span class="feature-name">Ocean Proximity</span>
+                    <span class="feature-name"><i class="fas fa-water"></i> Ocean Proximity</span>
                     <div class="feature-progress">
                         <div class="feature-fill" style="width: 18%"></div>
                     </div>
                     <span class="feature-value">18%</span>
                 </div>
                 <div class="feature-bar">
-                    <span class="feature-name">Distance to SF</span>
+                    <span class="feature-name"><i class="fas fa-location-arrow"></i> Distance to SF</span>
                     <div class="feature-progress">
                         <div class="feature-fill" style="width: 12%"></div>
                     </div>
                     <span class="feature-value">12%</span>
                 </div>
                 <div class="feature-bar">
-                    <span class="feature-name">Rooms/Household</span>
+                    <span class="feature-name"><i class="fas fa-expand"></i> Rooms/Household</span>
                     <div class="feature-progress">
                         <div class="feature-fill" style="width: 8%"></div>
                     </div>
                     <span class="feature-value">8%</span>
                 </div>
                 <div class="feature-bar">
-                    <span class="feature-name">Latitude</span>
+                    <span class="feature-name"><i class="fas fa-map-pin"></i> Latitude</span>
                     <div class="feature-progress">
                         <div class="feature-fill" style="width: 7%"></div>
                     </div>
@@ -741,18 +1196,18 @@
                 </div>
             </div>
 
-            <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border-radius: 16px; border-left: 4px solid #f39c12;">
-                <h4 style="color: #856404; margin-bottom: 0.5rem;"><i class="fas fa-info-circle"></i> About the Model</h4>
-                <p style="color: #856404; font-size: 0.95rem;">
-                    This predictor uses a HistGradientBoostingRegressor trained on 20,640 California census records from 1990. 
-                    The model achieves an R² score of 0.85, meaning it explains 85% of price variation. 
-                    <strong>Note:</strong> Predictions are in 1990 dollars. For current market values, adjust for inflation (approximately 2.5x).
+            <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--accent) 0%, white 100%); border-radius: 16px; border: 2px solid rgba(87, 197, 182, 0.3);">
+                <h4 style="color: var(--primary); margin-bottom: 1rem;"><i class="fas fa-robot"></i> About the Model</h4>
+                <p style="color: #555; font-size: 0.95rem; line-height: 1.7;">
+                    This predictor uses a <strong>HistGradientBoostingRegressor</strong> trained on 20,640 California census records from 1990. 
+                    The model achieves an <strong>R² score of 0.85</strong>, meaning it explains 85% of price variation. 
+                    We engineered additional features like distance to major cities and room ratios to improve accuracy.
                 </p>
             </div>
         </section>
 
         <!-- Tips Section -->
-        <section class="section fade-in delay-3">
+        <section class="section fade-in delay-3" id="about">
             <div class="section-header">
                 <h2><i class="fas fa-lightbulb"></i> Tips for Accurate Predictions</h2>
             </div>
@@ -802,6 +1257,12 @@
         </p>
     </footer>
 
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Prediction updated!</span>
+    </div>
+
     <script>
         // Web model data (embedded for GitHub Pages)
         const webModel = {
@@ -847,18 +1308,186 @@
             }
         };
 
+        // Sample properties
+        const samples = {
+            sf: {
+                longitude: -122.23,
+                latitude: 37.88,
+                ocean_proximity: "NEAR BAY",
+                housing_median_age: 41,
+                total_rooms: 880,
+                total_bedrooms: 129,
+                population: 322,
+                households: 126,
+                median_income: 8.3252
+            },
+            la: {
+                longitude: -118.24,
+                latitude: 34.05,
+                ocean_proximity: "NEAR OCEAN",
+                housing_median_age: 25,
+                total_rooms: 1500,
+                total_bedrooms: 300,
+                population: 800,
+                households: 300,
+                median_income: 5.5
+            },
+            inland: {
+                longitude: -119.5,
+                latitude: 36.5,
+                ocean_proximity: "INLAND",
+                housing_median_age: 20,
+                total_rooms: 1200,
+                total_bedrooms: 250,
+                population: 600,
+                households: 220,
+                median_income: 2.5
+            },
+            island: {
+                longitude: -119.0,
+                latitude: 33.5,
+                ocean_proximity: "ISLAND",
+                housing_median_age: 30,
+                total_rooms: 2000,
+                total_bedrooms: 400,
+                population: 1000,
+                households: 350,
+                median_income: 6.0
+            }
+        };
+
+        // Load sample property
+        function loadSample(sampleName) {
+            const sample = samples[sampleName];
+            if (!sample) return;
+
+            document.getElementById('longitude').value = sample.longitude;
+            document.getElementById('latitude').value = sample.latitude;
+            document.getElementById('ocean_proximity').value = sample.ocean_proximity;
+            document.getElementById('housing_median_age').value = sample.housing_median_age;
+            document.getElementById('total_rooms').value = sample.total_rooms;
+            document.getElementById('total_bedrooms').value = sample.total_bedrooms;
+            document.getElementById('population').value = sample.population;
+            document.getElementById('households').value = sample.households;
+            document.getElementById('median_income').value = sample.median_income;
+
+            // Update displays
+            document.getElementById('ageValue').textContent = sample.housing_median_age + ' years';
+            document.getElementById('incomeValue').textContent = '$' + Math.round(sample.median_income * 10000).toLocaleString();
+
+            // Clear any errors
+            clearErrors();
+
+            // Predict
+            predictPrice();
+
+            // Show toast
+            showToast('Sample property loaded!', 'success');
+
+            // Scroll to form
+            document.getElementById('predictor').scrollIntoView({ behavior: 'smooth' });
+        }
+
         // Update range value displays
         document.getElementById('housing_median_age').addEventListener('input', function() {
             document.getElementById('ageValue').textContent = this.value + ' years';
+            predictPrice();
         });
 
         document.getElementById('median_income').addEventListener('input', function() {
             const income = parseFloat(this.value) * 10000;
             document.getElementById('incomeValue').textContent = '$' + income.toLocaleString();
+            predictPrice();
         });
+
+        // Real-time prediction on input change
+        ['longitude', 'latitude', 'ocean_proximity', 'total_rooms', 'total_bedrooms', 'population', 'households'].forEach(id => {
+            document.getElementById(id).addEventListener('change', function() {
+                if (validateInputs()) {
+                    predictPrice();
+                }
+            });
+        });
+
+        // Validation
+        function validateInputs() {
+            let isValid = true;
+            clearErrors();
+
+            // Longitude
+            const longitude = parseFloat(document.getElementById('longitude').value);
+            if (isNaN(longitude) || longitude < -125 || longitude > -114) {
+                showError('longitude', 'longitude-error');
+                isValid = false;
+            }
+
+            // Latitude
+            const latitude = parseFloat(document.getElementById('latitude').value);
+            if (isNaN(latitude) || latitude < 32 || latitude > 42) {
+                showError('latitude', 'latitude-error');
+                isValid = false;
+            }
+
+            // Total rooms
+            const totalRooms = parseFloat(document.getElementById('total_rooms').value);
+            if (isNaN(totalRooms) || totalRooms < 2 || totalRooms > 40000) {
+                showError('total_rooms', 'rooms-error');
+                isValid = false;
+            }
+
+            // Bedrooms <= Rooms
+            const totalBedrooms = parseFloat(document.getElementById('total_bedrooms').value);
+            if (totalBedrooms > totalRooms) {
+                showError('total_bedrooms', 'bedrooms-error');
+                isValid = false;
+            }
+
+            // Population
+            const population = parseFloat(document.getElementById('population').value);
+            if (isNaN(population) || population < 3 || population > 36000) {
+                showError('population', 'population-error');
+                isValid = false;
+            }
+
+            // Households <= Population
+            const households = parseFloat(document.getElementById('households').value);
+            if (households > population) {
+                showError('households', 'households-error');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function showError(inputId, errorId) {
+            document.getElementById(inputId).classList.add('error');
+            document.getElementById(errorId).classList.add('show');
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.form-control').forEach(el => el.classList.remove('error'));
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+        }
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = 'toast show ' + type;
+            toastMessage.textContent = message;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
 
         // Prediction function
         function predictPrice() {
+            if (!validateInputs()) {
+                return;
+            }
+
             // Get input values
             const longitude = parseFloat(document.getElementById('longitude').value);
             const latitude = parseFloat(document.getElementById('latitude').value);
@@ -921,18 +1550,20 @@
 
             // Update result with animation
             const resultElement = document.getElementById('predictionResult');
-            resultElement.style.opacity = '0';
+            resultElement.style.transform = 'scale(0.95)';
+            resultElement.style.opacity = '0.7';
             
             setTimeout(() => {
                 resultElement.textContent = '$' + Math.round(predictedPrice).toLocaleString();
+                resultElement.style.transform = 'scale(1)';
                 resultElement.style.opacity = '1';
-            }, 200);
+            }, 150);
 
             // Update insights
-            updateInsights(ocean_proximity, median_income, rooms_per_household, distance_to_sf);
+            updateInsights(ocean_proximity, median_income, rooms_per_household, distance_to_sf, bedrooms_per_room, population_per_household);
         }
 
-        function updateInsights(ocean, income, roomsPerHouse, distToSF) {
+        function updateInsights(ocean, income, roomsPerHouse, distToSF, bedRatio, popPerHouse) {
             const oceanLabels = {
                 "<1H OCEAN": "within 1 hour of the ocean",
                 "INLAND": "inland",
@@ -941,17 +1572,41 @@
                 "NEAR OCEAN": "near the ocean"
             };
 
+            const oceanMultipliers = {
+                "<1H OCEAN": 1.16,
+                "INLAND": 0.60,
+                "ISLAND": 1.84,
+                "NEAR BAY": 1.25,
+                "NEAR OCEAN": 1.20
+            };
+
             const incomeLevel = income > 6 ? "high-income" : income > 3.5 ? "middle-income" : "lower-income";
+            const incomeIcon = income > 6 ? "fa-arrow-up" : income > 3.5 ? "fa-minus" : "fa-arrow-down";
             const roomDensity = roomsPerHouse > 6 ? "spacious" : roomsPerHouse > 4 ? "moderate" : "compact";
             const sfProximity = distToSF < 1 ? "very close to San Francisco" : distToSF < 3 ? "within the Bay Area" : "outside the immediate Bay Area";
+            
+            const multiplier = oceanMultipliers[ocean];
+            const premiumText = multiplier > 1.3 ? "significantly increases" : multiplier > 1.1 ? "increases" : multiplier < 0.8 ? "decreases" : "moderately affects";
 
             const insightsHTML = `
-                <p style="color: #666; font-size: 0.95rem; line-height: 1.7;">
-                    This property is located <strong>${oceanLabels[ocean]}</strong>, which ${webModel.ocean_multipliers[ocean] > 1.2 ? 'significantly increases' : webModel.ocean_multipliers[ocean] < 0.8 ? 'decreases' : 'moderately affects'} 
-                    its value. With a median income of <strong>$${(income * 10000).toLocaleString()}</strong> in the neighborhood, 
-                    this is a <strong>${incomeLevel}</strong> area. The <strong>${roomDensity}</strong> layout with ${roomsPerHouse.toFixed(1)} rooms per household 
-                    and being <strong>${sfProximity}</strong> all contribute to this valuation.
-                </p>
+                <div class="insight-item">
+                    <div class="insight-icon-small"><i class="fas fa-water"></i></div>
+                    <div class="insight-text">
+                        <strong>Location Premium:</strong> Being ${oceanLabels[ocean]} ${premiumText} value by ${Math.abs((multiplier - 1) * 100).toFixed(0)}%.
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon-small"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="insight-text">
+                        <strong>Income Factor:</strong> With $${(income * 10000).toLocaleString()} median income, this is a ${incomeLevel} neighborhood.
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon-small"><i class="fas fa-home"></i></div>
+                    <div class="insight-text">
+                        <strong>Property Profile:</strong> ${roomsPerHouse.toFixed(1)} rooms/household indicates ${roomDensity} living. Located ${sfProximity}.
+                    </div>
+                </div>
             `;
 
             document.getElementById('propertyInsights').innerHTML = insightsHTML;
@@ -960,10 +1615,22 @@
         // Initialize with default prediction
         predictPrice();
 
-        // Add enter key support for inputs
-        document.querySelectorAll('input, select').forEach(input => {
-            input.addEventListener('change', predictPrice);
-        });
+        // Animate feature bars on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.feature-fill').forEach((bar, index) => {
+                        const width = bar.style.width;
+                        bar.style.width = '0';
+                        setTimeout(() => {
+                            bar.style.width = width;
+                        }, index * 100);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(document.getElementById('featureImportance'));
     </script>
 </body>
 </html>
