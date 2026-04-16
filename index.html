@@ -964,25 +964,47 @@
                         <i class="fas fa-home"></i> Property Details
                     </h3>
 
-                    <!-- Location -->
+                    <!-- Location Name -->
                     <div class="form-group">
-                        <label><i class="fas fa-map-marker-alt"></i> Location Coordinates</label>
+                        <label><i class="fas fa-city"></i> Location Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-map-pin input-icon"></i>
+                            <input type="text" class="form-control" id="location_name" placeholder="e.g., San Francisco, Los Angeles, San Diego" style="padding-left: 3rem;">
+                        </div>
+                        <div class="help-text">Enter a city or neighborhood name for your reference (optional)</div>
+                    </div>
+
+                    <!-- Location Coordinates -->
+                    <div class="form-group">
+                        <label><i class="fas fa-globe"></i> GPS Coordinates</label>
+                        <div style="background: linear-gradient(135deg, #e8f6f3 0%, #f0f9f7 100%); padding: 1rem; border-radius: 12px; margin-bottom: 0.75rem;">
+                            <p style="font-size: 0.9rem; color: #555; margin-bottom: 0.5rem;">
+                                <i class="fas fa-info-circle" style="color: var(--primary);"></i> 
+                                <strong>How to find coordinates:</strong>
+                            </p>
+                            <ol style="font-size: 0.85rem; color: #666; margin-left: 1.25rem; line-height: 1.6;">
+                                <li>Go to <a href="https://maps.google.com" target="_blank" style="color: var(--primary);">Google Maps</a></li>
+                                <li>Right-click on your property location</li>
+                                <li>The first number is <strong>Latitude</strong> (e.g., 37.7749)</li>
+                                <li>The second number is <strong>Longitude</strong> (e.g., -122.4194)</li>
+                            </ol>
+                        </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                             <div>
                                 <div class="input-wrapper">
-                                    <i class="fas fa-arrows-alt-h input-icon"></i>
-                                    <input type="number" class="form-control" id="longitude" placeholder="Longitude" value="-122.23" step="0.01" min="-125" max="-114">
-                                </div>
-                                <div class="help-text">Range: -125 to -114 (West to East)</div>
-                                <div class="error-message" id="longitude-error"><i class="fas fa-exclamation-circle"></i> Longitude must be between -125 and -114</div>
-                            </div>
-                            <div>
-                                <div class="input-wrapper">
                                     <i class="fas fa-arrows-alt-v input-icon"></i>
-                                    <input type="number" class="form-control" id="latitude" placeholder="Latitude" value="37.88" step="0.01" min="32" max="42">
+                                    <input type="number" class="form-control" id="latitude" placeholder="Latitude (e.g., 37.77)" value="37.88" step="0.01" min="32" max="42">
                                 </div>
                                 <div class="help-text">Range: 32 to 42 (South to North)</div>
                                 <div class="error-message" id="latitude-error"><i class="fas fa-exclamation-circle"></i> Latitude must be between 32 and 42</div>
+                            </div>
+                            <div>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-arrows-alt-h input-icon"></i>
+                                    <input type="number" class="form-control" id="longitude" placeholder="Longitude (e.g., -122.41)" value="-122.23" step="0.01" min="-125" max="-114">
+                                </div>
+                                <div class="help-text">Range: -125 to -114 (West to East)</div>
+                                <div class="error-message" id="longitude-error"><i class="fas fa-exclamation-circle"></i> Longitude must be between -125 and -114</div>
                             </div>
                         </div>
                     </div>
@@ -1252,8 +1274,7 @@
             </a>
         </p>
         <p style="opacity: 0.6; font-size: 0.85rem; margin-top: 1rem;">
-            Project by <a href="https://github.com/tashkirrr">@tashkirrr</a> | 
-            Inspired by <a href="https://youtu.be/I0-xdYWLLKQ">this tutorial</a>
+            Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> by <a href="https://github.com/tashkirrr">@tashkirrr</a>
         </p>
     </footer>
 

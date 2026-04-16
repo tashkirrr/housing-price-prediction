@@ -396,7 +396,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Dataset**: California Housing Prices dataset from the 1990 census
 - **Inspiration**: Based on the classic California Housing example from scikit-learn
-- **Tutorial Reference**: [YouTube Tutorial](https://youtu.be/I0-xdYWLLKQ)
 
 ---
 
