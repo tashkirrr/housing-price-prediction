@@ -1,0 +1,108 @@
+# Docker Compose Configuration
+# Run with: docker-compose up --build
+
+version: '3.8'
+
+services:
+  # ==========================================================================
+  # FastAPI Service
+  # ==========================================================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: housing-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=info
+    volumes:
+      - ./models:/app/models:ro
+      - ./data:/app/data:ro
+      - ./logs:/app/logs
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - housing-network
+    restart: unless-stopped
+
+  # ==========================================================================
+  # Streamlit App Service
+  # ==========================================================================
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: housing-streamlit
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./models:/app/models:ro
+      - ./data:/app/data:ro
+    command: streamlit run app/app.py --server.port=8501 --server.address=0.0.0.0
+    depends_on:
+      - api
+    networks:
+      - housing-network
+    restart: unless-stopped
+
+  # ==========================================================================
+  # MLflow Tracking Server (Optional)
+  # ==========================================================================
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: housing-mlflow
+    ports:
+      - "5000:5000"
+    environment:
+      - MLFLOW_TRACKING_URI=http://localhost:5000
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./models:/app/models:ro
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlruns
+    networks:
+      - housing-network
+    restart: unless-stopped
+
+  # ==========================================================================
+  # Jupyter Notebook Service (Optional - for development)
+  # ==========================================================================
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: housing-jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/app
+      - ./notebooks:/app/notebooks
+    command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+    networks:
+      - housing-network
+    profiles:
+      - dev  # Only start with: docker-compose --profile dev up
+
+networks:
+  housing-network:
+    driver: bridge
+
+volumes:
+  mlruns:
+    driver: local
