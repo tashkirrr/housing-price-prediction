@@ -3,48 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Global Housing Predictor</title>
+    <title>About Us - Realteak</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
-        <div class="container">
+        <div class="container nav-container">
             <a href="index.html" class="logo">
-                <span class="logo-icon">🌍</span>
-                <span class="logo-text">Global Housing</span>
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">Realteak</span>
             </a>
-            <button class="nav-toggle" onclick="toggleNav()">☰</button>
-            <ul class="nav-links" id="navLinks">
+            <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="explore.html">Explore</a></li>
-                <li><a href="predict.html">Predict</a></li>
-                <li><a href="countries.html">Countries</a></li>
-                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="explore.html">Buy</a></li>
+                <li><a href="predict.html">Sell</a></li>
+                <li><a href="countries.html">Rent</a></li>
+                <li><a href="about.html" class="active">About Us</a></li>
+                <li><a href="about.html">Contact</a></li>
             </ul>
+            <a href="predict.html" class="btn btn-login">Login</a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
         </div>
     </nav>
 
-    <main class="page-header">
+    <header class="page-header">
         <div class="container">
-            <h1>About Global Housing Predictor</h1>
-            <p>Understanding our mission, methodology, and data sources.</p>
+            <h1>About Realteak</h1>
+            <p>Empowering property decisions with transparency and data-driven insights across 20 countries worldwide.</p>
         </div>
-    </main>
+    </header>
 
     <section class="about-section">
         <div class="container">
             <div class="about-content">
-                <div class="about-block">
-                    <h2>Our Mission</h2>
+                <div class="about-block animate-fade-in-up">
+                    <h2>🎯 Our Mission</h2>
                     <p>
                         We believe everyone deserves access to transparent property valuation information, 
                         regardless of where they are in the world. Our goal is to democratize real estate 
                         data and help people make informed decisions about property investments.
                     </p>
+                    <p>
+                        Whether you're a first-time homebuyer, seasoned investor, or just curious about 
+                        global property markets, we're here to provide clarity and confidence in your journey.
+                    </p>
                 </div>
 
-                <div class="about-block" id="methodology">
-                    <h2>Methodology</h2>
+                <div class="about-block animate-fade-in-up">
+                    <h2>⚙️ How It Works</h2>
                     <p>
                         Our prediction model uses a combination of statistical analysis and machine learning 
                         techniques trained on housing data from multiple international markets.
@@ -60,37 +69,37 @@
                     </ul>
                 </div>
 
-                <div class="about-block" id="data">
-                    <h2>Data Sources</h2>
+                <div class="about-block animate-fade-in-up">
+                    <h2>📊 Data Sources</h2>
                     <p>
                         We aggregate data from multiple publicly available sources including government 
                         statistics, real estate listings, and economic indicators from around the world.
                     </p>
                     <div class="data-sources">
                         <div class="source-card">
-                            <h4>Government Statistics</h4>
+                            <h4>🏛️ Government Statistics</h4>
                             <p>Census data and housing surveys from national statistics offices</p>
                         </div>
                         <div class="source-card">
-                            <h4>Market Listings</h4>
+                            <h4>🏘️ Market Listings</h4>
                             <p>Aggregated property listing data from various markets</p>
                         </div>
                         <div class="source-card">
-                            <h4>Economic Indicators</h4>
+                            <h4>💹 Economic Indicators</h4>
                             <p>Income, employment, and cost of living data</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="about-block">
-                    <h2>Limitations</h2>
+                <div class="about-block animate-fade-in-up">
+                    <h2>⚠️ Limitations</h2>
                     <p>
                         While we strive for accuracy, please note that our predictions are estimates based 
                         on available data. Actual property values can vary based on many factors including:
                     </p>
                     <ul>
                         <li>Specific neighborhood characteristics</li>
-                        <li>Property condition and renovations</li>
+                        <li>Property condition and recent renovations</li>
                         <li>Current market conditions and trends</li>
                         <li>Unique property features not captured in our model</li>
                     </ul>
@@ -100,14 +109,28 @@
                     </p>
                 </div>
 
-                <div class="about-block">
-                    <h2>Open Source</h2>
+                <div class="about-block animate-fade-in-up">
+                    <h2>🌍 Global Coverage</h2>
+                    <p>
+                        We currently cover <strong>20 countries</strong> and <strong>95+ cities</strong> across:
+                    </p>
+                    <ul>
+                        <li><strong>North America:</strong> United States, Canada, Mexico</li>
+                        <li><strong>Europe:</strong> UK, Germany, France, Spain, Italy, Netherlands, Sweden, Switzerland</li>
+                        <li><strong>Asia Pacific:</strong> Japan, Singapore, Australia, China, South Korea, India, Thailand</li>
+                        <li><strong>Middle East & South America:</strong> UAE, Brazil</li>
+                    </ul>
+                </div>
+
+                <div class="about-block animate-fade-in-up">
+                    <h2>💻 Open Source</h2>
                     <p>
                         This project is open source. You can find the code on GitHub and contribute to 
                         improving our models and expanding our coverage.
                     </p>
                     <a href="https://github.com" target="_blank" class="btn btn-secondary">
-                        View on GitHub
+                        <span>View on GitHub</span>
+                        <span>→</span>
                     </a>
                 </div>
             </div>
@@ -116,8 +139,43 @@
 
     <footer class="footer">
         <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                            <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                        </svg>
+                        <span class="logo-text">Realteak</span>
+                    </a>
+                    <p>Your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="explore.html">Properties</a></li>
+                        <li><a href="predict.html">Valuation</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Global Housing Predictor. Open source project.</p>
+                <p>&copy; 2026 Realteak. All rights reserved.</p>
             </div>
         </div>
     </footer>
