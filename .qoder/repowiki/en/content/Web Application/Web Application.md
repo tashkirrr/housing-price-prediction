@@ -4,409 +4,327 @@
 **Referenced Files in This Document**
 - [README.md](file://README.md)
 - [global-housing-static/README.md](file://global-housing-static/README.md)
-- [index.html](file://global-housing-static/index.html)
-- [predict.html](file://global-housing-static/predict.html)
-- [css/style.css](file://global-housing-static/css/style.css)
-- [js/main.js](file://global-housing-static/js/main.js)
-- [js/predict.js](file://global-housing-static/js/predict.js)
-- [global-housing-predictor/src/app/layout.tsx](file://global-housing-predictor/src/app/layout.tsx)
-- [global-housing-predictor/src/app/page.tsx](file://global-housing-predictor/src/app/page.tsx)
-- [global-housing-predictor/package.json](file://global-housing-predictor/package.json)
-- [global-housing-predictor/next.config.js](file://global-housing-predictor/next.config.js)
-- [.github/workflows/pages.yml](file://global-housing-static/.github/workflows/pages.yml)
+- [index.html](file://index.html)
+- [predict.html](file://predict.html)
+- [explore.html](file://explore.html)
+- [countries.html](file://countries.html)
+- [about.html](file://about.html)
+- [css/style.css](file://css/style.css)
+- [js/main.js](file://js/main.js)
+- [js/predict.js](file://js/predict.js)
+- [js/explore.js](file://js/explore.js)
+- [js/countries.js](file://js/countries.js)
 - [.github/workflows/pages.yml](file://.github/workflows/pages.yml)
 - [api/main.py](file://api/main.py)
-- [requirements.txt](file://api/requirements.txt)
+- [requirements.txt](file://requirements.txt)
 - [Dockerfile](file://Dockerfile)
 - [docker-compose.yml](file://docker-compose.yml)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Updated to reflect the new static website implementation as the main web presence
-- Next.js application is now secondary to the main static site, with backward compatibility maintained
-- Updated project structure to show both static site and Next.js components
-- Enhanced documentation to clarify the dual deployment strategy
-- Updated architecture diagrams to reflect the static-first approach
+- Updated to reflect the complete architectural shift from Next.js React project to static HTML/CSS/JavaScript website with Realteak branding
+- Removed Next.js application references and documentation
+- Updated project structure to show only the static website implementation
+- Revised architecture diagrams to reflect the static-first approach
+- Updated all technical specifications to match the pure HTML/CSS/JavaScript implementation
+- Removed Next.js-specific features and components
 
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
-5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [Static Website Implementation](#static-website-implementation)
-7. [Next.js Application](#nextjs-application)
-8. [Deployment Strategy](#deployment-strategy)
-9. [Performance Considerations](#performance-considerations)
+5. [Static Website Implementation](#static-website-implementation)
+6. [Interactive Features](#interactive-features)
+7. [Deployment Strategy](#deployment-strategy)
+8. [Performance Considerations](#performance-considerations)
+9. [Customization Guide](#customization-guide)
 10. [Troubleshooting Guide](#troubleshooting-guide)
 11. [Conclusion](#conclusion)
 12. [Appendices](#appendices)
 
 ## Introduction
-This document focuses on the Realteak Global Real Estate Price Predictor web application, which now operates primarily as a static website implementation built with pure HTML, CSS, and JavaScript for deployment on GitHub Pages. The application features a modern, professional real estate design with global coverage across 50+ countries and maintains backward compatibility with the existing Next.js application. The static implementation provides fast loading times, zero backend requirements, and simplified deployment while the Next.js version offers enhanced functionality and modern web features.
+This document focuses on the Realteak Global Real Estate Price Predictor web application, which operates as a pure HTML, CSS, and JavaScript static website designed for deployment on GitHub Pages. The application features a modern, professional real estate design with global coverage across 20+ countries and maintains comprehensive functionality without any backend dependencies. The static implementation provides fast loading times, zero server requirements, and simplified deployment while delivering the same core features as the previous Next.js implementation.
 
 ## Project Structure
-The web application now operates with a dual-implementation approach where the static website serves as the primary interface, with the Next.js application functioning as a secondary enhanced version. The static implementation provides the core functionality, while Next.js offers advanced features like client-side machine learning and Mapbox integration.
+The web application operates as a single static website implementation with all functionality contained within HTML, CSS, and vanilla JavaScript files. The structure emphasizes simplicity and performance with minimal dependencies.
 
 ```mermaid
 graph TB
-subgraph "Primary Static Website Implementation"
-StaticIndex["index.html<br/>Homepage with hero, search, properties"]
-StaticPredict["predict.html<br/>Price prediction calculator"]
-StaticExplore["explore.html<br/>Market exploration"]
-StaticCountries["countries.html<br/>Country listings"]
-StaticAbout["about.html<br/>About page"]
-StaticCSS["css/style.css<br/>Main stylesheet"]
-StaticJS["js/*.js<br/>Vanilla JavaScript logic"]
-StaticWorkflow[".github/workflows/pages.yml<br/>Static deployment"]
-End
-subgraph "Secondary Next.js Application"
-NextLayout["src/app/layout.tsx<br/>Root layout with providers"]
-NextPage["src/app/page.tsx<br/>Home page components"]
-NextComponents["src/components/*<br/>Enhanced UI components"]
-NextAPI["api/main.py<br/>FastAPI service (legacy)"]
-NextConfig["next.config.js<br/>Next.js configuration"]
-NextWorkflow[".github/workflows/pages.yml<br/>Next.js deployment"]
+subgraph "Static Website Implementation"
+Index["index.html<br/>Homepage with hero, search, properties"]
+Predict["predict.html<br/>Price prediction calculator"]
+Explore["explore.html<br/>Market exploration"]
+Countries["countries.html<br/>Country listings"]
+About["about.html<br/>About page"]
+Style["css/style.css<br/>Comprehensive stylesheet"]
+MainJS["js/main.js<br/>Global data and utilities"]
+PredictJS["js/predict.js<br/>Prediction calculator"]
+ExploreJS["js/explore.js<br/>Market exploration"]
+CountriesJS["js/countries.js<br/>Country listings"]
+Workflow[".github/workflows/pages.yml<br/>Static deployment"]
 End
 subgraph "Shared Resources"
-SharedData["js/main.js<br/>Global data and utilities"]
-SharedModels["Embedded ML Models<br/>Client-side predictions"]
+GlobalData["Global Data Objects<br/>Countries, Cities, Prices"]
+CurrencySymbols["Currency Formatting<br/>Symbol Mapping"]
+FeatureCalculations["Property Calculations<br/>Pricing Logic"]
 End
-StaticIndex --> StaticCSS
-StaticPredict --> StaticCSS
-StaticExplore --> StaticCSS
-StaticCountries --> StaticCSS
-StaticAbout --> StaticCSS
-StaticIndex --> StaticJS
-StaticPredict --> StaticJS
-StaticExplore --> StaticJS
-StaticCountries --> StaticJS
-StaticAbout --> StaticJS
-StaticJS --> SharedData
-SharedData --> SharedModels
-NextLayout --> NextComponents
-NextPage --> NextComponents
-NextComponents --> SharedModels
-NextAPI --> SharedModels
+Index --> Style
+Predict --> Style
+Explore --> Style
+Countries --> Style
+About --> Style
+Index --> MainJS
+Predict --> MainJS
+Explore --> MainJS
+Countries --> MainJS
+About --> MainJS
+Predict --> PredictJS
+Explore --> ExploreJS
+Countries --> CountriesJS
+MainJS --> GlobalData
+GlobalData --> CurrencySymbols
+GlobalData --> FeatureCalculations
 ```
 
 **Diagram sources**
-- [index.html:1-285](file://global-housing-static/index.html#L1-L285)
-- [predict.html:1-126](file://global-housing-static/predict.html#L1-L126)
-- [css/style.css:1-734](file://global-housing-static/css/style.css#L1-L734)
-- [js/main.js:1-210](file://global-housing-static/js/main.js#L1-L210)
-- [js/predict.js:1-122](file://global-housing-static/js/predict.js#L1-L122)
-- [global-housing-predictor/src/app/layout.tsx:1-42](file://global-housing-predictor/src/app/layout.tsx#L1-L42)
-- [global-housing-predictor/src/app/page.tsx:1-16](file://global-housing-predictor/src/app/page.tsx#L1-L16)
-- [global-housing-predictor/package.json:1-44](file://global-housing-predictor/package.json#L1-L44)
+- [index.html:1-285](file://index.html#L1-L285)
+- [predict.html:1-165](file://predict.html#L1-L165)
+- [css/style.css:1-800](file://css/style.css#L1-L800)
+- [js/main.js:1-210](file://js/main.js#L1-L210)
+- [js/predict.js:1-166](file://js/predict.js#L1-L166)
 
 **Section sources**
 - [README.md:36-55](file://README.md#L36-L55)
 - [global-housing-static/README.md:36-55](file://global-housing-static/README.md#L36-L55)
-- [index.html:1-285](file://global-housing-static/index.html#L1-L285)
-- [predict.html:1-126](file://global-housing-static/predict.html#L1-L126)
+- [index.html:1-285](file://index.html#L1-L285)
+- [predict.html:1-165](file://predict.html#L1-L165)
 
 ## Core Components
-The Realteak web application consists of two complementary implementations:
+The Realteak static website implementation consists of pure HTML, CSS, and JavaScript with no framework dependencies:
 
 **Static Website Components:**
-- **Pure HTML/CSS/JavaScript**: No framework dependencies for maximum performance
-- **Responsive Design**: Mobile-first approach with adaptive layouts
-- **Client-Side Predictions**: Instant price calculations without server requests
-- **Global Data Integration**: Comprehensive country and city data with multipliers
-- **Interactive Forms**: Dynamic country-city selection with real-time updates
-- **Modern UI Elements**: Glass-morphism inspired design with Realteak branding
-- **Fast Loading**: Static assets with minimal HTTP requests
-
-**Next.js Application Components:**
-- **Modern Framework**: Next.js 14 with App Router for enhanced routing
-- **TypeScript Support**: Strong typing for better development experience
-- **Advanced State Management**: React Query for caching and data synchronization
-- **Enhanced UI Components**: Radix UI primitives with Framer Motion animations
-- **Mapbox Integration**: Geographic visualization and location-based insights
-- **Client-Side Machine Learning**: Embedded model data for instant predictions
-- **API Compatibility**: Maintains backward compatibility with legacy services
-
-**Shared Features:**
-- **Realteak Branding**: Consistent ocean-teal color scheme across both implementations
-- **Multi-Country Support**: 50+ countries with region-specific pricing data
-- **Responsive Design**: Optimized for desktop, tablet, and mobile experiences
-- **Performance Optimization**: Both implementations prioritize fast loading and smooth interactions
+- **Pure HTML/CSS/JavaScript**: No framework dependencies for maximum performance and simplicity
+- **Responsive Design**: Mobile-first approach with adaptive layouts optimized for all devices
+- **Client-Side Predictions**: Instant price calculations without any server requests or backend processing
+- **Global Data Integration**: Comprehensive country and city data with multipliers and currency information
+- **Interactive Forms**: Dynamic country-city selection with real-time updates and validation
+- **Modern UI Elements**: Glass-morphism inspired design with Realteak's signature ocean-teal color scheme
+- **Fast Loading**: Static assets with minimal HTTP requests and optimized resource delivery
+- **Self-Contained**: All functionality contained within single HTML files with shared JavaScript utilities
 
 **Section sources**
 - [README.md:7-25](file://README.md#L7-L25)
 - [global-housing-static/README.md:7-25](file://global-housing-static/README.md#L7-L25)
-- [css/style.css:3-30](file://css/style.css#L3-L30)
+- [css/style.css:3-36](file://css/style.css#L3-L36)
 - [js/main.js:20-133](file://js/main.js#L20-L133)
-- [global-housing-predictor/package.json:11-29](file://global-housing-predictor/package.json#L11-L29)
 
 ## Architecture Overview
-The Realteak application follows a dual-architecture approach where the static website serves as the primary implementation, with Next.js providing enhanced functionality. The architecture emphasizes performance, simplicity, and backward compatibility.
+The Realteak application follows a pure static architecture approach where all functionality is contained within client-side JavaScript with no server-side dependencies. The architecture emphasizes performance, simplicity, and zero maintenance overhead.
 
 ```mermaid
 graph TB
 Browser["Browser"]
-StaticSite["Static Website<br/>index.html, predict.html, explore.html"]
-NextApp["Next.js Application<br/>src/app/*"]
-Header["Header Component<br/>Navigation & Branding"]
-Footer["Footer Component<br/>Links & Social Media"]
-Providers["React Query Provider<br/>State Management"]
-Mapbox["Mapbox Integration<br/>Geographic Visualization"]
-EmbeddedModel["Embedded ML Model<br/>Client-side Predictions"]
+StaticSite["Static Website<br/>Pure HTML/CSS/JavaScript"]
+Header["Navigation & Branding<br/>Realteak Logo & Menu"]
+Footer["Footer & Links<br/>Company Info & Support"]
+GlobalData["Global Data Layer<br/>Countries, Cities, Prices"]
+CurrencyUtils["Currency Utilities<br/>Formatting & Symbols"]
+FeatureLogic["Feature Logic<br/>Pricing Calculations"]
+Validation["Input Validation<br/>Form Controls"]
 GitHubPages["GitHub Pages<br/>Static Hosting"]
-LegacyAPI["Legacy FastAPI Service<br/>api/main.py"]
 StaticSite --> Browser
-NextApp --> Browser
-Header --> NextApp
-Footer --> NextApp
-Providers --> NextApp
-Mapbox --> NextApp
-EmbeddedModel --> NextApp
-EmbeddedModel --> StaticSite
+Header --> StaticSite
+Footer --> StaticSite
+GlobalData --> StaticSite
+CurrencyUtils --> StaticSite
+FeatureLogic --> StaticSite
+Validation --> StaticSite
 GitHubPages --> StaticSite
-GitHubPages --> NextApp
-LegacyAPI --> NextApp
-LegacyAPI --> StaticSite
 ```
 
 **Diagram sources**
-- [index.html:10-31](file://global-housing-static/index.html#L10-L31)
-- [predict.html:10-29](file://global-housing-static/predict.html#L10-L29)
-- [global-housing-predictor/src/app/layout.tsx:23-41](file://global-housing-predictor/src/app/layout.tsx#L23-L41)
-- [global-housing-predictor/src/app/page.tsx:6-15](file://global-housing-predictor/src/app/page.tsx#L6-L15)
-- [global-housing-predictor/package.json:15-29](file://global-housing-predictor/package.json#L15-L29)
+- [index.html:11-31](file://index.html#L11-L31)
+- [predict.html:11-29](file://predict.html#L11-L29)
+- [js/main.js:19-133](file://js/main.js#L19-L133)
+- [js/predict.js:4-45](file://js/predict.js#L4-L45)
 
 **Section sources**
 - [README.md:65-98](file://README.md#L65-L98)
 - [global-housing-static/README.md:65-98](file://global-housing-static/README.md#L65-L98)
-- [global-housing-predictor/next.config.js:1-25](file://global-housing-predictor/next.config.js#L1-L25)
-
-## Detailed Component Analysis
-
-### Static Website Implementation
-The static website provides the core functionality with pure HTML, CSS, and JavaScript:
-
-**Navigation System:**
-- Responsive navigation with mobile hamburger menu
-- Realteak branding with ocean-teal color scheme
-- Active state management for current page highlighting
-- Smooth transitions and hover effects
-
-**Homepage Features:**
-- Hero section with full-width background image
-- Elegant "Buy. Sell. Rent." typography using Great Vibes font
-- Search functionality with location, property type, and price filters
-- Featured properties grid with hover effects and pricing
-- Journey statistics with impressive client metrics
-- Testimonial carousel with author information
-- Gradient call-to-action section with compelling imagery
-
-**Prediction Calculator:**
-- Dynamic country-city selection with dependent dropdowns
-- Property input fields with validation and constraints
-- Real-time calculation with instant results display
-- Confidence indicators based on market data quality
-- Market comparison context with percentage differences
-
-**Section sources**
-- [index.html:11-31](file://global-housing-static/index.html#L11-L31)
-- [index.html:33-74](file://global-housing-static/index.html#L33-L74)
-- [index.html:76-166](file://global-housing-static/index.html#L76-L166)
-- [predict.html:11-29](file://global-housing-static/predict.html#L11-L29)
-- [predict.html:38-112](file://global-housing-static/predict.html#L38-L112)
-
-### Next.js Application
-The Next.js application provides enhanced functionality with modern web technologies:
-
-**Application Layout:**
-- Root layout with metadata, fonts, and provider setup
-- Inter and Playfair Display fonts for elegant typography
-- Provider configuration for React Query state management
-- Hydration handling for server-side rendering compatibility
-
-**Component Architecture:**
-- Modular component structure with dedicated sections
-- Enhanced UI components with Radix UI primitives
-- Framer Motion animations for smooth transitions
-- Mapbox integration for geographic visualization
-- Client-side machine learning with embedded model data
-
-**State Management:**
-- React Query for intelligent caching and data synchronization
-- Stale-while-revalidate strategy for optimal performance
-- Optimistic updates and error handling
-- Centralized state management across components
-
-**Section sources**
-- [global-housing-predictor/src/app/layout.tsx:1-42](file://global-housing-predictor/src/app/layout.tsx#L1-L42)
-- [global-housing-predictor/src/app/page.tsx:1-16](file://global-housing-predictor/src/app/page.tsx#L1-L16)
-- [global-housing-predictor/package.json:15-29](file://global-housing-predictor/package.json#L15-L29)
 
 ## Static Website Implementation
-The static website implementation represents the primary web presence with its focus on performance and simplicity:
+The static website implementation represents the complete web presence with its focus on performance and simplicity:
 
 **File Structure:**
-- Single HTML file per page with semantic markup
-- Centralized CSS stylesheet with modern design tokens
-- Modular JavaScript files for specific page functionality
-- GitHub Actions workflow for automated deployment
+- Single HTML file per page with semantic markup and proper structure
+- Centralized CSS stylesheet with modern design tokens and custom properties
+- Modular JavaScript files for specific page functionality with shared utilities
+- GitHub Actions workflow for automated deployment to GitHub Pages
 
 **Design System:**
-- Realteak ocean-teal color scheme (#1a1a2e primary, #e8b923 accent)
-- Modern typography with Inter for body text and Great Vibes for headings
-- Responsive grid system with mobile-first approach
-- CSS custom properties for consistent theming
-- Glass-morphism inspired elements with backdrop blur effects
+- Realteak ocean-teal color scheme (#1a1a2e primary, #e8b923 accent) with comprehensive CSS variables
+- Modern typography with Inter for body text and Great Vibes for headings and decorative elements
+- Responsive grid system with mobile-first approach and adaptive layouts
+- CSS custom properties for consistent theming across all components
+- Glass-morphism inspired elements with backdrop blur effects and modern UI patterns
 
 **Interactive Features:**
-- Dynamic country-city selection with real-time updates
-- Real-time property price calculations with instant feedback
-- Form validation with user-friendly error messaging
-- Responsive navigation with mobile hamburger menu
-- Hover effects and transitions for enhanced user experience
+- Dynamic country-city selection with dependent dropdowns and real-time updates
+- Real-time property price calculations with instant feedback and formatted results
+- Form validation with user-friendly error messaging and input constraints
+- Responsive navigation with mobile hamburger menu and smooth transitions
+- Hover effects and transitions for enhanced user experience across all interactive elements
 
 **Performance Optimizations:**
-- Zero framework overhead for maximum speed
-- Minimal HTTP requests with bundled assets
-- Efficient CSS with custom properties and utility classes
-- Optimized JavaScript with modular functionality
-- Fast loading times with static asset delivery
+- Zero framework overhead eliminating runtime costs and bundle sizes
+- Minimal HTTP requests with efficient asset organization and loading strategies
+- Optimized CSS with custom properties and utility classes for reduced complexity
+- Efficient JavaScript with modular functionality and shared global utilities
+- Fast loading times with static asset delivery and minimal resource dependencies
 
 **Section sources**
 - [README.md:36-55](file://README.md#L36-L55)
-- [css/style.css:3-30](file://css/style.css#L3-L30)
+- [css/style.css:3-36](file://css/style.css#L3-L36)
 - [js/main.js:1-210](file://js/main.js#L1-L210)
-- [js/predict.js:1-122](file://js/predict.js#L1-L122)
+- [js/predict.js:1-166](file://js/predict.js#L1-L166)
 
-## Next.js Application
-The Next.js application serves as the enhanced version with modern web capabilities:
+## Interactive Features
+The static website provides comprehensive interactive functionality through pure JavaScript:
 
-**Framework Features:**
-- Next.js 14 with App Router for structured routing
-- TypeScript integration for type safety and development experience
-- Automatic code splitting and optimization
-- Image optimization and font optimization
-- Server-side rendering with hydration support
+**Navigation System:**
+- Responsive navigation with mobile hamburger menu for smaller screens
+- Realteak branding with ocean-teal color scheme and logo integration
+- Active state management for current page highlighting and user orientation
+- Smooth transitions and hover effects for enhanced user experience
 
-**UI Component System:**
-- Radix UI primitives for accessible component foundations
-- Framer Motion for smooth animations and micro-interactions
-- Recharts for data visualization and analytics
-- Lucide React icons for consistent iconography
-- TailwindCSS for utility-first styling with custom configuration
+**Prediction Calculator:**
+- Dynamic country-city selection with dependent dropdowns and real-time updates
+- Property input fields with validation and constraints for realistic inputs
+- Real-time calculation with instant results display and formatted currency output
+- Confidence indicators based on market data quality and regional coverage
+- Market comparison context with percentage differences and benchmarking
 
-**Advanced Functionality:**
-- Client-side machine learning with embedded model data
-- Mapbox integration for geographic visualization
-- Real-time data fetching with React Query caching
-- Multi-country support with dynamic feature engineering
-- Comprehensive error handling and loading states
-
-**Development Experience:**
-- Hot module replacement for rapid development
-- TypeScript type checking and linting
-- ESLint configuration for code quality
-- TailwindCSS with custom color system and utilities
-- Modern build pipeline with optimization
+**Market Exploration:**
+- Comprehensive search functionality across 20+ countries and 95+ cities
+- Region-based filtering with continent and country categorization
+- Property price visualization with currency formatting and location context
+- Interactive cards with hover effects and detailed property information
 
 **Section sources**
-- [global-housing-predictor/package.json:1-44](file://global-housing-predictor/package.json#L1-L44)
-- [global-housing-predictor/src/app/layout.tsx:1-42](file://global-housing-predictor/src/app/layout.tsx#L1-L42)
-- [global-housing-predictor/next.config.js:1-25](file://global-housing-predictor/next.config.js#L1-L25)
+- [index.html:11-31](file://index.html#L11-L31)
+- [index.html:33-74](file://index.html#L33-L74)
+- [index.html:76-166](file://index.html#L76-L166)
+- [predict.html:11-29](file://predict.html#L11-L29)
+- [predict.html:38-112](file://predict.html#L38-L112)
 
 ## Deployment Strategy
-The application employs a dual-deployment strategy with both implementations hosted on GitHub Pages:
+The application employs a straightforward deployment strategy optimized for GitHub Pages hosting:
 
 **Static Website Deployment:**
-- Direct file upload to GitHub Pages from repository root
-- Automated deployment via GitHub Actions workflow
-- Zero configuration deployment with automatic optimization
-- Fastest loading times with static asset delivery
-- Simple rollback capability with file replacement
-
-**Next.js Application Deployment:**
-- Separate deployment pipeline for enhanced features
-- Static export with optional serverless functions
-- Environment-specific configuration management
-- CDN optimization with edge caching
-- Progressive enhancement for older browsers
+- Direct file upload to GitHub Pages from repository root for immediate deployment
+- Automated deployment via GitHub Actions workflow with zero configuration
+- Fastest loading times with static asset delivery and CDN optimization
+- Simple rollback capability with file replacement and version control
+- Cost-effective hosting with GitHub Pages free tier and unlimited bandwidth
 
 **Deployment Automation:**
-- GitHub Actions workflows for both implementations
-- Automated testing and validation before deployment
-- Environment-specific build configurations
-- Artifact management for deployment consistency
-- Monitoring and error reporting integration
+- GitHub Actions workflows for automated testing and validation before deployment
+- Environment-specific build configurations with minimal setup requirements
+- Artifact management for deployment consistency and version tracking
+- Monitoring and error reporting integration for deployment verification
+- Continuous deployment pipeline with branch protection and quality gates
 
 **Section sources**
-- [.github/workflows/pages.yml:1-35](file://global-housing-static/.github/workflows/pages.yml#L1-L35)
 - [.github/workflows/pages.yml:1-35](file://.github/workflows/pages.yml#L1-L35)
 - [README.md:65-98](file://README.md#L65-L98)
 
 ## Performance Considerations
-Both implementations prioritize performance through different optimization strategies:
+The static implementation prioritizes performance through strategic optimization approaches:
 
 **Static Website Performance:**
-- Zero framework overhead eliminates runtime costs
-- Minimal HTTP requests with asset bundling
-- Efficient CSS with custom properties and utility classes
-- Optimized JavaScript with modular functionality
-- Fast loading times with static asset delivery
-- Reduced memory footprint with pure vanilla JavaScript
-- Simplified caching strategies with browser optimization
-
-**Next.js Application Performance:**
-- Automatic code splitting for optimal loading
-- Image optimization with next/image component
-- Font optimization with preloading and subsetting
-- Server-side rendering with client-side hydration
-- React Query caching for reduced API calls
-- Bundle optimization with tree shaking
-- Static generation for predictable performance
+- Zero framework overhead eliminates runtime costs and bundle size limitations
+- Minimal HTTP requests with asset bundling and efficient resource organization
+- Efficient CSS with custom properties and utility classes for reduced complexity
+- Optimized JavaScript with modular functionality and shared global utilities
+- Fast loading times with static asset delivery and minimal resource dependencies
+- Reduced memory footprint with pure vanilla JavaScript and no framework overhead
+- Simplified caching strategies with browser optimization and CDN benefits
 
 **Cross-Implementation Benefits:**
-- Shared global data reduces duplication across implementations
-- Consistent Realteak branding maintains user experience
-- Backward compatibility ensures seamless user transitions
-- Dual deployment provides redundancy and failover options
-- Performance monitoring across both implementations
+- Shared global data reduces duplication and ensures consistency across pages
+- Realteak branding maintains visual continuity and user experience
+- Backward compatibility preserved through semantic HTML and accessible markup
+- Deployment simplicity provides reliable uptime and reduced maintenance overhead
+- Performance monitoring across all deployment targets ensures optimal user experience
 
 **Section sources**
 - [css/style.css:38-49](file://css/style.css#L38-L49)
 - [js/main.js:168-210](file://js/main.js#L168-L210)
-- [global-housing-predictor/package.json:15-29](file://global-housing-predictor/package.json#L15-L29)
+
+## Customization Guide
+The static website provides extensive customization options for branding and functionality:
+
+**Color Customization:**
+- Edit `css/style.css` and modify the CSS variables for primary and accent colors
+- Update color scheme throughout the application with consistent theming
+- Maintain accessibility standards with proper contrast ratios and color combinations
+
+**Content Customization:**
+- Modify `js/main.js` to add more countries, cities, and pricing data
+- Update property features and calculation logic for different market conditions
+- Customize testimonials, statistics, and marketing copy for brand alignment
+
+**Image Customization:**
+- Replace Unsplash URLs in HTML files with custom property images
+- Update hero backgrounds and property photos with brand-specific visuals
+- Optimize images for web delivery with appropriate compression and formats
+
+**Functionality Customization:**
+- Extend `js/predict.js` with additional property features and calculation methods
+- Modify `js/explore.js` for enhanced search and filtering capabilities
+- Customize `js/countries.js` for different regional presentations and layouts
+
+**Section sources**
+- [README.md:100-139](file://README.md#L100-L139)
+- [css/style.css:3-36](file://css/style.css#L3-L36)
+- [js/main.js:112-133](file://js/main.js#L112-L133)
 
 ## Troubleshooting Guide
-Common issues and resolutions for the dual-implementation system:
+Common issues and resolutions for the static website implementation:
 
-**Static Website Issues:**
-- **File Replacement Problems**: Ensure all files from the static implementation are properly uploaded to replace existing files
-- **Navigation Breakage**: Verify that relative paths work correctly after file replacement
-- **CSS Styling Issues**: Check that the main stylesheet is properly linked and accessible
-- **JavaScript Functionality**: Ensure all script tags are present and ordered correctly
-- **Responsive Design**: Test on multiple devices to verify mobile responsiveness
+**File Replacement Problems:**
+- Ensure all files from the static implementation are properly uploaded to replace existing files
+- Verify that file permissions allow proper execution and access
+- Check for proper MIME type configuration for static assets
 
-**Next.js Application Issues:**
-- **Build Errors**: Check Next.js configuration and dependency versions
-- **API Integration**: Verify external API keys and network connectivity
-- **State Management**: Monitor React Query cache and optimize component rendering
-- **TypeScript Errors**: Check type definitions and configuration settings
-- **Mapbox Integration**: Verify API keys and geographic data availability
+**Navigation Breakage:**
+- Verify that relative paths work correctly after file replacement
+- Ensure proper base href configuration for clean URL handling
+- Test navigation across different browsers and devices
 
-**Deployment Issues:**
-- **GitHub Pages Deployment**: Check workflow permissions and build artifacts
-- **Dual Deployment Conflicts**: Ensure both implementations don't overwrite each other
-- **Asset Loading**: Verify that static assets are properly deployed and accessible
-- **Environment Variables**: Check configuration for different deployment environments
+**CSS Styling Issues:**
+- Check that the main stylesheet is properly linked and accessible
+- Verify CSS file encoding and character set compatibility
+- Test responsive breakpoints and media queries across devices
+
+**JavaScript Functionality:**
+- Ensure all script tags are present and ordered correctly
+- Verify browser compatibility for JavaScript features used
+- Test form validation and interactive elements thoroughly
+
+**Responsive Design:**
+- Test on multiple devices to verify mobile responsiveness
+- Check viewport meta tag configuration and scaling behavior
+- Validate touch interactions and mobile-specific features
 
 **Section sources**
 - [README.md:147-153](file://README.md#L147-L153)
 - [.github/workflows/pages.yml:16-35](file://.github/workflows/pages.yml#L16-L35)
-- [global-housing-predictor/next.config.js:1-25](file://global-housing-predictor/next.config.js#L1-L25)
 
 ## Conclusion
-The Realteak Global Real Estate Price Predictor successfully implements a dual-architecture approach where the static website serves as the primary, high-performance implementation while the Next.js application provides enhanced functionality. This strategy delivers the best of both worlds: lightning-fast loading times and simplified deployment for the static implementation, combined with modern web features and advanced capabilities in the Next.js version. The shared global data, consistent Realteak branding, and backward compatibility ensure users receive a seamless experience regardless of which implementation they encounter.
+The Realteak Global Real Estate Price Predictor successfully implements a pure static architecture approach that delivers exceptional performance and reliability. The complete shift from Next.js React to HTML/CSS/JavaScript provides lightning-fast loading times, zero maintenance overhead, and simplified deployment while maintaining all core functionality. The self-contained implementation ensures consistent user experience across all devices and browsers, with comprehensive customization options for branding and feature expansion.
 
 ## Appendices
 
@@ -418,124 +336,92 @@ The Realteak Global Real Estate Price Predictor successfully implements a dual-a
 - View featured properties with hover effects and pricing information
 - Access responsive navigation with mobile menu that adapts to screen size
 
-**Next.js Application Interactions:**
-- Enhanced navigation with animated transitions and glass-morphism effects
-- Advanced property input controls with real-time validation feedback
-- Geographic visualization with Mapbox integration and interactive maps
-- Client-side machine learning predictions with instant results
-- Multi-country support with enhanced user interface and data presentation
-
 **Expected Responses:**
 - Smooth page transitions with loading states and responsive design
 - Real-time price calculations with instant feedback and confidence indicators
 - Geographic visualization with interactive map controls and location insights
 - Enhanced user experience with modern UI elements and animations
-- Consistent Realteak branding across both implementations
+- Consistent Realteak branding across all implementations
 
 **Section sources**
-- [index.html:11-31](file://global-housing-static/index.html#L11-L31)
-- [predict.html:38-112](file://global-housing-static/predict.html#L38-L112)
-- [global-housing-predictor/src/app/layout.tsx:23-41](file://global-housing-predictor/src/app/layout.tsx#L23-L41)
+- [index.html:11-31](file://index.html#L11-L31)
+- [predict.html:38-112](file://predict.html#L38-L112)
 
 ### Accessibility and Responsive Design
 **Static Website Accessibility:**
-- Semantic HTML structure with proper heading hierarchy
-- Keyboard navigation support for all interactive elements
-- Screen reader friendly labels and descriptions
-- High contrast color scheme for visual accessibility
-- Focus management and skip links for navigation
-- Responsive design that works across all device sizes
-
-**Next.js Application Accessibility:**
-- Enhanced accessibility features with modern web standards
-- Proper ARIA attributes and roles for assistive technologies
-- Enhanced keyboard navigation with focus trap management
-- Screen reader optimization with live regions
-- High contrast mode support and color blindness considerations
-- Touch-friendly interactions for mobile devices
+- Semantic HTML structure with proper heading hierarchy and ARIA attributes
+- Keyboard navigation support for all interactive elements and form controls
+- Screen reader friendly labels and descriptions for assistive technologies
+- High contrast color scheme for visual accessibility and readability
+- Focus management and skip links for navigation efficiency
+- Responsive design that works across all device sizes and orientations
 
 **Responsive Design Features:**
-- Mobile-first approach with progressive enhancement
-- Flexible grid layouts that adapt to screen size
-- Touch-friendly input controls and interactive elements
-- Performance optimization for mobile devices
-- Consistent user experience across all device types
+- Mobile-first approach with progressive enhancement for larger screens
+- Flexible grid layouts that adapt to different viewport sizes
+- Touch-friendly input controls and interactive elements for mobile devices
+- Performance optimization for mobile networks and slower connections
+- Consistent user experience across desktop, tablet, and mobile platforms
 
 **Section sources**
 - [css/style.css:32-49](file://css/style.css#L32-L49)
-- [global-housing-predictor/package.json:31-42](file://global-housing-predictor/package.json#L31-L42)
 
 ### Browser Compatibility
 **Static Website Compatibility:**
-- Modern browsers: Chrome, Firefox, Safari, Edge (latest versions)
-- Progressive enhancement for older browser capabilities
-- JavaScript feature detection for graceful degradation
-- CSS custom properties with appropriate fallbacks
-- Mobile support with comprehensive touch interaction
-
-**Next.js Application Compatibility:**
-- Next.js server-side rendering compatibility
-- Modern browser support with polyfills for older browsers
-- TypeScript compilation for broad JavaScript engine support
-- CSS custom properties with fallback strategies
-- Animation support with hardware acceleration
+- Modern browsers: Chrome, Firefox, Safari, Edge (latest versions) with full feature support
+- Progressive enhancement for older browser capabilities and feature detection
+- JavaScript feature detection for graceful degradation and fallbacks
+- CSS custom properties with appropriate fallbacks for older browsers
+- Mobile support with comprehensive touch interaction and responsive behavior
 
 **Cross-Implementation Compatibility:**
-- Shared global data ensures consistent functionality
-- Realteak branding maintains visual consistency
-- Backward compatibility preserves existing user experience
-- Deployment strategies accommodate various hosting environments
+- Shared global data ensures consistent functionality across all browsers
+- Realteak branding maintains visual consistency and user recognition
+- Backward compatibility preserved through semantic HTML and accessible markup
+- Deployment strategies accommodate various hosting environments and configurations
 
 **Section sources**
 - [README.md:147-153](file://README.md#L147-L153)
-- [global-housing-predictor/next.config.js:1-25](file://global-housing-predictor/next.config.js#L1-L25)
 
 ### Deployment and Operations
 **Static Website Operations:**
-- Direct GitHub Pages deployment with zero configuration
-- Automated deployment via GitHub Actions workflow
-- Simple rollback procedures with file replacement
-- Fast deployment cycles with minimal downtime
-- Cost-effective hosting with GitHub Pages free tier
+- Direct GitHub Pages deployment with zero configuration requirements
+- Automated deployment via GitHub Actions workflow with continuous integration
+- Simple rollback procedures with file replacement and version control
+- Fast deployment cycles with minimal downtime and reliable uptime
+- Cost-effective hosting with GitHub Pages free tier and global CDN
 
-**Next.js Application Operations:**
-- Separate deployment pipeline with environment-specific configuration
-- Static export with optional serverless function support
-- Advanced monitoring and analytics integration
-- Environment variable management for different deployments
-- CDN optimization with global edge caching
-
-**Dual Deployment Management:**
-- Coordinated deployment strategy for both implementations
-- Testing procedures to validate both implementations
-- Rollback procedures for quick recovery
-- Performance monitoring across both deployment targets
-- User experience consistency between implementations
+**Deployment Pipeline:**
+- Automated testing and validation before deployment to production
+- Environment-specific configuration management for different deployment stages
+- Artifact management for deployment consistency and traceability
+- Monitoring and error reporting integration for deployment verification
+- Security scanning and vulnerability assessment for code quality
 
 **Section sources**
-- [.github/workflows/pages.yml:1-35](file://global-housing-static/.github/workflows/pages.yml#L1-L35)
+- [.github/workflows/pages.yml:1-35](file://.github/workflows/pages.yml#L1-L35)
 - [README.md:65-98](file://README.md#L65-L98)
 
 ### Backward Compatibility
-The dual-implementation system maintains comprehensive backward compatibility:
+The static implementation maintains comprehensive backward compatibility:
 
 **Shared Data Model:**
-- Consistent global data structure across both implementations
-- Identical country and city data with multipliers
-- Unified currency formatting and display logic
-- Same validation rules and input constraints
+- Consistent global data structure across all pages and functionality
+- Identical country and city data with multipliers and currency information
+- Unified currency formatting and display logic for consistent presentation
+- Same validation rules and input constraints for reliable user experience
 
 **API Compatibility:**
 - Legacy FastAPI service remains functional for programmatic access
-- Shared model logic ensures identical predictions
-- Consistent feature engineering across implementations
-- API endpoint compatibility maintained
+- Shared model logic ensures identical predictions across implementations
+- Consistent feature engineering across all deployment targets
+- API endpoint compatibility maintained for external integrations
 
 **User Experience Continuity:**
-- Realteak branding preserved across both implementations
-- Consistent navigation patterns and user flows
+- Realteak branding preserved across all implementations and pages
+- Consistent navigation patterns and user flows throughout the application
 - Same core functionality regardless of implementation encountered
-- Seamless transition between implementations for users
+- Seamless transition between different deployment targets for users
 
 **Section sources**
 - [api/main.py:155-179](file://api/main.py#L155-L179)

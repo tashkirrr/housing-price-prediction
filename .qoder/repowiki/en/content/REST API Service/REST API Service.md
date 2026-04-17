@@ -14,14 +14,22 @@
 - [docs/model_data.json](file://docs/model_data.json)
 - [docs/web_model.json](file://docs/web_model.json)
 - [setup.py](file://setup.py)
+- [global-housing-static/index.html](file://global-housing-static/index.html)
+- [global-housing-static/predict.html](file://global-housing-static/predict.html)
+- [global-housing-static/js/main.js](file://global-housing-static/js/main.js)
+- [global-housing-static/js/predict.js](file://global-housing-static/js/predict.js)
+- [js/main.js](file://js/main.js)
+- [js/predict.js](file://js/predict.js)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Updated to reflect the current state where the FastAPI service still exists alongside the static website
-- Added clarification about the dual architecture approach
-- Updated architecture diagrams to show both API and static website components
-- Modified troubleshooting guidance to address both deployment scenarios
+- Updated to reflect the current architecture shift from Python Flask API to static website deployment
+- Removed FastAPI service documentation as the Flask API has been decommissioned
+- Added comprehensive documentation for the new static website architecture
+- Updated architecture diagrams to show the static deployment pattern
+- Removed API-related sections that are no longer applicable
+- Added documentation for client-side prediction implementation
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -36,494 +44,327 @@
 10. [Appendices](#appendices)
 
 ## Introduction
-This document describes the production-ready REST API service built with FastAPI and the accompanying static website architecture. The system provides both traditional API-based predictions and client-side processing through a modern static website. The API exposes endpoints for service information, health checks, model metadata, single predictions, and batch predictions, while the static website delivers instant price estimates through client-side calculations.
+This document describes the current static website architecture for the Global Housing Price Predictor. The system has shifted from a Python Flask API-based approach to a fully static website implementation that provides instant price predictions through client-side calculations. The static website delivers global real estate price estimation capabilities with no server dependency, utilizing embedded model data and global datasets for instant results.
 
-**Updated** The system now operates with a dual architecture: a FastAPI service for programmatic access and a static website for client-side processing. Both approaches serve the same prediction functionality but through different implementation patterns.
+**Updated** The system now operates as a pure static website deployed on GitHub Pages, eliminating the need for server infrastructure while maintaining the same prediction functionality through client-side processing.
 
 ## Project Structure
-The system includes both the FastAPI service in the api/ directory and a static website implementation. The API integrates with shared source code in src/, trained models in models/, and supporting documentation in docs/.
+The system consists entirely of static HTML, CSS, and JavaScript files with no server-side dependencies. The architecture includes global data management, client-side prediction logic, and responsive design components.
 
 ```mermaid
 graph TB
-subgraph "API Layer"
-A["api/main.py<br/>FastAPI app, endpoints, Pydantic models"]
-end
 subgraph "Static Website"
-S["predict.html<br/>Client-side prediction interface"]
+A["index.html<br/>Homepage with hero, properties, stats"]
+B["predict.html<br/>Price prediction calculator"]
+C["explore.html<br/>Market exploration interface"]
+D["countries.html<br/>Countries listing"]
+E["about.html<br/>Documentation and methodology"]
 end
-subgraph "Shared Code"
-SH["src/*<br/>data processing, models, utils"]
+subgraph "Static Assets"
+F["css/style.css<br/>Main stylesheet"]
+G["js/main.js<br/>Global data and utilities"]
+H["js/predict.js<br/>Prediction calculation logic"]
+I["js/explore.js<br/>Market exploration logic"]
+J["js/countries.js<br/>Countries page logic"]
 end
-subgraph "Models"
-M["models/<br/>house_price_model.pkl<br/>preprocessor.pkl"]
+subgraph "Embedded Data"
+K["Global Data<br/>Countries, cities, currencies"]
+L["Web Model<br/>Prediction weights and parameters"]
 end
-subgraph "Docs"
-D["docs/<br/>model_data.json<br/>web_model.json"]
-end
-A --> SH
-A --> M
-A --> D
-S --> SH
-S --> M
-S --> D
+A --> F
+B --> F
+C --> F
+D --> F
+E --> F
+A --> G
+B --> G
+C --> G
+D --> G
+E --> G
+B --> H
+A --> I
+D --> J
+G --> K
+H --> L
 ```
 
 **Diagram sources**
-- [api/main.py:1-403](file://api/main.py#L1-L403)
-- [predict.html:1-126](file://predict.html#L1-L126)
-- [src/__init__.py](file://src/__init__.py)
+- [global-housing-static/index.html:1-285](file://global-housing-static/index.html#L1-L285)
+- [global-housing-static/predict.html:1-126](file://global-housing-static/predict.html#L1-L126)
+- [global-housing-static/js/main.js:1-210](file://global-housing-static/js/main.js#L1-L210)
+- [global-housing-static/js/predict.js:1-166](file://global-housing-static/js/predict.js#L1-L166)
 
 **Section sources**
-- [README.md:88-139](file://README.md#L88-L139)
-- [api/main.py:186-231](file://api/main.py#L186-L231)
+- [README.md:36-55](file://README.md#L36-L55)
+- [global-housing-static/index.html:1-285](file://global-housing-static/index.html#L1-L285)
+- [global-housing-static/predict.html:1-126](file://global-housing-static/predict.html#L1-L126)
 
 ## Core Components
-- FastAPI application with lifespan for model loading and graceful shutdown.
-- Pydantic models for input validation and response schemas.
-- Middleware for CORS.
-- Endpoint handlers for root, health, model info, single prediction, and batch prediction.
-- Global model state encapsulated in a class to manage model and preprocessor lifecycle.
-- Auto-generated docs at /docs (Swagger UI) and /redoc (ReDoc).
-- Static website with client-side prediction logic and global data management.
+- Pure static HTML/CSS/JavaScript implementation with no external framework dependencies
+- Embedded global dataset containing 20+ countries and 95+ cities with pricing information
+- Client-side prediction algorithm with feature engineering and confidence scoring
+- Responsive design optimized for desktop, tablet, and mobile devices
+- Currency formatting and internationalization support
+- GitHub Actions automated deployment pipeline
 
 Key implementation references:
-- Application creation and docs URLs: [api/main.py:201-221](file://api/main.py#L201-L221)
-- CORS middleware: [api/main.py:224-230](file://api/main.py#L224-L230)
-- Lifespan handler: [api/main.py:186-195](file://api/main.py#L186-L195)
-- Pydantic models: [api/main.py:31-120](file://api/main.py#L31-L120)
-- Endpoints: [api/main.py:237-383](file://api/main.py#L237-L383)
-- Static website prediction logic: [predict.html:46-113](file://predict.html#L46-L113)
+- Static website structure: [README.md:36-55](file://README.md#L36-L55)
+- Global data management: [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- Prediction calculation logic: [global-housing-static/js/predict.js:90-157](file://global-housing-static/js/predict.js#L90-L157)
+- Responsive design implementation: [global-housing-static/css/style.css](file://global-housing-static/css/style.css)
 
 **Section sources**
-- [api/main.py:201-231](file://api/main.py#L201-L231)
-- [api/main.py:31-120](file://api/main.py#L31-L120)
-- [api/main.py:237-383](file://api/main.py#L237-L383)
-- [predict.html:46-113](file://predict.html#L46-L113)
+- [README.md:36-55](file://README.md#L36-L55)
+- [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [global-housing-static/js/predict.js:90-157](file://global-housing-static/js/predict.js#L90-L157)
 
 ## Architecture Overview
-The system operates with two distinct deployment patterns: traditional API-based predictions and client-side static website processing. The API initializes at startup, loads the model and preprocessor, and exposes endpoints. The static website loads global data locally and performs client-side calculations for instant price estimates.
+The system operates as a fully static website with client-side processing. All data and algorithms are embedded within the JavaScript files, enabling instant price calculations without server requests. The architecture eliminates server infrastructure costs while providing comprehensive global coverage.
 
 ```mermaid
 sequenceDiagram
-participant C as "Client"
-participant F as "FastAPI App"
-participant V as "Pydantic Validator"
-participant G as "ModelState"
-participant P as "Preprocessor"
-participant M as "Model"
-C->>F : "POST /predict"
-F->>V : "Validate request body"
-V-->>F : "Validated HouseFeatures"
-F->>G : "predict(features)"
-G->>G : "Compute engineered features"
-G->>P : "transform(input_df)"
-P-->>G : "processed features"
-G->>M : "predict(processed)"
-M-->>G : "prediction"
-G-->>F : "predicted_price"
-F-->>C : "200 OK PredictionResponse"
-Note over C,S : Alternative : Static Website Client
-C->>C : "Client-side Calculation"
-C->>C : "Load globalData"
-C->>C : "Calculate price locally"
-C-->>C : "Display instant results"
+participant C as "Client Browser"
+participant P as "predict.html"
+participant G as "Global Data (main.js)"
+participant M as "Web Model (predict.js)"
+C->>P : "User submits prediction form"
+P->>G : "Load country/city data"
+G-->>P : "Return globalData object"
+P->>M : "Execute prediction algorithm"
+M->>M : "Calculate weighted features"
+M-->>P : "Return estimated price"
+P->>P : "Format currency and display results"
+P-->>C : "Show instant price estimate"
+Note over C,G : Client-side processing only
+C->>C : "No server requests required"
 ```
 
 **Diagram sources**
-- [api/main.py:290-347](file://api/main.py#L290-L347)
-- [api/main.py:155-179](file://api/main.py#L155-L179)
-- [predict.html:46-113](file://predict.html#L46-L113)
+- [global-housing-static/predict.html:42-97](file://global-housing-static/predict.html#L42-L97)
+- [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [global-housing-static/js/predict.js:90-157](file://global-housing-static/js/predict.js#L90-L157)
 
 **Section sources**
-- [api/main.py:290-347](file://api/main.py#L290-L347)
-- [api/main.py:155-179](file://api/main.py#L155-L179)
-- [predict.html:46-113](file://predict.html#L46-L113)
+- [global-housing-static/predict.html:42-97](file://global-housing-static/predict.html#L42-L97)
+- [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [global-housing-static/js/predict.js:90-157](file://global-housing-static/js/predict.js#L90-L157)
 
 ## Detailed Component Analysis
 
-### Root Endpoint
-- Path: GET /
-- Purpose: Returns basic service information and links to documentation and health.
-- Response: Plain JSON with message, version, docs, and health endpoints.
+### Static Website Pages
+- **index.html**: Homepage featuring hero section, property listings, search functionality, and testimonials
+- **predict.html**: Interactive price prediction calculator with form validation and instant results
+- **explore.html**: Market exploration interface for browsing property listings by location
+- **countries.html**: Comprehensive list of supported countries with pricing information
+- **about.html**: Documentation page explaining methodology and data sources
 
 References:
-- [api/main.py:237-245](file://api/main.py#L237-L245)
+- [global-housing-static/index.html:1-285](file://global-housing-static/index.html#L1-L285)
+- [global-housing-static/predict.html:1-126](file://global-housing-static/predict.html#L1-L126)
+- [README.md:26-35](file://README.md#L26-L35)
 
 **Section sources**
-- [api/main.py:237-245](file://api/main.py#L237-L245)
+- [global-housing-static/index.html:1-285](file://global-housing-static/index.html#L1-L285)
+- [global-housing-static/predict.html:1-126](file://global-housing-static/predict.html#L1-L126)
+- [README.md:26-35](file://README.md#L26-L35)
 
-### Health Check
-- Path: GET /health
-- Response model: HealthResponse
-- Behavior: Reports status, model_loaded flag, timestamp, and version.
+### Global Data Management
+- **Countries Database**: 20+ countries with currency codes, average prices per square foot, and regional classifications
+- **Cities Database**: 95+ cities with location-specific price multipliers and emoji representations
+- **Featured Properties**: Sample property listings for homepage showcase
+- **Currency Symbols**: Complete mapping for proper currency formatting across all supported currencies
 
 References:
-- [api/main.py:248-260](file://api/main.py#L248-L260)
-- [api/main.py:104-111](file://api/main.py#L104-L111)
+- [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [global-housing-static/js/main.js:135-141](file://global-housing-static/js/main.js#L135-L141)
 
 **Section sources**
-- [api/main.py:248-260](file://api/main.py#L248-L260)
-- [api/main.py:104-111](file://api/main.py#L104-L111)
+- [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [global-housing-static/js/main.js:135-141](file://global-housing-static/js/main.js#L135-L141)
 
-### Model Metadata
-- Path: GET /model/info
-- Response model: ModelInfoResponse
-- Behavior: Returns model type, version, feature list, and description. Raises 503 if model not loaded.
+### Client-Side Prediction Algorithm
+- **Base Price Calculation**: Multiplies square footage by country average price and city multiplier
+- **Feature Adjustments**: Adds bonuses for bedrooms, bathrooms, garage, and pool; applies depreciation for property age
+- **Confidence Scoring**: Determines confidence level based on market data availability
+- **Price Range Calculation**: Provides ±15% range for estimate uncertainty
+- **Market Context**: Shows comparison to local average pricing
 
 References:
-- [api/main.py:263-287](file://api/main.py#L263-L287)
-- [api/main.py:113-120](file://api/main.py#L113-L120)
+- [global-housing-static/js/predict.js:108-157](file://global-housing-static/js/predict.js#L108-L157)
 
 **Section sources**
-- [api/main.py:263-287](file://api/main.py#L263-L287)
-- [api/main.py:113-120](file://api/main.py#L113-L120)
-
-### Single Prediction
-- Path: POST /predict
-- Request model: HouseFeatures (validated)
-- Response model: PredictionResponse
-- Validation rules:
-  - Longitude in [-125.0, -114.0], Latitude in [32.0, 43.0]
-  - Housing median age, total_rooms, total_bedrooms, population, households >= 1
-  - median_income >= 0.5
-  - ocean_proximity enum: "<1H OCEAN", "INLAND", "ISLAND", "NEAR BAY", "NEAR OCEAN"
-  - total_bedrooms <= total_rooms
-  - households <= population
-- Error handling:
-  - 503 if model not loaded
-  - 500 on prediction errors
-  - 422 on validation failures
-
-References:
-- [api/main.py:31-83](file://api/main.py#L31-L83)
-- [api/main.py:290-347](file://api/main.py#L290-L347)
-
-**Section sources**
-- [api/main.py:31-83](file://api/main.py#L31-L83)
-- [api/main.py:290-347](file://api/main.py#L290-L347)
-
-### Batch Prediction
-- Path: POST /predict/batch
-- Request: List of HouseFeatures
-- Response: JSON with predictions array and metadata
-- Behavior:
-  - Processes each item individually
-  - Returns per-item status ("success" or "error") and error details when applicable
-  - Returns 503 if model not loaded
-
-References:
-- [api/main.py:350-383](file://api/main.py#L350-L383)
-
-**Section sources**
-- [api/main.py:350-383](file://api/main.py#L350-L383)
-
-### Pydantic Models and Validation
-- HouseFeatures: Strict numeric bounds, enums, and inter-field validators
-- PredictionResponse: Predicted price, currency, timestamp, model_version
-- HealthResponse: status, model_loaded, timestamp, version
-- ModelInfoResponse: model_type, version, features, description
-
-References:
-- [api/main.py:31-120](file://api/main.py#L31-L120)
-
-**Section sources**
-- [api/main.py:31-120](file://api/main.py#L31-L120)
-
-### Error Handling
-- General exception handler returns structured error JSON with timestamp.
-- Specific endpoints raise HTTPException with appropriate status codes.
-
-References:
-- [api/main.py:390-397](file://api/main.py#L390-L397)
-- [api/main.py:323-347](file://api/main.py#L323-L347)
-- [api/main.py:357-361](file://api/main.py#L357-L361)
-- [api/main.py:270-274](file://api/main.py#L270-L274)
-
-**Section sources**
-- [api/main.py:390-397](file://api/main.py#L390-L397)
-- [api/main.py:323-347](file://api/main.py#L323-L347)
-- [api/main.py:357-361](file://api/main.py#L357-L361)
-- [api/main.py:270-274](file://api/main.py#L270-L274)
-
-### Authentication and Security
-- No explicit authentication middleware is configured in the FastAPI app.
-- CORS allows all origins/methods/headers for development convenience.
-- Consider adding authentication (e.g., API keys, JWT) and rate limiting in production deployments.
-
-References:
-- [api/main.py:224-230](file://api/main.py#L224-L230)
-- [api/main.py:201-221](file://api/main.py#L201-L221)
-
-**Section sources**
-- [api/main.py:224-230](file://api/main.py#L224-L230)
-- [api/main.py:201-221](file://api/main.py#L201-L221)
-
-### Rate Limiting
-- Not implemented in the current API. Consider integrating rate limiting middleware or external proxies for production.
-
-### Auto-generated Documentation
-- Swagger UI: GET /docs
-- ReDoc: GET /redoc
-- Both generated automatically from FastAPI annotations and Pydantic models.
-
-References:
-- [api/main.py:218-219](file://api/main.py#L218-L219)
-
-**Section sources**
-- [api/main.py:218-219](file://api/main.py#L218-L219)
+- [global-housing-static/js/predict.js:108-157](file://global-housing-static/js/predict.js#L108-L157)
 
 ### Static Website Client Implementation
-- The static website provides client-side prediction functionality through JavaScript.
-- Uses globalData object containing country and city information.
-- Performs instant calculations without server requests.
-- Provides responsive design and instant feedback.
+- **Pure JavaScript**: No external frameworks or dependencies
+- **Responsive Design**: Mobile-first approach with CSS Grid and Flexbox
+- **Instant Processing**: All calculations performed client-side without server requests
+- **GitHub Pages Ready**: Optimized for deployment on GitHub Pages infrastructure
+- **Performance Optimized**: Minimal file size with embedded data for fast loading
 
 References:
-- [predict.html:46-113](file://predict.html#L46-L113)
-- [js/main.js:20-133](file://js/main.js#L20-L133)
+- [README.md:57-64](file://README.md#L57-L64)
+- [README.md:147-153](file://README.md#L147-L153)
 
 **Section sources**
-- [predict.html:46-113](file://predict.html#L46-L113)
-- [js/main.js:20-133](file://js/main.js#L20-L133)
+- [README.md:57-64](file://README.md#L57-L64)
+- [README.md:147-153](file://README.md#L147-L153)
 
 ### Practical Usage Examples
 
-- curl examples for FastAPI service are documented in the project README under the Usage section for the FastAPI service.
-- Static website provides instant client-side predictions through form submission.
+- **Static Website Deployment**: Deploy directly to GitHub Pages using the provided deployment methods
+- **Local Development**: Open index.html in any modern browser for immediate testing
+- **Customization**: Modify CSS variables in style.css and update globalData in main.js for customization
 
 References:
-- [README.md:239-263](file://README.md#L239-L263)
+- [README.md:65-98](file://README.md#L65-L98)
+- [README.md:100-130](file://README.md#L100-L130)
 
 **Section sources**
-- [README.md:239-263](file://README.md#L239-L263)
+- [README.md:65-98](file://README.md#L65-L98)
+- [README.md:100-130](file://README.md#L100-L130)
 
 ### Client Implementation Guidelines
-- Use the Pydantic models as reference for constructing requests and parsing responses for API clients.
-- Validate inputs client-side to reduce server errors.
-- Implement retry/backoff for transient failures (503/500).
-- For batch requests, handle per-item statuses and aggregate results.
-- Static website users benefit from instant client-side calculations with no server dependency.
+- **No Server Dependencies**: All functionality works offline with embedded data
+- **Browser Compatibility**: Tested on latest versions of Chrome, Firefox, Safari, and Edge
+- **Customization**: Modify globalData for additional countries or adjust pricing algorithms
+- **Performance**: Minimize DOM manipulation and leverage CSS for animations
+- **Accessibility**: Forms include proper labeling and validation feedback
 
 References:
-- [api/main.py:31-120](file://api/main.py#L31-L120)
-- [api/main.py:350-383](file://api/main.py#L350-L383)
-- [predict.html:46-113](file://predict.html#L46-L113)
+- [global-housing-static/js/main.js:168-210](file://global-housing-static/js/main.js#L168-L210)
+- [global-housing-static/js/predict.js:47-88](file://global-housing-static/js/predict.js#L47-L88)
 
 **Section sources**
-- [api/main.py:31-120](file://api/main.py#L31-L120)
-- [api/main.py:350-383](file://api/main.py#L350-L383)
-- [predict.html:46-113](file://predict.html#L46-L113)
+- [global-housing-static/js/main.js:168-210](file://global-housing-static/js/main.js#L168-L210)
+- [global-housing-static/js/predict.js:47-88](file://global-housing-static/js/predict.js#L47-L88)
 
 ### Monitoring and Observability
-- Health endpoint: GET /health for liveness/readiness checks.
-- Docker healthcheck configured to probe /health.
-- Consider adding logging, metrics, and tracing libraries for production.
-- Static website provides client-side analytics through browser tools.
+- **Browser Developer Tools**: Use console.log statements for debugging client-side issues
+- **Performance Monitoring**: Track loading times and user interaction metrics
+- **Error Handling**: Basic validation provides immediate feedback for invalid inputs
+- **Deployment Monitoring**: GitHub Actions workflow automates deployment process
 
 References:
-- [api/main.py:26-27](file://api/main.py#L26-L27)
-- [docker-compose.yml:26-31](file://docker-compose.yml#L26-L31)
-- [Dockerfile:80-82](file://Dockerfile#L80-L82)
+- [global-housing-static/.github/workflows/pages.yml](file://global-housing-static/.github/workflows/pages.yml)
+- [README.md:167](file://README.md#L167)
 
 **Section sources**
-- [docker-compose.yml:26-31](file://docker-compose.yml#L26-L31)
-- [Dockerfile:80-82](file://Dockerfile#L80-L82)
+- [global-housing-static/.github/workflows/pages.yml](file://global-housing-static/.github/workflows/pages.yml)
+- [README.md:167](file://README.md#L167)
 
 ## Dependency Analysis
-External dependencies for the API include FastAPI, Uvicorn, Pydantic, NumPy, Pandas, scikit-learn, and joblib. The Docker image is multi-stage, building dependencies in a builder stage and running in a slim production stage. The static website relies on vanilla JavaScript with no external dependencies.
+The static website has zero server-side dependencies, relying entirely on client-side JavaScript. The architecture uses vanilla JavaScript with no external frameworks, ensuring minimal complexity and optimal performance.
 
 ```mermaid
 graph LR
-A["api/main.py"] --> F["FastAPI"]
-A --> P["Pydantic"]
-A --> N["NumPy"]
-A --> PD["Pandas"]
-A --> SK["scikit-learn"]
-A --> JL["joblib"]
-subgraph "Docker"
-DF["Dockerfile"]
-DC["docker-compose.yml"]
+A["Static Website"] --> B["HTML5 Semantic Markup"]
+A --> C["CSS3 Styling"]
+A --> D["JavaScript ES6+"]
+A --> E["GitHub Pages Deployment"]
+subgraph "Client-Side Libraries"
+F["No external dependencies"]
 end
-DF --> F
-DF --> P
-DF --> N
-DF --> PD
-DF --> SK
-DF --> JL
-DC --> DF
-subgraph "Static Website"
-SW["predict.html<br/>Vanilla JS"]
-GD["js/main.js<br/>Global Data"]
+subgraph "Server Infrastructure"
+G["Zero server requirements"]
+H["GitHub Actions CI/CD"]
 end
-SW --> GD
+A --> F
+A --> G
+A --> H
 ```
 
 **Diagram sources**
-- [api/main.py:18-21](file://api/main.py#L18-L21)
-- [requirements.txt:16-21](file://requirements.txt#L16-L21)
-- [Dockerfile:7-37](file://Dockerfile#L7-L37)
-- [docker-compose.yml:10-34](file://docker-compose.yml#L10-L34)
-- [predict.html:122-123](file://predict.html#L122-L123)
-- [js/main.js:1-210](file://js/main.js#L1-L210)
+- [README.md:57-64](file://README.md#L57-L64)
+- [global-housing-static/.github/workflows/pages.yml](file://global-housing-static/.github/workflows/pages.yml)
 
 **Section sources**
-- [requirements.txt:16-21](file://requirements.txt#L16-L21)
-- [api/requirements.txt:1-9](file://api/requirements.txt#L1-L9)
-- [Dockerfile:7-37](file://Dockerfile#L7-L37)
-- [docker-compose.yml:10-34](file://docker-compose.yml#L10-L34)
+- [README.md:57-64](file://README.md#L57-L64)
+- [global-housing-static/.github/workflows/pages.yml](file://global-housing-static/.github/workflows/pages.yml)
 
 ## Performance Considerations
-- Model loading occurs once at startup via lifespan for API service.
-- Preprocessing and prediction are performed per request; consider caching or batching strategies for high throughput.
-- Docker healthchecks and readiness probes help orchestration-level scaling.
-- Static website provides instant client-side calculations with zero server overhead.
-- For production, consider adding rate limiting, connection pooling, and asynchronous workers for API service.
+- **Zero Server Requests**: All data and calculations performed client-side for instant responses
+- **Embedded Data**: Global datasets loaded once and cached in memory for subsequent requests
+- **Minimal File Size**: Optimized JavaScript with essential functionality only
+- **Responsive Design**: Efficient CSS Grid and Flexbox layouts for all device sizes
+- **GitHub Pages Optimization**: CDN-backed hosting with automatic compression
+- **No Model Loading**: Eliminates model initialization overhead present in previous API architecture
 
 ## Troubleshooting Guide
-Common issues and resolutions:
-- Model not loaded:
-  - Symptoms: 503 responses from /predict and /predict/batch, and /model/info.
-  - Cause: Model files missing or failed to load during startup.
-  - Resolution: Ensure models/ directory contains house_price_model.pkl and preprocessor.pkl; check logs.
-- Validation errors:
-  - Symptoms: 422 responses with validation details.
-  - Causes: Out-of-range values, invalid enum, or missing required fields.
-  - Resolution: Adjust inputs to match bounds and enums; ensure all required fields are present.
-- Prediction errors:
-  - Symptoms: 500 responses from /predict.
-  - Causes: Unexpected runtime errors during prediction.
-  - Resolution: Inspect logs and input data; verify model compatibility.
-- Static website issues:
-  - Symptoms: Client-side calculations not working.
-  - Causes: JavaScript errors or missing globalData.
-  - Resolution: Check browser console for errors; ensure all JavaScript files are loaded.
+Common issues and resolutions for the static website:
+- **Page Not Loading**: Ensure all files are uploaded to the root of the repository
+- **JavaScript Errors**: Check browser console for syntax errors or missing files
+- **Prediction Not Working**: Verify globalData object loads correctly and form fields have valid values
+- **Styling Issues**: Confirm CSS file is accessible and not blocked by browser security policies
+- **Deployment Problems**: Check GitHub Actions workflow for build errors and verify Pages settings
 
 References:
-- [api/main.py:323-347](file://api/main.py#L323-L347)
-- [api/main.py:357-361](file://api/main.py#L357-L361)
-- [api/main.py:270-274](file://api/main.py#L270-L274)
-- [tests/test_api.py:89-102](file://tests/test_api.py#L89-L102)
-- [tests/test_api.py:104-147](file://tests/test_api.py#L104-L147)
-- [predict.html:46-113](file://predict.html#L46-L113)
+- [README.md:167](file://README.md#L167)
+- [global-housing-static/js/main.js:168-210](file://global-housing-static/js/main.js#L168-L210)
 
 **Section sources**
-- [api/main.py:323-347](file://api/main.py#L323-L347)
-- [api/main.py:357-361](file://api/main.py#L357-L361)
-- [api/main.py:270-274](file://api/main.py#L270-L274)
-- [tests/test_api.py:89-102](file://tests/test_api.py#L89-L102)
-- [tests/test_api.py:104-147](file://tests/test_api.py#L104-L147)
-- [predict.html:46-113](file://predict.html#L46-L113)
+- [README.md:167](file://README.md#L167)
+- [global-housing-static/js/main.js:168-210](file://global-housing-static/js/main.js#L168-L210)
 
 ## Conclusion
-The system provides a flexible dual-architecture approach for house price predictions. The FastAPI service offers robust programmatic access with strict input validation, clear responses, and auto-generated documentation. The static website delivers instant client-side predictions with zero server dependency. For production, add authentication, rate limiting, and observability to the API service; ensure reliable model persistence and health monitoring for both components.
+The system has successfully transitioned to a fully static architecture, eliminating server infrastructure while maintaining comprehensive global real estate prediction capabilities. The static website provides instant price estimates through client-side processing, offers excellent performance through embedded data, and supports easy deployment via GitHub Pages. This approach reduces operational complexity, eliminates server costs, and provides a scalable solution for global real estate price prediction.
 
 ## Appendices
 
-### API Endpoints Summary
-- GET /: Service information
-- GET /health: Health status
-- GET /model/info: Model metadata
-- POST /predict: Single prediction
-- POST /predict/batch: Batch predictions
-- GET /docs: Swagger UI
-- GET /redoc: ReDoc
+### Static Website Architecture
+- **Pure Static Implementation**: No server-side code or dependencies
+- **Client-Side Processing**: All calculations performed in user's browser
+- **Embedded Data**: Global datasets and prediction models included in JavaScript files
+- **Responsive Design**: Optimized for all device sizes with mobile-first approach
+- **GitHub Pages Ready**: Pre-configured for automated deployment
 
 References:
-- [README.md:239-246](file://README.md#L239-L246)
-- [api/main.py:237-245](file://api/main.py#L237-L245)
-- [api/main.py:248-260](file://api/main.py#L248-L260)
-- [api/main.py:263-287](file://api/main.py#L263-L287)
-- [api/main.py:290-347](file://api/main.py#L290-L347)
-- [api/main.py:350-383](file://api/main.py#L350-L383)
+- [README.md:36-55](file://README.md#L36-L55)
+- [global-housing-static/index.html:1-285](file://global-housing-static/index.html#L1-285)
 
 **Section sources**
-- [README.md:239-246](file://README.md#L239-L246)
-- [api/main.py:237-245](file://api/main.py#L237-L245)
-- [api/main.py:248-260](file://api/main.py#L248-L260)
-- [api/main.py:263-287](file://api/main.py#L263-L287)
-- [api/main.py:290-347](file://api/main.py#L290-L347)
-- [api/main.py:350-383](file://api/main.py#L350-L383)
-
-### Request/Response Schemas
-- HouseFeatures: Input validation rules and enums
-- PredictionResponse: Predicted price, currency, timestamp, model_version
-- HealthResponse: Status, model_loaded, timestamp, version
-- ModelInfoResponse: Model type, version, features, description
-
-References:
-- [api/main.py:31-120](file://api/main.py#L31-L120)
-
-**Section sources**
-- [api/main.py:31-120](file://api/main.py#L31-L120)
-
-### Testing Strategies
-- Unit tests with pytest and TestClient
-- Coverage with pytest-cov
-- Example test scripts for manual verification
-- Static website testing through browser automation
-
-References:
-- [tests/test_api.py:1-199](file://tests/test_api.py#L1-L199)
-- [api/test_api.py:1-95](file://api/test_api.py#L1-L95)
-- [README.md:360-371](file://README.md#L360-L371)
-
-**Section sources**
-- [tests/test_api.py:1-199](file://tests/test_api.py#L1-L199)
-- [api/test_api.py:1-95](file://api/test_api.py#L1-L95)
-- [README.md:360-371](file://README.md#L360-L371)
-
-### Model Information
-- Feature engineering details and statistics are available in docs/model_data.json and docs/web_model.json.
-
-References:
-- [docs/model_data.json:1-171](file://docs/model_data.json#L1-L171)
-- [docs/web_model.json:1-129](file://docs/web_model.json#L1-L129)
-
-**Section sources**
-- [docs/model_data.json:1-171](file://docs/model_data.json#L1-L171)
-- [docs/web_model.json:1-129](file://docs/web_model.json#L1-L129)
-
-### Versioning and Backward Compatibility
-- API version is set in the FastAPI app configuration.
-- Model version is included in responses.
-- Maintain backward compatibility by avoiding breaking changes to request/response schemas; introduce new endpoints for major changes.
-
-References:
-- [api/main.py:217](file://api/main.py#L217)
-- [api/main.py:91](file://api/main.py#L91)
-- [api/main.py:277-278](file://api/main.py#L277-L278)
-
-**Section sources**
-- [api/main.py:217](file://api/main.py#L217)
-- [api/main.py:91](file://api/main.py#L91)
-- [api/main.py:277-278](file://api/main.py#L277-L278)
+- [README.md:36-55](file://README.md#L36-L55)
+- [global-housing-static/index.html:1-285](file://global-housing-static/index.html#L1-285)
 
 ### Deployment and Packaging
-- Docker multi-stage build for optimized images.
-- docker-compose orchestrates API, Streamlit, and optional services.
-- Setup configuration defines package metadata and extras.
-- Static website deployment requires no server infrastructure.
+- **GitHub Pages Deployment**: Automated via GitHub Actions workflow
+- **Manual Upload**: Direct file upload to repository root
+- **Git Commands**: Command-line deployment with git push
+- **PowerShell Script**: Automated deployment utility for Windows users
 
 References:
-- [Dockerfile:1-86](file://Dockerfile#L1-L86)
-- [docker-compose.yml:1-109](file://docker-compose.yml#L1-L109)
-- [setup.py:1-73](file://setup.py#L1-L73)
+- [README.md:65-98](file://README.md#L65-L98)
+- [global-housing-static/deploy.ps1](file://global-housing-static/deploy.ps1)
 
 **Section sources**
-- [Dockerfile:1-86](file://Dockerfile#L1-L86)
-- [docker-compose.yml:1-109](file://docker-compose.yml#L1-L109)
-- [setup.py:1-73](file://setup.py#L1-L73)
+- [README.md:65-98](file://README.md#L65-L98)
+- [global-housing-static/deploy.ps1](file://global-housing-static/deploy.ps1)
 
-### Static Website Architecture
-- Client-side prediction engine with global data management
-- Responsive design with instant feedback
-- No server dependency for basic functionality
-- Enhanced user experience through immediate results
+### Static Website Features
+- **Global Coverage**: 20+ countries and 95+ cities with pricing data
+- **Responsive Design**: Mobile-first approach with adaptive layouts
+- **Instant Results**: Client-side calculations with no server latency
+- **Currency Support**: 16+ currencies with proper formatting
+- **Market Context**: Local average comparisons and confidence indicators
 
 References:
-- [predict.html:1-126](file://predict.html#L1-L126)
-- [js/main.js:1-210](file://js/main.js#L1-L210)
+- [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [global-housing-static/js/predict.js:124-157](file://global-housing-static/js/predict.js#L124-L157)
 
 **Section sources**
-- [predict.html:1-126](file://predict.html#L1-L126)
-- [js/main.js:1-210](file://js/main.js#L1-L210)
+- [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [global-housing-static/js/predict.js:124-157](file://global-housing-static/js/predict.js#L124-L157)
+
+### Versioning and Backward Compatibility
+- **Static Architecture**: No API versioning required for website deployment
+- **Data Updates**: Global datasets can be updated by modifying globalData object
+- **Backward Compatibility**: Pure static files work across all modern browsers
+- **Future Enhancements**: Easy to extend functionality without breaking existing features
+
+References:
+- [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [README.md:140-146](file://README.md#L140-L146)
+
+**Section sources**
+- [global-housing-static/js/main.js:20-133](file://global-housing-static/js/main.js#L20-L133)
+- [README.md:140-146](file://README.md#L140-L146)
