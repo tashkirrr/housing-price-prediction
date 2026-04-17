@@ -820,6 +820,147 @@ body {
     margin-top: 0.5rem;
 }
 
+/* Prediction Form Styles */
+.prediction-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.prediction-form {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius);
+    font-size: 0.9375rem;
+    color: var(--gray-800);
+    background: var(--white);
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.form-group input:disabled,
+.form-group select:disabled {
+    background: var(--gray-100);
+    cursor: not-allowed;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    color: var(--gray-700);
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+}
+
+.btn-full {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Results Section */
+.result-section {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+}
+
+.result-header {
+    font-size: 1rem;
+    color: var(--gray-500);
+    margin-bottom: 0.5rem;
+}
+
+.result-price {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.result-range {
+    color: var(--gray-500);
+    margin-bottom: 0.5rem;
+    font-size: 0.9375rem;
+}
+
+.result-confidence {
+    font-size: 0.875rem;
+    color: var(--gray-400);
+    margin-bottom: 1.5rem;
+}
+
+.result-context {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-200);
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.result-context p {
+    margin-bottom: 0.5rem;
+    color: var(--gray-600);
+}
+
 /* Utility Classes */
 .hidden {
     display: none !important;

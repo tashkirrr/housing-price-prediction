@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Price Prediction - EstatePredict</title>
+    <title>Price Prediction - Realteak</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="container nav-container">
             <a href="index.html" class="logo">
-                <span class="logo-icon">🏠</span>
-                <span class="logo-text">Estate<span class="logo-accent">Predict</span></span>
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">Realteak</span>
             </a>
-            <ul class="nav-links" id="navLinks">
+            <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="explore.html">Explore</a></li>
-                <li><a href="predict.html" class="active">Predict</a></li>
-                <li><a href="countries.html">Countries</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="explore.html">Buy</a></li>
+                <li><a href="predict.html" class="active">Sell</a></li>
+                <li><a href="countries.html">Rent</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="about.html">Contact</a></li>
             </ul>
-            <div class="nav-actions">
-                <a href="predict.html" class="btn btn-primary">Get Estimate</a>
-            </div>
+            <a href="predict.html" class="btn btn-login">Login</a>
             <button class="nav-toggle" onclick="toggleNav()">☰</button>
         </div>
     </nav>
@@ -37,75 +38,78 @@
 
     <section class="featured-section">
         <div class="container">
-            <div style="max-width: 700px; margin: 0 auto;">
+            <div class="prediction-wrapper">
                 <!-- Form -->
-                <form id="predictionForm" style="background: var(--white); border-radius: var(--radius-xl); padding: 2.5rem; box-shadow: var(--shadow-lg);">
-                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">📍 Location</h3>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
-                        <div class="form-group">
-                            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--gray-600); margin-bottom: 0.5rem;">Country</label>
-                            <select id="country" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 0.9375rem;">
-                                <option value="">Select country</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--gray-600); margin-bottom: 0.5rem;">City</label>
-                            <select id="city" required disabled style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 0.9375rem; background: var(--gray-100);">
-                                <option value="">Select country first</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">🏠 Property Details</h3>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
-                        <div class="form-group">
-                            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--gray-600); margin-bottom: 0.5rem;">Living Area (sq ft)</label>
-                            <input type="number" id="sqft" min="100" max="50000" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 0.9375rem;">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--gray-600); margin-bottom: 0.5rem;">Bedrooms</label>
-                            <input type="number" id="bedrooms" min="0" max="20" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 0.9375rem;">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--gray-600); margin-bottom: 0.5rem;">Bathrooms</label>
-                            <input type="number" id="bathrooms" min="0.5" max="20" step="0.5" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 0.9375rem;">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--gray-600); margin-bottom: 0.5rem;">Property Age (years)</label>
-                            <input type="number" id="age" min="0" max="500" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 0.9375rem;">
+                <form id="predictionForm" class="prediction-form">
+                    <div class="form-section">
+                        <h3 class="form-section-title">📍 Location</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <select id="country" name="country" required>
+                                    <option value="">Select country</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <select id="city" name="city" required disabled>
+                                    <option value="">Select country first</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-200);">✨ Features</h3>
-                    
-                    <div style="display: flex; gap: 2rem; margin-bottom: 2rem;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="checkbox" id="garage" style="width: 1.25rem; height: 1.25rem;">
-                            <span>Has Garage</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="checkbox" id="pool" style="width: 1.25rem; height: 1.25rem;">
-                            <span>Has Pool</span>
-                        </label>
+                    <div class="form-section">
+                        <h3 class="form-section-title">🏠 Property Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sqft">Living Area (sq ft)</label>
+                                <input type="number" id="sqft" name="sqft" min="100" max="50000" placeholder="e.g., 1200" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bedrooms">Bedrooms</label>
+                                <input type="number" id="bedrooms" name="bedrooms" min="0" max="20" placeholder="e.g., 3" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bathrooms">Bathrooms</label>
+                                <input type="number" id="bathrooms" name="bathrooms" min="0.5" max="20" step="0.5" placeholder="e.g., 2.5" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Property Age (years)</label>
+                                <input type="number" id="age" name="age" min="0" max="500" placeholder="e.g., 10" required>
+                            </div>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-dark btn-large" style="width: 100%;">
-                        Calculate Estimate
-                    </button>
+                    <div class="form-section">
+                        <h3 class="form-section-title">✨ Features</h3>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="garage" name="garage">
+                                <span class="checkmark"></span>
+                                <span class="label-text">Has Garage</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pool" name="pool">
+                                <span class="checkmark"></span>
+                                <span class="label-text">Has Pool</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-find btn-full">Calculate Estimate</button>
                 </form>
 
                 <!-- Results -->
-                <div id="resultSection" class="hidden" style="background: var(--white); border-radius: var(--radius-xl); padding: 2.5rem; box-shadow: var(--shadow-lg); text-align: center;">
-                    <div style="font-size: 1rem; color: var(--gray-500); margin-bottom: 0.5rem;">Estimated Property Value</div>
-                    <div id="priceDisplay" style="font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem;">--</div>
-                    <div id="priceRange" style="color: var(--gray-500); margin-bottom: 0.5rem;">--</div>
-                    <div id="confidence" style="font-size: 0.875rem; color: var(--gray-400); margin-bottom: 1.5rem;">--</div>
-                    <div id="marketContext" style="padding-top: 1.5rem; border-top: 1px solid var(--gray-200);"></div>
-                    <button onclick="resetForm()" class="btn btn-outline" style="margin-top: 1.5rem;">
-                        Calculate Another
-                    </button>
+                <div id="resultSection" class="result-section hidden">
+                    <div class="result-header">Estimated Property Value</div>
+                    <div class="result-price" id="priceDisplay">--</div>
+                    <div class="result-range" id="priceRange">--</div>
+                    <div class="result-confidence" id="confidence">--</div>
+                    <div class="result-context" id="marketContext"></div>
+                    <button onclick="resetForm()" class="btn btn-outline">Calculate Another</button>
                 </div>
             </div>
         </div>
@@ -113,8 +117,43 @@
 
     <footer class="footer">
         <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+                            <path d="M20 5L5 18H10V35H17V25H23V35H30V18H35L20 5Z" fill="currentColor"/>
+                        </svg>
+                        <span class="logo-text">Realteak</span>
+                    </a>
+                    <p>Your trusted partner in finding the perfect property.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="explore.html">Properties</a></li>
+                        <li><a href="predict.html">Valuation</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 EstatePredict. All rights reserved.</p>
+                <p>&copy; 2026 Realteak. All rights reserved.</p>
             </div>
         </div>
     </footer>
