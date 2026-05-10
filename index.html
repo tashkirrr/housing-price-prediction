@@ -1,49 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REALTEAK | Future of Forecasting</title>
+    <title>REALTEAK | Cyber Forecast Terminal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Space Grotesk', 'sans-serif'] },
+                    fontFamily: { 
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
                     colors: {
                         cyber: {
-                            black: '#020204',
-                            white: '#ffffff',
+                            black: '#050507',
+                            slate: '#111116',
                             neon: '#00f3ff',
                             pink: '#ff00ff',
-                            yellow: '#f3ff00',
-                            slate: '#1a1a1e'
+                            yellow: '#f3ff00'
                         }
                     },
                     animation: {
-                        'glitch': 'glitch 1s infinite linear alternate-reverse',
-                        'scanline': 'scanline 8s linear infinite',
-                        'neon-pulse': 'neon-pulse 2s infinite ease-in-out',
+                        'pulse-neon': 'pulse-neon 2s infinite',
+                        'flicker': 'flicker 0.15s infinite',
                     },
                     keyframes: {
-                        glitch: {
-                            '0%': { transform: 'translate(0)' },
-                            '20%': { transform: 'translate(-2px, 2px)' },
-                            '40%': { transform: 'translate(-2px, -2px)' },
-                            '60%': { transform: 'translate(2px, 2px)' },
-                            '80%': { transform: 'translate(2px, -2px)' },
-                            '100%': { transform: 'translate(0)' },
+                        'pulse-neon': {
+                            '0%, 100%': { opacity: '1', filter: 'brightness(1)' },
+                            '50%': { opacity: '0.7', filter: 'brightness(1.5)' }
                         },
-                        scanline: {
-                            '0%': { top: '0%' },
-                            '100%': { top: '100%' }
-                        },
-                        'neon-pulse': {
-                            '0%, 100%': { boxShadow: '0 0 20px #00f3ff, inset 0 0 10px #00f3ff' },
-                            '50%': { boxShadow: '0 0 40px #00f3ff, inset 0 0 20px #00f3ff' }
+                        'flicker': {
+                            '0%': { opacity: '0.97' }, '100%': { opacity: '1' }
                         }
                     }
                 }
@@ -52,117 +44,141 @@
     </script>
     <style>
         [x-cloak] { display: none !important; }
-        .cyber-border { border: 2px solid; border-image: linear-gradient(45deg, #00f3ff, #ff00ff) 1; }
-        .neon-text { text-shadow: 0 0 10px #00f3ff, 0 0 20px #00f3ff; }
-        .pink-text { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff; }
-        .cyber-grid { background-image: linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px); background-size: 50px 50px; }
-        .dark .cyber-grid { background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px); }
-        .cyber-card { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); }
+        .cyber-grid { background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px); background-size: 30px 30px; }
+        .hud-border { border: 1px solid rgba(0, 243, 255, 0.3); position: relative; }
+        .hud-border::before { content: ''; position: absolute; top: -2px; left: -2px; width: 10px; height: 10px; border-top: 2px solid #00f3ff; border-left: 2px solid #00f3ff; }
+        .hud-border::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 10px; height: 10px; border-bottom: 2px solid #00f3ff; border-right: 2px solid #00f3ff; }
+        .neon-glow { box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); }
+        .mobile-nav-enter { transform: translateX(-100%); }
+        .mobile-nav-enter-active { transform: translateX(0); transition: transform 0.3s ease-out; }
     </style>
 </head>
-<body class="bg-white dark:bg-cyber-black text-cyber-black dark:text-white transition-colors duration-500 overflow-x-hidden" x-data="{ darkMode: true }" :class="darkMode ? 'dark' : ''" x-init="darkMode = true">
+<body class="bg-white dark:bg-cyber-black text-cyber-black dark:text-white transition-colors duration-500 overflow-x-hidden font-sans" x-data="{ mobileMenu: false, darkMode: true }">
 
-    <!-- Scanline Effect -->
-    <div class="fixed top-0 left-0 w-full h-1 bg-cyber-neon/10 z-[1000] pointer-events-none animate-scanline opacity-20"></div>
+    <!-- HUD Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 border-[20px] border-cyber-neon/5 hidden lg:block"></div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 border-b border-cyber-neon/20 bg-white/80 dark:bg-cyber-black/80 backdrop-blur-xl">
-        <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-3 group">
-                <div class="w-12 h-12 bg-cyber-neon flex items-center justify-center skew-x-[-15deg] group-hover:skew-x-[15deg] transition-transform">
-                    <span class="text-cyber-black font-black text-2xl skew-x-[15deg] group-hover:skew-x-[-15deg]">R</span>
-                </div>
-                <span class="text-3xl font-black tracking-tighter uppercase italic">Realteak</span>
-            </a>
+    <!-- Sidebar Navigation (Desktop) -->
+    <aside class="fixed left-0 top-0 h-full w-20 lg:w-24 bg-white dark:bg-cyber-slate border-r border-cyber-neon/20 z-[60] flex flex-col items-center py-10 gap-10 hidden md:flex">
+        <a href="index.html" class="w-12 h-12 bg-cyber-neon flex items-center justify-center skew-x-[-15deg] hover:rotate-90 transition-transform">
+            <span class="text-cyber-black font-black text-xl skew-x-[15deg]">R</span>
+        </a>
+        <nav class="flex flex-col gap-6 flex-1 justify-center">
+            <a href="index.html" title="Home" class="p-4 text-cyber-neon bg-cyber-neon/10 border-l-4 border-cyber-neon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></a>
+            <a href="forecast.html" title="Forecast" class="p-4 text-slate-400 hover:text-cyber-neon transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline></svg></a>
+            <a href="analytics.html" title="Analytics" class="p-4 text-slate-400 hover:text-cyber-neon transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg></a>
+        </nav>
+        <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark')" class="p-4 text-slate-400 hover:text-cyber-yellow transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path></svg>
+        </button>
+    </aside>
 
-            <div class="hidden lg:flex items-center gap-12 font-bold uppercase tracking-widest text-xs">
-                <a href="index.html" class="text-cyber-neon border-b-2 border-cyber-neon pb-1">Index</a>
-                <a href="forecast.html" class="hover:text-cyber-neon transition-colors">Forecast</a>
-                <a href="analytics.html" class="hover:text-cyber-neon transition-colors">Analytics</a>
-                <a href="method.html" class="hover:text-cyber-neon transition-colors">Method</a>
+    <!-- Mobile Header -->
+    <header class="md:hidden fixed top-0 w-full h-16 bg-cyber-slate/90 backdrop-blur-lg border-b border-cyber-neon/20 z-[70] px-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-cyber-neon flex items-center justify-center skew-x-[-15deg]">
+                <span class="text-cyber-black font-black text-sm skew-x-[15deg]">R</span>
             </div>
-
-            <div class="flex items-center gap-6">
-                <button @click="darkMode = !darkMode" class="p-3 border-2 border-cyber-neon/30 hover:border-cyber-neon transition-all">
-                    <svg x-show="!darkMode" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
-                    <svg x-show="darkMode" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
-                </button>
-                <a href="forecast.html" class="px-8 py-3 bg-cyber-neon text-cyber-black font-black skew-x-[-15deg] hover:scale-110 transition-all shadow-[0_0_20px_#00f3ff]">
-                    <div class="skew-x-[15deg]">CONNECT</div>
-                </a>
-            </div>
+            <span class="font-black italic text-lg uppercase tracking-tight">Realteak</span>
         </div>
-    </nav>
+        <button @click="mobileMenu = true" class="text-cyber-neon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+    </header>
 
-    <!-- Hero Section -->
-    <main class="relative min-h-screen flex items-center pt-24 cyber-grid">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div class="space-y-10 relative z-10">
-                <div class="inline-block px-4 py-1 border-l-4 border-cyber-neon bg-cyber-neon/10 font-bold uppercase tracking-[0.3em] text-xs">
-                    Protocol: Future Markets 2024
-                </div>
-                <h1 class="text-7xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.8] italic">
-                    Forecast <br> <span class="dark:neon-text text-cyber-neon">Everything.</span>
-                </h1>
-                <p class="text-xl font-medium max-w-xl border-l-2 border-cyber-neon/30 pl-8 opacity-80 leading-relaxed">
-                    Access the most advanced real estate intelligence network. High-fidelity predictive modeling for the next generation of property investment.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-6 pt-6">
-                    <a href="forecast.html" class="px-12 py-5 bg-cyber-pink text-white font-black uppercase tracking-widest skew-x-[-15deg] hover:shadow-[0_0_30px_#ff00ff] transition-all">
-                        <div class="skew-x-[15deg]">Start Protocol</div>
-                    </a>
-                    <a href="analytics.html" class="px-12 py-5 border-2 border-cyber-neon text-cyber-neon font-black uppercase tracking-widest skew-x-[-15deg] hover:bg-cyber-neon hover:text-cyber-black transition-all">
-                        <div class="skew-x-[15deg]">Data Stream</div>
-                    </a>
-                </div>
-            </div>
+    <!-- Mobile Menu Overlay -->
+    <div x-show="mobileMenu" x-cloak class="fixed inset-0 z-[100] bg-cyber-black/95 backdrop-blur-xl md:hidden p-10 flex flex-col gap-10">
+        <div class="flex justify-between items-center">
+            <span class="text-2xl font-black text-cyber-neon italic">TERMINAL_NAV</span>
+            <button @click="mobileMenu = false" class="text-white"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <nav class="flex flex-col gap-8 text-4xl font-black uppercase italic">
+            <a href="index.html" class="text-cyber-neon">Home</a>
+            <a href="forecast.html" @click="mobileMenu = false">Forecast</a>
+            <a href="analytics.html" @click="mobileMenu = false">Analytics</a>
+            <a href="method.html" @click="mobileMenu = false">Method</a>
+        </nav>
+        <div class="mt-auto pt-10 border-t border-cyber-neon/20 flex justify-between items-center">
+            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark')" class="flex items-center gap-3 font-bold uppercase text-xs tracking-widest text-cyber-neon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"></circle></svg>
+                TOGGLE_LIGHT
+            </button>
+            <span class="text-[10px] font-mono text-slate-500">v4.48.0</span>
+        </div>
+    </div>
 
-            <!-- Visual Component -->
-            <div class="relative group">
-                <div class="absolute -inset-10 bg-cyber-neon/20 blur-[100px] animate-pulse"></div>
-                <div class="relative cyber-card border-4 border-cyber-neon p-2 bg-cyber-black overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80" alt="Cyber City" class="w-full h-[600px] object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700">
-                    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-cyber-black to-transparent"></div>
-                    
-                    <!-- HUD Elements -->
-                    <div class="absolute top-10 right-10 text-right space-y-2">
-                        <div class="text-[10px] font-black uppercase tracking-widest text-cyber-neon">Market Saturation</div>
-                        <div class="text-3xl font-black italic">89.2%</div>
-                        <div class="w-32 h-1 bg-cyber-neon/30 ml-auto overflow-hidden">
-                            <div class="w-2/3 h-full bg-cyber-neon"></div>
-                        </div>
+    <!-- Main Content Area -->
+    <main class="md:ml-20 lg:ml-24 min-h-screen cyber-grid flex flex-col">
+        
+        <!-- Hero Hero Section -->
+        <section class="flex-1 flex flex-col justify-center px-6 lg:px-20 py-32 lg:py-0">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-10">
+                    <div class="inline-flex items-center gap-3 px-4 py-1.5 border border-cyber-neon/30 bg-cyber-neon/5 text-cyber-neon font-mono text-[10px] uppercase tracking-widest animate-pulse-neon">
+                        <span class="w-1.5 h-1.5 bg-cyber-neon rounded-full"></span>
+                        Status: System Operational // 2024.Q2
                     </div>
-
-                    <div class="absolute bottom-10 left-10 space-y-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 border-2 border-cyber-pink flex items-center justify-center rounded-full animate-spin-slow">
-                                <div class="w-8 h-8 border-2 border-cyber-neon flex items-center justify-center rounded-full"></div>
-                            </div>
-                            <div>
-                                <div class="text-[8px] font-black uppercase tracking-[0.3em] text-cyber-pink">Core Intelligence</div>
-                                <div class="text-lg font-black italic">ACTIVE_STREAM</div>
-                            </div>
-                        </div>
+                    <h1 class="text-6xl md:text-8xl lg:text-9xl font-black uppercase italic leading-[0.85] tracking-tighter">
+                        Market <br> <span class="text-cyber-neon dark:neon-text">Protocol.</span>
+                    </h1>
+                    <p class="text-lg md:text-xl font-medium max-w-xl opacity-70 border-l-4 border-cyber-pink pl-6 leading-relaxed">
+                        Access high-fidelity real estate telemetry. Our forecasting nodes bridge classic economic foundations with 2024 market volatility.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="forecast.html" class="px-10 py-5 bg-cyber-neon text-cyber-black font-black uppercase italic skew-x-[-15deg] hover:scale-105 transition-all text-center shadow-[0_0_20px_rgba(0,243,255,0.4)]">
+                            <div class="skew-x-[15deg]">Initiate Forecast</div>
+                        </a>
+                        <a href="analytics.html" class="px-10 py-5 border-2 border-cyber-pink text-cyber-pink font-black uppercase italic skew-x-[-15deg] hover:bg-cyber-pink hover:text-white transition-all text-center">
+                            <div class="skew-x-[15deg]">Data Stream</div>
+                        </a>
                     </div>
                 </div>
+
+                <!-- HUD Visualizer -->
+                <div class="relative hidden lg:block">
+                    <div class="absolute -inset-20 bg-cyber-neon/10 blur-[120px] animate-pulse"></div>
+                    <div class="hud-border p-3 bg-cyber-black">
+                        <div class="relative h-[500px] overflow-hidden group">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80" alt="City" class="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-100 transition-all duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-cyber-black via-transparent to-transparent"></div>
+                            
+                            <!-- Overlay HUD -->
+                            <div class="absolute top-6 left-6 space-y-1">
+                                <div class="text-[8px] font-black uppercase tracking-[0.4em] text-cyber-neon">Coordinate Sync</div>
+                                <div class="text-xs font-mono text-white">37.7749° N, 122.4194° W</div>
+                            </div>
+                            <div class="absolute bottom-6 right-6 text-right">
+                                <div class="text-[8px] font-black uppercase tracking-[0.4em] text-cyber-pink">Yield Volatility</div>
+                                <div class="text-4xl font-black italic text-white animate-flicker">HIGH</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Dynamic Metrics Footer -->
+        <section class="bg-cyber-slate/80 border-t border-cyber-neon/20 px-6 lg:px-20 py-10">
+            <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-20">
+                <div class="space-y-1">
+                    <div class="text-[8px] font-black uppercase tracking-widest text-slate-500">R2 Fidelity</div>
+                    <div class="text-2xl font-black italic">0.8503</div>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-[8px] font-black uppercase tracking-widest text-slate-500">Inflation Multiplier</div>
+                    <div class="text-2xl font-black italic text-cyber-neon">4.48x</div>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-[8px] font-black uppercase tracking-widest text-slate-500">Protocol Level</div>
+                    <div class="text-2xl font-black italic">v4.48.0</div>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-[8px] font-black uppercase tracking-widest text-slate-500">Nodes Active</div>
+                    <div class="text-2xl font-black italic text-cyber-pink">12,402</div>
+                </div>
+            </div>
+        </section>
     </main>
-
-    <!-- Footer -->
-    <footer class="py-20 border-t-4 border-cyber-neon bg-cyber-black text-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:row items-center justify-between gap-10">
-            <div class="text-4xl font-black italic tracking-tighter uppercase">Realteak</div>
-            <div class="flex gap-10 text-xs font-bold uppercase tracking-widest">
-                <a href="#" class="hover:text-cyber-neon transition-colors">Terminals</a>
-                <a href="#" class="hover:text-cyber-neon transition-colors">Security</a>
-                <a href="#" class="hover:text-cyber-neon transition-colors">Nodes</a>
-            </div>
-            <div class="text-[10px] font-medium opacity-50 uppercase tracking-widest">
-                System Version 4.48 // 2024 Build
-            </div>
-        </div>
-    </nav>
 
 </body>
 </html>
