@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REALTEAK | Cyber Intelligence Terminal v5</title>
+    <title>REALTEAK | Hyper-Animated Cyber Terminal v6</title>
     
     <!-- Core Engine -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,21 +20,21 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { 
-                        sans: ['Outfit', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace']
-                    },
+                    fontFamily: { sans: ['Outfit', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
                     colors: {
-                        cyber: {
-                            black: '#030305',
-                            slate: '#0d0d12',
-                            neon: '#00f3ff',
-                            pink: '#ff00ff',
-                            blue: '#0a84ff',
-                        }
+                        cyber: { black: '#030305', slate: '#0d0d12', neon: '#00f3ff', pink: '#ff00ff', blue: '#0a84ff', }
                     },
-                    backgroundImage: {
-                        'cyber-gradient': 'radial-gradient(circle at 50% 50%, #11111a 0%, #030305 100%)',
+                    animation: {
+                        'flicker': 'flicker 2s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'scan-fast': 'scan 4s linear infinite',
+                        'neon-pulse': 'neon-pulse 1.5s infinite alternate',
+                    },
+                    keyframes: {
+                        flicker: { '0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': { opacity: '1' }, '20%, 21.999%, 63%, 63.999%, 65%, 69.999%': { opacity: '0.4' } },
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } },
+                        scan: { '0%': { top: '-10%' }, '100%': { top: '110%' } },
+                        'neon-pulse': { 'from': { boxShadow: '0 0 10px #00f3ff, 0 0 5px #00f3ff' }, 'to': { boxShadow: '0 0 25px #00f3ff, 0 0 15px #00f3ff' } }
                     }
                 }
             }
@@ -43,181 +43,186 @@
     <style>
         [x-cloak] { display: none !important; }
         ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.4); border-radius: 10px; }
         
-        .glass-panel { background: rgba(13, 13, 18, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .neon-border { position: relative; }
-        .neon-border::after { content: ''; position: absolute; inset: 0; border: 1px solid rgba(0, 243, 255, 0.3); pointer-events: none; }
+        .glass-panel { background: rgba(13, 13, 18, 0.8); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-panel:hover { border-color: rgba(0, 243, 255, 0.3); background: rgba(13, 13, 18, 0.9); }
         
-        #main-map { height: 100%; width: 100%; border-radius: 1rem; filter: invert(100%) hue-rotate(180deg) brightness(0.7) contrast(1.2); }
-        .tab-btn { position: relative; transition: all 0.3s ease; }
-        .tab-btn.active { color: #00f3ff; }
-        .tab-btn.active::after { content: ''; position: absolute; left: 0; bottom: -10px; width: 100%; height: 2px; background: #00f3ff; box-shadow: 0 0 10px #00f3ff; }
+        #main-map { height: 100%; width: 100%; filter: invert(100%) hue-rotate(180deg) brightness(0.8) contrast(1.2); }
         
-        @keyframes scan { from { top: -100%; } to { top: 100%; } }
-        .scanline { height: 100px; background: linear-gradient(to bottom, transparent, rgba(0, 243, 255, 0.05), transparent); animation: scan 10s linear infinite; }
+        .glitch-text:hover { animation: flicker 0.2s infinite; color: #00f3ff; text-shadow: 2px 2px #ff00ff, -2px -2px #00f3ff; }
+        .cyber-btn { position: relative; overflow: hidden; transition: all 0.3s; }
+        .cyber-btn::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent); transform: rotate(45deg); transition: 0.5s; }
+        .cyber-btn:hover::after { left: 100%; top: 100%; }
+
+        .scan-bar { position: absolute; width: 100%; height: 2px; background: #00f3ff; box-shadow: 0 0 15px #00f3ff; z-index: 50; pointer-events: none; }
+        .hud-corner { position: absolute; width: 20px; height: 20px; border-color: #00f3ff; pointer-events: none; }
     </style>
 </head>
-<body class="bg-cyber-black text-slate-300 transition-all duration-700 select-none overflow-hidden" x-data="terminal()" x-init="init()">
+<body class="bg-cyber-black text-slate-300 overflow-hidden font-sans select-none" x-data="terminal()" x-init="init()">
 
-    <!-- Background Layer -->
-    <div class="fixed inset-0 cyber-gradient -z-10"></div>
-    <div class="fixed inset-0 scanline pointer-events-none z-50"></div>
+    <!-- Animated Background Decor -->
+    <div class="fixed inset-0 pointer-events-none -z-10">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary-900/10 rounded-full blur-[150px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-pink-900/10 rounded-full blur-[150px] animate-pulse" style="animation-delay: 1s"></div>
+    </div>
 
-    <!-- Layout Container -->
-    <div class="flex h-screen w-screen overflow-hidden">
+    <!-- MAIN BOOT SEQUENCE -->
+    <div x-show="booting" class="fixed inset-0 z-[1000] bg-cyber-black flex flex-col items-center justify-center space-y-8" x-transition:leave="transition ease-in duration-700" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+        <div class="w-16 h-16 bg-cyber-neon skew-x-[-15deg] animate-spin-slow shadow-[0_0_50px_#00f3ff]"></div>
+        <div class="font-mono text-xs tracking-[0.5em] text-cyber-neon animate-pulse">INITIALIZING_PROTOCOL_V6</div>
+        <div class="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+            <div class="h-full bg-cyber-neon" :style="'width: ' + bootProgress + '%'"></div>
+        </div>
+    </div>
+
+    <div class="flex h-screen w-screen opacity-0 transition-opacity duration-1000" :class="booting ? 'opacity-0' : 'opacity-100'">
         
-        <!-- SIDEBAR (Navigation) -->
+        <!-- SIDEBAR -->
         <aside class="w-20 lg:w-24 flex flex-col items-center py-8 border-r border-white/5 bg-cyber-slate/50 z-[100]">
             <div class="mb-12 cursor-pointer group" @click="page = 'home'">
-                <div class="w-12 h-12 bg-cyber-neon rounded-xl flex items-center justify-center skew-x-[-10deg] group-hover:rotate-12 transition-all shadow-[0_0_20px_rgba(0,243,255,0.4)]">
+                <div class="w-12 h-12 bg-cyber-neon rounded-xl flex items-center justify-center skew-x-[-10deg] group-hover:rotate-[360deg] transition-all duration-700 shadow-[0_0_20px_rgba(0,243,255,0.4)]">
                     <span class="text-cyber-black font-black text-2xl skew-x-[10deg]">R</span>
                 </div>
             </div>
 
-            <nav class="flex flex-col gap-8 flex-1">
+            <nav class="flex flex-col gap-10 flex-1">
                 <template x-for="item in menu">
-                    <button @click="page = item.id" :class="page === item.id ? 'text-cyber-neon scale-125' : 'text-slate-600 hover:text-white'" class="transition-all duration-300 relative">
+                    <button @click="changePage(item.id)" :class="page === item.id ? 'text-cyber-neon scale-125' : 'text-slate-600 hover:text-white'" class="transition-all duration-500 relative group">
                         <span x-html="item.icon"></span>
-                        <div x-show="page === item.id" class="absolute -left-8 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-cyber-neon rounded-r-full shadow-[0_0_10px_#00f3ff]"></div>
+                        <div x-show="page === item.id" class="absolute -left-8 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-cyber-neon rounded-r-full shadow-[0_0_20px_#00f3ff]"></div>
+                        <div class="absolute left-full ml-4 px-3 py-1 bg-cyber-neon text-cyber-black text-[8px] font-black uppercase opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[110]">
+                            <span x-text="item.id"></span>
+                        </div>
                     </button>
                 </template>
             </nav>
 
-            <button @click="toggleTheme()" class="p-4 text-slate-600 hover:text-cyber-neon transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2m-9-9h2m14 0h2m-14.07 7.07 1.41-1.41M17.66 6.34l1.41-1.41M6.34 6.34 4.93 4.93m12.73 12.73 1.41 1.41"></path></svg>
+            <button class="p-4 text-slate-600 hover:text-cyber-neon transition-all hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2"></path></svg>
             </button>
         </aside>
 
         <!-- MAIN AREA -->
-        <div class="flex-1 flex flex-col relative overflow-hidden">
+        <div class="flex-1 flex flex-col overflow-hidden">
             
-            <!-- TOP BAR -->
             <header class="h-20 border-b border-white/5 flex items-center justify-between px-10 glass-panel">
                 <div class="flex items-center gap-6">
                     <div class="space-y-1">
-                        <h2 class="text-xs font-mono font-bold text-cyber-neon uppercase tracking-[0.3em]" x-text="pageTitle"></h2>
-                        <div class="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
+                        <h2 class="text-[10px] font-mono font-bold text-cyber-neon uppercase tracking-[0.4em] animate-flicker" x-text="pageTitle"></h2>
+                        <div class="flex items-center gap-2 text-[8px] text-slate-500 font-mono italic">
                             <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                            PROTOCOL_ACTIVE // SYS_V5.0
+                            SIGNAL_STRENGTH: 100% // CALIBRATION_READY
                         </div>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-10">
-                    <div class="hidden lg:flex gap-8">
-                        <div class="text-right">
-                            <p class="text-[8px] font-bold text-slate-600 uppercase tracking-widest">Base Calibration</p>
-                            <p class="text-sm font-black italic">4.48x_SCAL</p>
-                        </div>
-                        <div class="text-right border-l border-white/10 pl-8">
-                            <p class="text-[8px] font-bold text-slate-600 uppercase tracking-widest">Signal Sync</p>
-                            <p class="text-sm font-black italic text-emerald-500">OPTIMAL</p>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12 rounded-full border border-cyber-neon/30 p-1">
-                        <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Realteak" class="w-full h-full rounded-full grayscale hover:grayscale-0 transition-all">
+                    <div class="hidden md:flex gap-12 font-mono text-[9px] uppercase tracking-widest text-slate-600">
+                        <div class="flex items-center gap-2"><span class="text-cyber-neon">UPTIME:</span> <span x-text="uptime"></span></div>
+                        <div class="flex items-center gap-2"><span class="text-cyber-neon">LOC:</span> <span x-text="form.lat.toFixed(2) + ', ' + form.lon.toFixed(2)"></span></div>
                     </div>
                 </div>
             </header>
 
-            <!-- CONTENT CONTENT -->
-            <div class="flex-1 overflow-y-auto p-6 lg:p-10 custom-scrollbar">
+            <div class="flex-1 overflow-y-auto p-6 lg:p-10 custom-scrollbar relative">
                 
                 <!-- Page: Home -->
-                <div x-show="page === 'home'" x-transition class="space-y-16">
-                    <div class="max-w-4xl space-y-8">
-                        <h1 class="text-6xl lg:text-8xl font-black uppercase italic tracking-tighter leading-none">
-                            Next-Gen <br> <span class="text-cyber-neon">Forecasting.</span>
+                <div x-show="page === 'home'" x-transition:enter="transition ease-out duration-500 delay-200" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-20">
+                    <div class="max-w-4xl space-y-10">
+                        <h1 class="text-7xl lg:text-9xl font-black uppercase italic tracking-tighter leading-none glitch-text transition-all duration-500">
+                            Forecast <br> <span class="text-cyber-neon">The Void.</span>
                         </h1>
-                        <p class="text-xl text-slate-400 font-medium leading-relaxed max-w-2xl border-l-4 border-cyber-pink pl-8">
-                            High-fidelity real estate intelligence terminal. Bridge classic market foundations with 2024 economic telemetry through our advanced forecasting nodes.
+                        <p class="text-xl text-slate-400 font-medium leading-relaxed max-w-2xl border-l-4 border-cyber-neon pl-8 animate-float">
+                            High-fidelity real estate intelligence terminal. Predictive market nodes bridge 1990 foundations with 2024 economic volatility.
                         </p>
-                        <div class="flex gap-4 pt-6">
-                            <button @click="page = 'forecast'" class="px-10 py-4 bg-cyber-neon text-cyber-black font-black uppercase italic hover:scale-105 transition-all shadow-[0_0_30px_rgba(0,243,255,0.3)]">Launch Node</button>
-                            <button @click="page = 'analytics'" class="px-10 py-4 border-2 border-white/10 hover:border-cyber-neon text-white font-black uppercase italic transition-all">Data Stream</button>
+                        <div class="flex gap-6 pt-6">
+                            <button @click="changePage('forecast')" class="cyber-btn px-12 py-5 bg-cyber-neon text-cyber-black font-black uppercase italic hover:scale-105 transition-all shadow-[0_0_30px_rgba(0,243,255,0.4)]">Initiate Node</button>
+                            <button @click="changePage('analytics')" class="px-12 py-5 border-2 border-white/10 hover:border-cyber-pink text-white font-black uppercase italic transition-all group">
+                                <span class="group-hover:text-cyber-pink">Data Stream</span>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <template x-for="feat in features">
-                            <div class="p-8 glass-panel neon-border hover:bg-white/5 transition-colors cursor-pointer group">
-                                <div class="w-10 h-10 mb-6 text-cyber-neon group-hover:scale-110 transition-transform" x-html="feat.icon"></div>
-                                <h3 class="text-lg font-black uppercase italic mb-2" x-text="feat.title"></h3>
-                                <p class="text-xs text-slate-500 font-medium leading-relaxed" x-text="feat.desc"></p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <template x-for="(feat, i) in features">
+                            <div class="p-10 glass-panel neon-border hover:translate-y-[-10px] transition-all cursor-pointer group" :style="'transition-delay: ' + (i * 100) + 'ms'">
+                                <div class="w-12 h-12 mb-8 text-cyber-neon group-hover:rotate-[360deg] transition-all duration-700" x-html="feat.icon"></div>
+                                <h3 class="text-xl font-black uppercase italic mb-4 group-hover:text-cyber-neon transition-colors" x-text="feat.title"></h3>
+                                <p class="text-sm text-slate-500 font-medium leading-relaxed" x-text="feat.desc"></p>
                             </div>
                         </template>
                     </div>
                 </div>
 
-                <!-- Page: Forecast (Interactive Node) -->
-                <div x-show="page === 'forecast'" x-transition class="h-full flex flex-col gap-6">
-                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[600px]">
+                <!-- Page: Forecast -->
+                <div x-show="page === 'forecast'" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" class="h-full flex flex-col gap-10">
+                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 min-h-[600px]">
                         
-                        <!-- Map Side -->
-                        <div class="lg:col-span-8 glass-panel p-2 flex flex-col">
-                            <div class="relative flex-1 rounded-xl overflow-hidden">
+                        <div class="lg:col-span-8 glass-panel p-3 flex flex-col relative group">
+                            <!-- HUD Corners -->
+                            <div class="hud-corner top-4 left-4 border-t-2 border-l-2"></div>
+                            <div class="hud-corner top-4 right-4 border-t-2 border-r-2"></div>
+                            <div class="hud-corner bottom-4 left-4 border-b-2 border-l-2"></div>
+                            <div class="hud-corner bottom-4 right-4 border-b-2 border-r-2"></div>
+
+                            <div class="relative flex-1 rounded-2xl overflow-hidden border border-white/5">
+                                <div class="scan-bar animate-scan-fast"></div>
                                 <div id="main-map"></div>
-                                <div class="absolute top-4 left-4 z-[10] flex gap-2">
-                                    <div class="px-4 py-2 bg-cyber-black/90 border border-cyber-neon/30 rounded-lg text-[10px] font-mono">
-                                        <span class="text-cyber-neon">LAT:</span> <span x-text="form.lat.toFixed(4)"></span>
-                                    </div>
-                                    <div class="px-4 py-2 bg-cyber-black/90 border border-cyber-neon/30 rounded-lg text-[10px] font-mono">
-                                        <span class="text-cyber-neon">LON:</span> <span x-text="form.lon.toFixed(4)"></span>
-                                    </div>
-                                </div>
                             </div>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <div class="bg-cyber-black/40 p-6 rounded-xl border border-white/5 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                <div class="bg-white/5 p-8 rounded-2xl border border-white/5 space-y-6 hover:bg-white/10 transition-colors group">
                                     <div class="flex justify-between items-center">
-                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 italic">Median Income</label>
-                                        <span class="text-lg font-black italic text-cyber-neon" x-text="'$'+(form.income*10).toFixed(1)+'k'"></span>
+                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 italic group-hover:text-cyber-neon">Node Income Flux</label>
+                                        <span class="text-2xl font-black italic text-cyber-neon" x-text="'$'+(form.income*10).toFixed(1)+'k'"></span>
                                     </div>
-                                    <input type="range" min="1" max="15" step="0.1" x-model="form.income" @input="calculate()" class="w-full accent-cyber-neon">
+                                    <input type="range" min="1" max="15" step="0.1" x-model="form.income" @input="calculate()" class="w-full h-1 bg-white/10 rounded-full appearance-none accent-cyber-neon cursor-pointer">
                                 </div>
-                                <div class="bg-cyber-black/40 p-6 rounded-xl border border-white/5 space-y-4">
+                                <div class="bg-white/5 p-8 rounded-2xl border border-white/5 space-y-6 hover:bg-white/10 transition-colors group">
                                     <div class="flex justify-between items-center">
-                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 italic">Node Cycle Age</label>
-                                        <span class="text-lg font-black italic text-cyber-neon" x-text="form.age + ' CY'"></span>
+                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 italic group-hover:text-cyber-neon">Cycle Age</label>
+                                        <span class="text-2xl font-black italic text-cyber-neon" x-text="form.age + ' CY'"></span>
                                     </div>
-                                    <input type="range" min="1" max="52" x-model="form.age" @input="calculate()" class="w-full accent-cyber-neon">
+                                    <input type="range" min="1" max="52" x-model="form.age" @input="calculate()" class="w-full h-1 bg-white/10 rounded-full appearance-none accent-cyber-neon cursor-pointer">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Result Side -->
-                        <div class="lg:col-span-4 flex flex-col gap-6">
-                            <div class="bg-cyber-neon p-10 flex flex-col justify-between h-[350px] relative overflow-hidden group">
-                                <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                <div class="space-y-2">
-                                    <p class="text-[10px] font-black uppercase tracking-[0.3em] text-cyber-black/50">Market Yield 2024</p>
-                                    <h3 class="text-6xl font-black text-cyber-black italic tracking-tighter" x-text="'$'+format(result)"></h3>
+                        <div class="lg:col-span-4 flex flex-col gap-8">
+                            <div class="bg-cyber-neon p-12 flex flex-col justify-between h-[400px] relative overflow-hidden group shadow-[0_0_50px_rgba(0,243,255,0.2)]">
+                                <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                                <div class="space-y-4 relative z-10">
+                                    <p class="text-[10px] font-black uppercase tracking-[0.4em] text-cyber-black/40">Active Yield Estimate</p>
+                                    <h3 class="text-7xl font-black text-cyber-black italic tracking-tighter" x-text="'$'+format(animatedPrice)"></h3>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-2 h-2 bg-cyber-black rounded-full animate-ping"></div>
+                                        <span class="text-[9px] font-black text-cyber-black uppercase">Live_Sync_Active</span>
+                                    </div>
                                 </div>
-                                <div class="space-y-4">
-                                    <div class="flex justify-between text-[10px] font-black text-cyber-black/70">
-                                        <span>CONFIDENCE_SCORE</span>
-                                        <span>94.2%</span>
+                                <div class="space-y-6 relative z-10">
+                                    <div class="flex justify-between text-[10px] font-black text-cyber-black/60">
+                                        <span>FIDELITY_SCORE</span>
+                                        <span x-text="fidelity + '%'"></span>
                                     </div>
-                                    <div class="w-full h-1.5 bg-cyber-black/10 rounded-full overflow-hidden">
-                                        <div class="h-full bg-cyber-black" style="width: 94%"></div>
+                                    <div class="w-full h-2 bg-cyber-black/10 rounded-full overflow-hidden">
+                                        <div class="h-full bg-cyber-black transition-all duration-1000" :style="'width: ' + fidelity + '%'"></div>
                                     </div>
-                                    <button class="w-full py-4 border-2 border-cyber-black text-cyber-black font-black uppercase tracking-widest text-xs hover:bg-cyber-black hover:text-cyber-neon transition-all">Verify Protocol</button>
+                                    <button class="w-full py-5 border-4 border-cyber-black text-cyber-black font-black uppercase tracking-widest text-xs hover:bg-cyber-black hover:text-cyber-neon transition-all duration-500">Sync Global Terminal</button>
                                 </div>
                             </div>
 
-                            <div class="glass-panel flex-1 p-8 space-y-6">
-                                <h4 class="text-[10px] font-black uppercase tracking-widest text-cyber-pink italic">Signal Decomposition</h4>
-                                <div class="space-y-4">
+                            <div class="glass-panel flex-1 p-10 space-y-10">
+                                <h4 class="text-[10px] font-black uppercase tracking-widest text-cyber-pink italic animate-flicker">Signal_Flow_Data</h4>
+                                <div class="space-y-8">
                                     <template x-for="sig in signals">
-                                        <div class="space-y-2">
-                                            <div class="flex justify-between text-[8px] font-bold uppercase tracking-widest text-slate-500">
+                                        <div class="space-y-3">
+                                            <div class="flex justify-between text-[9px] font-black uppercase tracking-widest text-slate-500">
                                                 <span x-text="sig.name"></span>
-                                                <span x-text="sig.val + '%'"></span>
+                                                <span class="text-white" x-text="sig.val + '%'"></span>
                                             </div>
                                             <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                                                <div class="h-full bg-cyber-pink" :style="'width: ' + sig.val + '%'"></div>
+                                                <div class="h-full bg-cyber-pink transition-all duration-1000" :style="'width: ' + sig.val + '%'"></div>
                                             </div>
                                         </div>
                                     </template>
@@ -227,64 +232,35 @@
                     </div>
                 </div>
 
-                <!-- Page: Analytics -->
-                <div x-show="page === 'analytics'" x-transition class="space-y-10">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <template x-for="m in markets">
-                            <div class="glass-panel p-8 hover:border-cyber-neon transition-all cursor-pointer group">
-                                <div class="flex justify-between items-start mb-6">
-                                    <h3 class="text-2xl font-black italic uppercase" x-text="m.name"></h3>
-                                    <span class="px-3 py-1 bg-cyber-neon/10 text-cyber-neon text-[8px] font-black uppercase tracking-widest border border-cyber-neon/20" x-text="m.trend"></span>
-                                </div>
-                                <p class="text-3xl font-black text-white mb-2" x-text="m.price"></p>
-                                <div class="w-full h-1 bg-white/5 rounded-full mt-4 overflow-hidden">
-                                    <div class="h-full bg-cyber-neon" :style="'width: ' + m.demand + '%'"></div>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-
             </div>
         </div>
-    </div>
-
-    <!-- System Toasts -->
-    <div x-show="toast" x-transition class="fixed bottom-10 right-10 z-[200] px-8 py-4 bg-cyber-neon text-cyber-black font-black uppercase italic text-xs shadow-2xl shadow-cyber-neon/30">
-        System Protocol Updated Successfully.
     </div>
 
     <script>
         function terminal() {
             return {
                 page: 'home',
-                toast: false,
+                booting: true,
+                bootProgress: 0,
+                uptime: '00:00:00',
                 result: 1250000,
+                animatedPrice: 1250000,
+                fidelity: 85,
                 form: { lat: 37.88, lon: -122.23, income: 8.5, age: 25 },
                 menu: [
-                    { id: 'home', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>' },
-                    { id: 'forecast', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline></svg>' },
-                    { id: 'analytics', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path></svg>' }
+                    { id: 'home', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>' },
+                    { id: 'forecast', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline></svg>' },
+                    { id: 'analytics', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path></svg>' }
                 ],
                 features: [
-                    { title: 'Yield Prediction', desc: '4.48x Market scaling engine with 0.85 fidelity.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"></path></svg>' },
-                    { title: 'Spatial Nodes', desc: 'Real-time coordinate mapping to primary economic hubs.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>' },
-                    { title: 'Zero Latency', desc: 'Optimized telemetry stream for instant market forecasting.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>' }
+                    { title: 'Yield Prediction', desc: '4.48x Market scaling engine with high-fidelity telemetry.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"></path></svg>' },
+                    { title: 'Spatial Mapping', desc: 'Real-time coordinate syncing to primary economic nodes.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>' },
+                    { title: 'Zero Latency', desc: 'Optimized data stream for instant market forecasting.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>' }
                 ],
-                markets: [
-                    { name: 'SF_NODE', price: '$1,240k', trend: '+14.2%', demand: 92 },
-                    { name: 'LA_NODE', price: '$980k', trend: '+9.1%', demand: 85 },
-                    { name: 'LDN_GRID', price: '£720k', trend: '+5.4%', demand: 78 }
-                ],
-                signals: [
-                    { name: 'LAT_LON_WEIGHT', val: 45 },
-                    { name: 'INCOME_FLUX', val: 32 },
-                    { name: 'NODE_CYCLE_AGE', val: 23 }
-                ],
-                get pageTitle() {
-                    return this.page === 'home' ? 'SYSTEM_OVERVIEW' : (this.page === 'forecast' ? 'FORECAST_LAB' : 'DATA_TELEMETRY');
-                },
+                signals: [ { name: 'COORD_WEIGHT', val: 45 }, { name: 'INCOME_FLUX', val: 32 }, { name: 'CYCLE_AGE', val: 23 } ],
                 init() {
+                    this.runBoot();
+                    this.startUptime();
                     this.$nextTick(() => {
                         this.map = L.map('main-map', { zoomControl: false }).setView([37.88, -122.23], 10);
                         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(this.map);
@@ -296,6 +272,27 @@
                         });
                     });
                 },
+                runBoot() {
+                    const int = setInterval(() => {
+                        this.bootProgress += Math.random() * 15;
+                        if (this.bootProgress >= 100) {
+                            this.bootProgress = 100;
+                            clearInterval(int);
+                            setTimeout(() => this.booting = false, 500);
+                        }
+                    }, 150);
+                },
+                startUptime() {
+                    let s = 0;
+                    setInterval(() => {
+                        s++;
+                        const h = Math.floor(s/3600).toString().padStart(2, '0');
+                        const m = Math.floor((s%3600)/60).toString().padStart(2, '0');
+                        const sec = (s%60).toString().padStart(2, '0');
+                        this.uptime = `${h}:${m}:${sec}`;
+                    }, 1000);
+                },
+                changePage(p) { this.page = p; this.calculate(); },
                 calculate() {
                     const base = 250000;
                     const multi = 4.48;
@@ -303,16 +300,25 @@
                     const ageVal = (52 - this.form.age) * 2000;
                     const d = Math.sqrt(Math.pow(this.form.lat - 37.7, 2) + Math.pow(this.form.lon + 122.4, 2));
                     const loc = Math.max(0.8, 1.5 - d);
-                    this.result = Math.round((base + incomeVal + ageVal) * multi * loc / 1000) * 1000;
+                    const target = Math.round((base + incomeVal + ageVal) * multi * loc / 1000) * 1000;
                     
-                    // Reactive Signal Shuffle
-                    this.signals.forEach(s => s.val = Math.floor(Math.random() * 20) + 15);
+                    this.animateValue(this.animatedPrice, target, 800, (v) => this.animatedPrice = v);
+                    this.fidelity = 85 + Math.floor(Math.random() * 10);
+                    this.signals.forEach(s => s.val = Math.floor(Math.random() * 30) + 10);
+                },
+                animateValue(start, end, duration, callback) {
+                    const startTime = performance.now();
+                    const run = (currentTime) => {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const value = Math.floor(start + (end - start) * progress);
+                        callback(value);
+                        if (progress < 1) requestAnimationFrame(run);
+                    };
+                    requestAnimationFrame(run);
                 },
                 format(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
-                toggleTheme() {
-                    this.toast = true;
-                    setTimeout(() => this.toast = false, 3000);
-                }
+                get pageTitle() { return this.page === 'home' ? 'TERMINAL_OVERVIEW' : 'FORECAST_PROTOCOL'; }
             }
         }
     </script>
