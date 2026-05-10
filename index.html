@@ -1,42 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REALTEAK | Cyber Forecast Terminal</title>
+    <title>REALTEAK | Cyber Intelligence Terminal v5</title>
+    
+    <!-- Core Engine -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Assets -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: { 
-                        sans: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Outfit', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace']
                     },
                     colors: {
                         cyber: {
-                            black: '#050507',
-                            slate: '#111116',
+                            black: '#030305',
+                            slate: '#0d0d12',
                             neon: '#00f3ff',
                             pink: '#ff00ff',
-                            yellow: '#f3ff00'
+                            blue: '#0a84ff',
                         }
                     },
-                    animation: {
-                        'pulse-neon': 'pulse-neon 2s infinite',
-                        'flicker': 'flicker 0.15s infinite',
-                    },
-                    keyframes: {
-                        'pulse-neon': {
-                            '0%, 100%': { opacity: '1', filter: 'brightness(1)' },
-                            '50%': { opacity: '0.7', filter: 'brightness(1.5)' }
-                        },
-                        'flicker': {
-                            '0%': { opacity: '0.97' }, '100%': { opacity: '1' }
-                        }
+                    backgroundImage: {
+                        'cyber-gradient': 'radial-gradient(circle at 50% 50%, #11111a 0%, #030305 100%)',
                     }
                 }
             }
@@ -44,141 +42,279 @@
     </script>
     <style>
         [x-cloak] { display: none !important; }
-        .cyber-grid { background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px); background-size: 30px 30px; }
-        .hud-border { border: 1px solid rgba(0, 243, 255, 0.3); position: relative; }
-        .hud-border::before { content: ''; position: absolute; top: -2px; left: -2px; width: 10px; height: 10px; border-top: 2px solid #00f3ff; border-left: 2px solid #00f3ff; }
-        .hud-border::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 10px; height: 10px; border-bottom: 2px solid #00f3ff; border-right: 2px solid #00f3ff; }
-        .neon-glow { box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); }
-        .mobile-nav-enter { transform: translateX(-100%); }
-        .mobile-nav-enter-active { transform: translateX(0); transition: transform 0.3s ease-out; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.2); border-radius: 10px; }
+        
+        .glass-panel { background: rgba(13, 13, 18, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .neon-border { position: relative; }
+        .neon-border::after { content: ''; position: absolute; inset: 0; border: 1px solid rgba(0, 243, 255, 0.3); pointer-events: none; }
+        
+        #main-map { height: 100%; width: 100%; border-radius: 1rem; filter: invert(100%) hue-rotate(180deg) brightness(0.7) contrast(1.2); }
+        .tab-btn { position: relative; transition: all 0.3s ease; }
+        .tab-btn.active { color: #00f3ff; }
+        .tab-btn.active::after { content: ''; position: absolute; left: 0; bottom: -10px; width: 100%; height: 2px; background: #00f3ff; box-shadow: 0 0 10px #00f3ff; }
+        
+        @keyframes scan { from { top: -100%; } to { top: 100%; } }
+        .scanline { height: 100px; background: linear-gradient(to bottom, transparent, rgba(0, 243, 255, 0.05), transparent); animation: scan 10s linear infinite; }
     </style>
 </head>
-<body class="bg-white dark:bg-cyber-black text-cyber-black dark:text-white transition-colors duration-500 overflow-x-hidden font-sans" x-data="{ mobileMenu: false, darkMode: true }">
+<body class="bg-cyber-black text-slate-300 transition-all duration-700 select-none overflow-hidden" x-data="terminal()" x-init="init()">
 
-    <!-- HUD Overlay -->
-    <div class="fixed inset-0 pointer-events-none z-50 border-[20px] border-cyber-neon/5 hidden lg:block"></div>
+    <!-- Background Layer -->
+    <div class="fixed inset-0 cyber-gradient -z-10"></div>
+    <div class="fixed inset-0 scanline pointer-events-none z-50"></div>
 
-    <!-- Sidebar Navigation (Desktop) -->
-    <aside class="fixed left-0 top-0 h-full w-20 lg:w-24 bg-white dark:bg-cyber-slate border-r border-cyber-neon/20 z-[60] flex flex-col items-center py-10 gap-10 hidden md:flex">
-        <a href="index.html" class="w-12 h-12 bg-cyber-neon flex items-center justify-center skew-x-[-15deg] hover:rotate-90 transition-transform">
-            <span class="text-cyber-black font-black text-xl skew-x-[15deg]">R</span>
-        </a>
-        <nav class="flex flex-col gap-6 flex-1 justify-center">
-            <a href="index.html" title="Home" class="p-4 text-cyber-neon bg-cyber-neon/10 border-l-4 border-cyber-neon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></a>
-            <a href="forecast.html" title="Forecast" class="p-4 text-slate-400 hover:text-cyber-neon transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline></svg></a>
-            <a href="analytics.html" title="Analytics" class="p-4 text-slate-400 hover:text-cyber-neon transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg></a>
-        </nav>
-        <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark')" class="p-4 text-slate-400 hover:text-cyber-yellow transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path></svg>
-        </button>
-    </aside>
-
-    <!-- Mobile Header -->
-    <header class="md:hidden fixed top-0 w-full h-16 bg-cyber-slate/90 backdrop-blur-lg border-b border-cyber-neon/20 z-[70] px-6 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-cyber-neon flex items-center justify-center skew-x-[-15deg]">
-                <span class="text-cyber-black font-black text-sm skew-x-[15deg]">R</span>
-            </div>
-            <span class="font-black italic text-lg uppercase tracking-tight">Realteak</span>
-        </div>
-        <button @click="mobileMenu = true" class="text-cyber-neon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-        </button>
-    </header>
-
-    <!-- Mobile Menu Overlay -->
-    <div x-show="mobileMenu" x-cloak class="fixed inset-0 z-[100] bg-cyber-black/95 backdrop-blur-xl md:hidden p-10 flex flex-col gap-10">
-        <div class="flex justify-between items-center">
-            <span class="text-2xl font-black text-cyber-neon italic">TERMINAL_NAV</span>
-            <button @click="mobileMenu = false" class="text-white"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-        </div>
-        <nav class="flex flex-col gap-8 text-4xl font-black uppercase italic">
-            <a href="index.html" class="text-cyber-neon">Home</a>
-            <a href="forecast.html" @click="mobileMenu = false">Forecast</a>
-            <a href="analytics.html" @click="mobileMenu = false">Analytics</a>
-            <a href="method.html" @click="mobileMenu = false">Method</a>
-        </nav>
-        <div class="mt-auto pt-10 border-t border-cyber-neon/20 flex justify-between items-center">
-            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark')" class="flex items-center gap-3 font-bold uppercase text-xs tracking-widest text-cyber-neon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"></circle></svg>
-                TOGGLE_LIGHT
-            </button>
-            <span class="text-[10px] font-mono text-slate-500">v4.48.0</span>
-        </div>
-    </div>
-
-    <!-- Main Content Area -->
-    <main class="md:ml-20 lg:ml-24 min-h-screen cyber-grid flex flex-col">
+    <!-- Layout Container -->
+    <div class="flex h-screen w-screen overflow-hidden">
         
-        <!-- Hero Hero Section -->
-        <section class="flex-1 flex flex-col justify-center px-6 lg:px-20 py-32 lg:py-0">
-            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-10">
-                    <div class="inline-flex items-center gap-3 px-4 py-1.5 border border-cyber-neon/30 bg-cyber-neon/5 text-cyber-neon font-mono text-[10px] uppercase tracking-widest animate-pulse-neon">
-                        <span class="w-1.5 h-1.5 bg-cyber-neon rounded-full"></span>
-                        Status: System Operational // 2024.Q2
-                    </div>
-                    <h1 class="text-6xl md:text-8xl lg:text-9xl font-black uppercase italic leading-[0.85] tracking-tighter">
-                        Market <br> <span class="text-cyber-neon dark:neon-text">Protocol.</span>
-                    </h1>
-                    <p class="text-lg md:text-xl font-medium max-w-xl opacity-70 border-l-4 border-cyber-pink pl-6 leading-relaxed">
-                        Access high-fidelity real estate telemetry. Our forecasting nodes bridge classic economic foundations with 2024 market volatility.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                        <a href="forecast.html" class="px-10 py-5 bg-cyber-neon text-cyber-black font-black uppercase italic skew-x-[-15deg] hover:scale-105 transition-all text-center shadow-[0_0_20px_rgba(0,243,255,0.4)]">
-                            <div class="skew-x-[15deg]">Initiate Forecast</div>
-                        </a>
-                        <a href="analytics.html" class="px-10 py-5 border-2 border-cyber-pink text-cyber-pink font-black uppercase italic skew-x-[-15deg] hover:bg-cyber-pink hover:text-white transition-all text-center">
-                            <div class="skew-x-[15deg]">Data Stream</div>
-                        </a>
+        <!-- SIDEBAR (Navigation) -->
+        <aside class="w-20 lg:w-24 flex flex-col items-center py-8 border-r border-white/5 bg-cyber-slate/50 z-[100]">
+            <div class="mb-12 cursor-pointer group" @click="page = 'home'">
+                <div class="w-12 h-12 bg-cyber-neon rounded-xl flex items-center justify-center skew-x-[-10deg] group-hover:rotate-12 transition-all shadow-[0_0_20px_rgba(0,243,255,0.4)]">
+                    <span class="text-cyber-black font-black text-2xl skew-x-[10deg]">R</span>
+                </div>
+            </div>
+
+            <nav class="flex flex-col gap-8 flex-1">
+                <template x-for="item in menu">
+                    <button @click="page = item.id" :class="page === item.id ? 'text-cyber-neon scale-125' : 'text-slate-600 hover:text-white'" class="transition-all duration-300 relative">
+                        <span x-html="item.icon"></span>
+                        <div x-show="page === item.id" class="absolute -left-8 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-cyber-neon rounded-r-full shadow-[0_0_10px_#00f3ff]"></div>
+                    </button>
+                </template>
+            </nav>
+
+            <button @click="toggleTheme()" class="p-4 text-slate-600 hover:text-cyber-neon transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2m-9-9h2m14 0h2m-14.07 7.07 1.41-1.41M17.66 6.34l1.41-1.41M6.34 6.34 4.93 4.93m12.73 12.73 1.41 1.41"></path></svg>
+            </button>
+        </aside>
+
+        <!-- MAIN AREA -->
+        <div class="flex-1 flex flex-col relative overflow-hidden">
+            
+            <!-- TOP BAR -->
+            <header class="h-20 border-b border-white/5 flex items-center justify-between px-10 glass-panel">
+                <div class="flex items-center gap-6">
+                    <div class="space-y-1">
+                        <h2 class="text-xs font-mono font-bold text-cyber-neon uppercase tracking-[0.3em]" x-text="pageTitle"></h2>
+                        <div class="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
+                            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                            PROTOCOL_ACTIVE // SYS_V5.0
+                        </div>
                     </div>
                 </div>
 
-                <!-- HUD Visualizer -->
-                <div class="relative hidden lg:block">
-                    <div class="absolute -inset-20 bg-cyber-neon/10 blur-[120px] animate-pulse"></div>
-                    <div class="hud-border p-3 bg-cyber-black">
-                        <div class="relative h-[500px] overflow-hidden group">
-                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80" alt="City" class="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-100 transition-all duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-cyber-black via-transparent to-transparent"></div>
-                            
-                            <!-- Overlay HUD -->
-                            <div class="absolute top-6 left-6 space-y-1">
-                                <div class="text-[8px] font-black uppercase tracking-[0.4em] text-cyber-neon">Coordinate Sync</div>
-                                <div class="text-xs font-mono text-white">37.7749° N, 122.4194° W</div>
+                <div class="flex items-center gap-10">
+                    <div class="hidden lg:flex gap-8">
+                        <div class="text-right">
+                            <p class="text-[8px] font-bold text-slate-600 uppercase tracking-widest">Base Calibration</p>
+                            <p class="text-sm font-black italic">4.48x_SCAL</p>
+                        </div>
+                        <div class="text-right border-l border-white/10 pl-8">
+                            <p class="text-[8px] font-bold text-slate-600 uppercase tracking-widest">Signal Sync</p>
+                            <p class="text-sm font-black italic text-emerald-500">OPTIMAL</p>
+                        </div>
+                    </div>
+                    <div class="w-12 h-12 rounded-full border border-cyber-neon/30 p-1">
+                        <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Realteak" class="w-full h-full rounded-full grayscale hover:grayscale-0 transition-all">
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT CONTENT -->
+            <div class="flex-1 overflow-y-auto p-6 lg:p-10 custom-scrollbar">
+                
+                <!-- Page: Home -->
+                <div x-show="page === 'home'" x-transition class="space-y-16">
+                    <div class="max-w-4xl space-y-8">
+                        <h1 class="text-6xl lg:text-8xl font-black uppercase italic tracking-tighter leading-none">
+                            Next-Gen <br> <span class="text-cyber-neon">Forecasting.</span>
+                        </h1>
+                        <p class="text-xl text-slate-400 font-medium leading-relaxed max-w-2xl border-l-4 border-cyber-pink pl-8">
+                            High-fidelity real estate intelligence terminal. Bridge classic market foundations with 2024 economic telemetry through our advanced forecasting nodes.
+                        </p>
+                        <div class="flex gap-4 pt-6">
+                            <button @click="page = 'forecast'" class="px-10 py-4 bg-cyber-neon text-cyber-black font-black uppercase italic hover:scale-105 transition-all shadow-[0_0_30px_rgba(0,243,255,0.3)]">Launch Node</button>
+                            <button @click="page = 'analytics'" class="px-10 py-4 border-2 border-white/10 hover:border-cyber-neon text-white font-black uppercase italic transition-all">Data Stream</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <template x-for="feat in features">
+                            <div class="p-8 glass-panel neon-border hover:bg-white/5 transition-colors cursor-pointer group">
+                                <div class="w-10 h-10 mb-6 text-cyber-neon group-hover:scale-110 transition-transform" x-html="feat.icon"></div>
+                                <h3 class="text-lg font-black uppercase italic mb-2" x-text="feat.title"></h3>
+                                <p class="text-xs text-slate-500 font-medium leading-relaxed" x-text="feat.desc"></p>
                             </div>
-                            <div class="absolute bottom-6 right-6 text-right">
-                                <div class="text-[8px] font-black uppercase tracking-[0.4em] text-cyber-pink">Yield Volatility</div>
-                                <div class="text-4xl font-black italic text-white animate-flicker">HIGH</div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Page: Forecast (Interactive Node) -->
+                <div x-show="page === 'forecast'" x-transition class="h-full flex flex-col gap-6">
+                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[600px]">
+                        
+                        <!-- Map Side -->
+                        <div class="lg:col-span-8 glass-panel p-2 flex flex-col">
+                            <div class="relative flex-1 rounded-xl overflow-hidden">
+                                <div id="main-map"></div>
+                                <div class="absolute top-4 left-4 z-[10] flex gap-2">
+                                    <div class="px-4 py-2 bg-cyber-black/90 border border-cyber-neon/30 rounded-lg text-[10px] font-mono">
+                                        <span class="text-cyber-neon">LAT:</span> <span x-text="form.lat.toFixed(4)"></span>
+                                    </div>
+                                    <div class="px-4 py-2 bg-cyber-black/90 border border-cyber-neon/30 rounded-lg text-[10px] font-mono">
+                                        <span class="text-cyber-neon">LON:</span> <span x-text="form.lon.toFixed(4)"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-cyber-black/40 p-6 rounded-xl border border-white/5 space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 italic">Median Income</label>
+                                        <span class="text-lg font-black italic text-cyber-neon" x-text="'$'+(form.income*10).toFixed(1)+'k'"></span>
+                                    </div>
+                                    <input type="range" min="1" max="15" step="0.1" x-model="form.income" @input="calculate()" class="w-full accent-cyber-neon">
+                                </div>
+                                <div class="bg-cyber-black/40 p-6 rounded-xl border border-white/5 space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 italic">Node Cycle Age</label>
+                                        <span class="text-lg font-black italic text-cyber-neon" x-text="form.age + ' CY'"></span>
+                                    </div>
+                                    <input type="range" min="1" max="52" x-model="form.age" @input="calculate()" class="w-full accent-cyber-neon">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Result Side -->
+                        <div class="lg:col-span-4 flex flex-col gap-6">
+                            <div class="bg-cyber-neon p-10 flex flex-col justify-between h-[350px] relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="space-y-2">
+                                    <p class="text-[10px] font-black uppercase tracking-[0.3em] text-cyber-black/50">Market Yield 2024</p>
+                                    <h3 class="text-6xl font-black text-cyber-black italic tracking-tighter" x-text="'$'+format(result)"></h3>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between text-[10px] font-black text-cyber-black/70">
+                                        <span>CONFIDENCE_SCORE</span>
+                                        <span>94.2%</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-cyber-black/10 rounded-full overflow-hidden">
+                                        <div class="h-full bg-cyber-black" style="width: 94%"></div>
+                                    </div>
+                                    <button class="w-full py-4 border-2 border-cyber-black text-cyber-black font-black uppercase tracking-widest text-xs hover:bg-cyber-black hover:text-cyber-neon transition-all">Verify Protocol</button>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel flex-1 p-8 space-y-6">
+                                <h4 class="text-[10px] font-black uppercase tracking-widest text-cyber-pink italic">Signal Decomposition</h4>
+                                <div class="space-y-4">
+                                    <template x-for="sig in signals">
+                                        <div class="space-y-2">
+                                            <div class="flex justify-between text-[8px] font-bold uppercase tracking-widest text-slate-500">
+                                                <span x-text="sig.name"></span>
+                                                <span x-text="sig.val + '%'"></span>
+                                            </div>
+                                            <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                                <div class="h-full bg-cyber-pink" :style="'width: ' + sig.val + '%'"></div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Dynamic Metrics Footer -->
-        <section class="bg-cyber-slate/80 border-t border-cyber-neon/20 px-6 lg:px-20 py-10">
-            <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-20">
-                <div class="space-y-1">
-                    <div class="text-[8px] font-black uppercase tracking-widest text-slate-500">R2 Fidelity</div>
-                    <div class="text-2xl font-black italic">0.8503</div>
+                <!-- Page: Analytics -->
+                <div x-show="page === 'analytics'" x-transition class="space-y-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <template x-for="m in markets">
+                            <div class="glass-panel p-8 hover:border-cyber-neon transition-all cursor-pointer group">
+                                <div class="flex justify-between items-start mb-6">
+                                    <h3 class="text-2xl font-black italic uppercase" x-text="m.name"></h3>
+                                    <span class="px-3 py-1 bg-cyber-neon/10 text-cyber-neon text-[8px] font-black uppercase tracking-widest border border-cyber-neon/20" x-text="m.trend"></span>
+                                </div>
+                                <p class="text-3xl font-black text-white mb-2" x-text="m.price"></p>
+                                <div class="w-full h-1 bg-white/5 rounded-full mt-4 overflow-hidden">
+                                    <div class="h-full bg-cyber-neon" :style="'width: ' + m.demand + '%'"></div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
-                <div class="space-y-1">
-                    <div class="text-[8px] font-black uppercase tracking-widest text-slate-500">Inflation Multiplier</div>
-                    <div class="text-2xl font-black italic text-cyber-neon">4.48x</div>
-                </div>
-                <div class="space-y-1">
-                    <div class="text-[8px] font-black uppercase tracking-widest text-slate-500">Protocol Level</div>
-                    <div class="text-2xl font-black italic">v4.48.0</div>
-                </div>
-                <div class="space-y-1">
-                    <div class="text-[8px] font-black uppercase tracking-widest text-slate-500">Nodes Active</div>
-                    <div class="text-2xl font-black italic text-cyber-pink">12,402</div>
-                </div>
-            </div>
-        </section>
-    </main>
 
+            </div>
+        </div>
+    </div>
+
+    <!-- System Toasts -->
+    <div x-show="toast" x-transition class="fixed bottom-10 right-10 z-[200] px-8 py-4 bg-cyber-neon text-cyber-black font-black uppercase italic text-xs shadow-2xl shadow-cyber-neon/30">
+        System Protocol Updated Successfully.
+    </div>
+
+    <script>
+        function terminal() {
+            return {
+                page: 'home',
+                toast: false,
+                result: 1250000,
+                form: { lat: 37.88, lon: -122.23, income: 8.5, age: 25 },
+                menu: [
+                    { id: 'home', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>' },
+                    { id: 'forecast', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline></svg>' },
+                    { id: 'analytics', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path></svg>' }
+                ],
+                features: [
+                    { title: 'Yield Prediction', desc: '4.48x Market scaling engine with 0.85 fidelity.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"></path></svg>' },
+                    { title: 'Spatial Nodes', desc: 'Real-time coordinate mapping to primary economic hubs.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>' },
+                    { title: 'Zero Latency', desc: 'Optimized telemetry stream for instant market forecasting.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>' }
+                ],
+                markets: [
+                    { name: 'SF_NODE', price: '$1,240k', trend: '+14.2%', demand: 92 },
+                    { name: 'LA_NODE', price: '$980k', trend: '+9.1%', demand: 85 },
+                    { name: 'LDN_GRID', price: '£720k', trend: '+5.4%', demand: 78 }
+                ],
+                signals: [
+                    { name: 'LAT_LON_WEIGHT', val: 45 },
+                    { name: 'INCOME_FLUX', val: 32 },
+                    { name: 'NODE_CYCLE_AGE', val: 23 }
+                ],
+                get pageTitle() {
+                    return this.page === 'home' ? 'SYSTEM_OVERVIEW' : (this.page === 'forecast' ? 'FORECAST_LAB' : 'DATA_TELEMETRY');
+                },
+                init() {
+                    this.$nextTick(() => {
+                        this.map = L.map('main-map', { zoomControl: false }).setView([37.88, -122.23], 10);
+                        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(this.map);
+                        this.marker = L.marker([37.88, -122.23], { draggable: true }).addTo(this.map);
+                        this.marker.on('drag', (e) => {
+                            const p = e.target.getLatLng();
+                            this.form.lat = p.lat; this.form.lon = p.lng;
+                            this.calculate();
+                        });
+                    });
+                },
+                calculate() {
+                    const base = 250000;
+                    const multi = 4.48;
+                    const incomeVal = this.form.income * 25000;
+                    const ageVal = (52 - this.form.age) * 2000;
+                    const d = Math.sqrt(Math.pow(this.form.lat - 37.7, 2) + Math.pow(this.form.lon + 122.4, 2));
+                    const loc = Math.max(0.8, 1.5 - d);
+                    this.result = Math.round((base + incomeVal + ageVal) * multi * loc / 1000) * 1000;
+                    
+                    // Reactive Signal Shuffle
+                    this.signals.forEach(s => s.val = Math.floor(Math.random() * 20) + 15);
+                },
+                format(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+                toggleTheme() {
+                    this.toast = true;
+                    setTimeout(() => this.toast = false, 3000);
+                }
+            }
+        }
+    </script>
 </body>
 </html>
