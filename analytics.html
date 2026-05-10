@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Node | REALTEAK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Space Grotesk', 'sans-serif'] },
+                    colors: {
+                        cyber: {
+                            black: '#020204',
+                            white: '#ffffff',
+                            neon: '#00f3ff',
+                            pink: '#ff00ff',
+                            yellow: '#f3ff00',
+                            slate: '#1a1a1e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .cyber-grid { background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
+        .cyber-card { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); }
+    </style>
+</head>
+<body class="bg-white dark:bg-cyber-black text-cyber-black dark:text-white transition-colors duration-500 cyber-grid" x-data="analytics()" x-init="darkMode = true">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-cyber-neon/20 bg-white/80 dark:bg-cyber-black/80 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-cyber-neon flex items-center justify-center skew-x-[-15deg]">
+                    <span class="text-cyber-black font-black text-xl skew-x-[15deg]">R</span>
+                </div>
+                <span class="text-2xl font-black uppercase italic tracking-tighter">Realteak</span>
+            </a>
+
+            <div class="hidden lg:flex items-center gap-10 font-bold uppercase tracking-widest text-[10px]">
+                <a href="index.html" class="hover:text-cyber-neon transition-colors">Index</a>
+                <a href="forecast.html" class="hover:text-cyber-neon transition-colors">Forecast</a>
+                <a href="analytics.html" class="text-cyber-neon border-b-2 border-cyber-neon pb-1">Analytics</a>
+                <a href="method.html" class="hover:text-cyber-neon transition-colors">Method</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button @click="document.documentElement.classList.toggle('dark')" class="p-2 border border-cyber-neon/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto space-y-16">
+        <div class="flex flex-col lg:flex-row justify-between items-end gap-6">
+            <div class="space-y-4">
+                <div class="inline-block px-3 py-1 bg-cyber-pink text-white font-black text-[9px] uppercase tracking-widest">
+                    Telemetry: Market Stream
+                </div>
+                <h2 class="text-5xl font-black uppercase tracking-tighter">Market <span class="text-cyber-neon italic">Nodes.</span></h2>
+            </div>
+            <div class="text-right">
+                <p class="text-[10px] font-black uppercase tracking-widest opacity-50">Global Saturation</p>
+                <div class="text-3xl font-black text-cyber-neon">92.4%</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <template x-for="item in properties">
+                <div class="cyber-card group border-2 border-cyber-neon/20 bg-white dark:bg-cyber-slate hover:border-cyber-neon transition-all duration-500 overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(0,243,255,0.1)]">
+                    <div class="relative h-64 overflow-hidden">
+                        <img :src="item.img" :alt="item.name" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+                        <div class="absolute bottom-6 left-6 px-4 py-1 bg-cyber-black/90 text-cyber-neon font-black italic border-l-4 border-cyber-neon shadow-lg" x-text="item.price"></div>
+                    </div>
+                    <div class="p-8 space-y-6">
+                        <div>
+                            <h4 class="text-xl font-black uppercase italic" x-text="item.name"></h4>
+                            <p class="text-[10px] font-bold opacity-50 uppercase tracking-widest" x-text="item.location"></p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-3 bg-cyber-neon/5 border border-cyber-neon/10 text-center">
+                                <p class="text-[8px] font-black opacity-40 uppercase mb-1">Yield Cap</p>
+                                <p class="font-black text-sm italic" x-text="item.rooms + ' NOD'"></p>
+                            </div>
+                            <div class="p-3 bg-cyber-pink/5 border border-cyber-pink/10 text-center">
+                                <p class="text-[8px] font-black opacity-40 uppercase mb-1">Protocol</p>
+                                <p class="font-black text-sm italic" x-text="item.beds + ' CY'"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <div class="cyber-card bg-cyber-black border-4 border-cyber-pink p-10 shadow-[0_0_40px_rgba(255,0,255,0.1)]">
+            <h3 class="text-2xl font-black uppercase italic text-cyber-pink mb-10 tracking-widest">Market Global Index</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="border-b border-cyber-pink/20">
+                        <tr>
+                            <th class="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-cyber-pink">Sector / Market</th>
+                            <th class="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-cyber-pink">Median Yield</th>
+                            <th class="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-cyber-pink">Frequency</th>
+                            <th class="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-cyber-pink">Saturation</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-cyber-pink/10">
+                        <template x-for="m in markets">
+                            <tr class="hover:bg-cyber-pink/5 transition-colors">
+                                <td class="px-6 py-8 font-black text-lg italic uppercase" x-text="m.country"></td>
+                                <td class="px-6 py-8 font-black text-xl text-cyber-neon" x-text="m.price"></td>
+                                <td class="px-6 py-8"><span class="px-3 py-1 bg-cyber-neon/10 border border-cyber-neon text-cyber-neon text-[9px] font-black uppercase tracking-widest" x-text="m.growth"></span></td>
+                                <td class="px-6 py-8 font-black text-cyber-pink" x-text="m.demand + '%'"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function analytics() {
+            return {
+                markets: [
+                    { country: 'SF NODE', price: '$1,240k', growth: 'ULTRA_HIGH', demand: 95 },
+                    { country: 'LA NODE', price: '$950k', growth: 'BULLISH', demand: 88 },
+                    { country: 'LDN SECTOR', price: '£740k', growth: 'STABLE', demand: 82 },
+                    { country: 'TOR CORE', price: '$1,150k', growth: 'HIGH_FREQ', demand: 90 },
+                    { country: 'SYD GRID', price: '$1,320k', growth: 'STEADY', demand: 85 },
+                ],
+                properties: [
+                    { name: 'Skyline Hub', location: 'San Francisco, CA', price: '$1,450,000', rooms: 5, beds: 3, img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80' },
+                    { name: 'Canyon Relay', location: 'Los Angeles, CA', price: '$1,890,000', rooms: 4, beds: 4, img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80' },
+                    { name: 'Harbor Gateway', location: 'San Diego, CA', price: '$2,100,000', rooms: 6, beds: 5, img: 'https://images.unsplash.com/photo-1600607687940-4e524cb350b1?w=800&q=80' },
+                ]
+            }
+        }
+    </script>
+</body>
+</html>

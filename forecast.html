@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecast Protocol | REALTEAK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Space Grotesk', 'sans-serif'] },
+                    colors: {
+                        cyber: {
+                            black: '#020204',
+                            white: '#ffffff',
+                            neon: '#00f3ff',
+                            pink: '#ff00ff',
+                            yellow: '#f3ff00',
+                            slate: '#1a1a1e'
+                        }
+                    },
+                    animation: {
+                        'scanline': 'scanline 8s linear infinite',
+                        'neon-pulse': 'neon-pulse 2s infinite ease-in-out',
+                    },
+                    keyframes: {
+                        scanline: { '0%': { top: '0%' }, '100%': { top: '100%' } },
+                        'neon-pulse': {
+                            '0%, 100%': { boxShadow: '0 0 20px #00f3ff' },
+                            '50%': { boxShadow: '0 0 40px #00f3ff' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .cyber-grid { background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
+        #map { height: 450px; border: 4px solid #00f3ff; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%); z-index: 10; filter: invert(90%) hue-rotate(180deg) brightness(1.2); }
+        .dark #map { filter: invert(100%) hue-rotate(180deg) brightness(0.8) contrast(1.2); }
+        .custom-slider { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(0, 243, 255, 0.2); outline: none; border: 1px solid rgba(0, 243, 255, 0.3); }
+        .custom-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 30px; background: #00f3ff; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 15px #00f3ff; }
+        .cyber-panel { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); }
+    </style>
+</head>
+<body class="bg-white dark:bg-cyber-black text-cyber-black dark:text-white transition-colors duration-500 cyber-grid" x-data="protocol()" x-init="initProtocol()">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-cyber-neon/20 bg-white/80 dark:bg-cyber-black/80 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-cyber-neon flex items-center justify-center skew-x-[-15deg]">
+                    <span class="text-cyber-black font-black text-xl skew-x-[15deg]">R</span>
+                </div>
+                <span class="text-2xl font-black uppercase italic tracking-tighter">Realteak</span>
+            </a>
+
+            <div class="hidden lg:flex items-center gap-10 font-bold uppercase tracking-widest text-[10px]">
+                <a href="index.html" class="hover:text-cyber-neon transition-colors">Index</a>
+                <a href="forecast.html" class="text-cyber-neon border-b-2 border-cyber-neon pb-1">Forecast</a>
+                <a href="analytics.html" class="hover:text-cyber-neon transition-colors">Analytics</a>
+                <a href="method.html" class="hover:text-cyber-neon transition-colors">Method</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark')" class="p-2 border border-cyber-neon/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        <!-- Left: Intelligence Inputs -->
+        <div class="lg:col-span-8 space-y-10">
+            <div class="space-y-4">
+                <div class="inline-block px-3 py-1 bg-cyber-neon text-cyber-black font-black text-[9px] uppercase tracking-widest">
+                    Manual Override: Location Stream
+                </div>
+                <div id="map" class="shadow-[0_0_30px_rgba(0,243,255,0.2)]"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="cyber-panel bg-white dark:bg-cyber-slate border-2 border-cyber-neon/30 p-8 space-y-8">
+                    <div class="flex justify-between items-center">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyber-neon">Node Income (Rel)</label>
+                        <span class="text-2xl font-black italic" x-text="'$'+(form.income*10).toFixed(1)+'k'"></span>
+                    </div>
+                    <input type="range" min="1" max="15" step="0.1" x-model="form.income" class="custom-slider" @input="updateProtocol()">
+                    <div class="flex justify-between text-[8px] font-bold text-slate-500 uppercase">
+                        <span>MIN_FLOW</span>
+                        <span>MAX_YIELD</span>
+                    </div>
+                </div>
+
+                <div class="cyber-panel bg-white dark:bg-cyber-slate border-2 border-cyber-neon/30 p-8 space-y-8">
+                    <div class="flex justify-between items-center">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyber-neon">Cycle Age</label>
+                        <span class="text-2xl font-black italic" x-text="form.age + ' CY'"></span>
+                    </div>
+                    <input type="range" min="1" max="52" x-model="form.age" class="custom-slider" @input="updateProtocol()">
+                    <div class="flex justify-between text-[8px] font-bold text-slate-500 uppercase">
+                        <span>NEW_GEN</span>
+                        <span>LEGACY_GEN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Forecast Output -->
+        <div class="lg:col-span-4 space-y-8">
+            <div class="cyber-panel bg-cyber-black border-4 border-cyber-neon p-10 text-white relative overflow-hidden group min-h-[450px] flex flex-col justify-between shadow-[0_0_50px_rgba(0,243,255,0.15)]">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-cyber-neon/10 rounded-full blur-[80px]"></div>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-cyber-neon animate-pulse"></div>
+                        <span class="text-[9px] font-black uppercase tracking-[0.4em] text-cyber-neon">Yield Projection 2024</span>
+                    </div>
+                    <div>
+                        <h2 class="text-7xl font-black italic tracking-tighter leading-none" x-text="'$'+formatNumber(resultPrice)"></h2>
+                        <div class="flex items-center gap-2 mt-4">
+                            <span class="px-2 py-0.5 bg-cyber-neon/10 border border-cyber-neon text-cyber-neon text-[8px] font-black uppercase tracking-widest">Conf: HIGH</span>
+                            <span class="px-2 py-0.5 bg-cyber-pink/10 border border-cyber-pink text-cyber-pink text-[8px] font-black uppercase tracking-widest">Market: BULL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="p-4 border border-cyber-neon/20 bg-cyber-neon/5 text-[9px] font-bold uppercase tracking-widest leading-relaxed opacity-70">
+                        System status: 110% Operational. <br>
+                        Calibration: 2024.Q2 // Protocol V4.48 <br>
+                        Infl. Scaling: Applied_Full
+                    </div>
+                    <button class="w-full py-5 bg-cyber-neon text-cyber-black font-black uppercase text-sm tracking-[0.2em] hover:scale-105 transition-all shadow-[0_0_30px_#00f3ff]">
+                        SYNC TERMINAL
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Table -->
+            <div class="cyber-panel border-2 border-cyber-pink/30 p-8 space-y-6 bg-white dark:bg-cyber-slate/50">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-cyber-pink">Economic Telemetry</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center py-2 border-b border-cyber-pink/10">
+                        <span class="text-[10px] font-bold opacity-50 uppercase">Base Rate</span>
+                        <span class="font-black text-sm italic">$877,400</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-cyber-pink/10">
+                        <span class="text-[10px] font-bold opacity-50 uppercase">Volatility</span>
+                        <span class="font-black text-sm italic text-cyber-neon">LOW_STABLE</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-[10px] font-bold opacity-50 uppercase">Demand Pulse</span>
+                        <span class="font-black text-sm italic text-cyber-pink">HIGH_FREQ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function protocol() {
+            return {
+                darkMode: true,
+                map: null,
+                marker: null,
+                resultPrice: 1250000,
+                form: {
+                    longitude: -122.23,
+                    latitude: 37.88,
+                    age: 25,
+                    income: 8.5
+                },
+                initProtocol() {
+                    this.$nextTick(() => {
+                        this.map = L.map('map', { zoomControl: false, scrollWheelZoom: false }).setView([37.88, -122.23], 10);
+                        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(this.map);
+                        this.marker = L.marker([37.88, -122.23], { draggable: true }).addTo(this.map);
+                        
+                        this.marker.on('drag', (e) => {
+                            const pos = e.target.getLatLng();
+                            this.form.latitude = pos.lat;
+                            this.form.longitude = pos.lng;
+                            this.updateProtocol();
+                        });
+                        this.map.on('click', (e) => {
+                            this.marker.setLatLng(e.latlng);
+                            this.form.latitude = e.latlng.lat;
+                            this.form.longitude = e.latlng.lng;
+                            this.updateProtocol();
+                        });
+                        this.updateProtocol();
+                    });
+                },
+                updateProtocol() {
+                    const base = 250000;
+                    const multiplier = 4.48;
+                    const incomeImpact = this.form.income * 25000;
+                    const ageImpact = (52 - this.form.age) * 2000;
+                    const distToCenter = Math.sqrt(Math.pow(this.form.latitude - 37.7, 2) + Math.pow(this.form.longitude + 122.4, 2));
+                    const locationImpact = Math.max(0.8, 1.5 - distToCenter);
+                    this.resultPrice = Math.round((base + incomeImpact + ageImpact) * multiplier * locationImpact / 1000) * 1000;
+                },
+                formatNumber(num) {
+                    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+            }
+        }
+    </script>
+</body>
+</html>

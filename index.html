@@ -1,39 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Realteak Pro | Hyper-Interactive Real Estate AI</title>
-    
-    <!-- Dependencies -->
+    <title>REALTEAK | Future of Forecasting</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    fontFamily: { sans: ['Space Grotesk', 'sans-serif'] },
                     colors: {
-                        primary: {
-                            50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc',
-                            400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1',
-                            800: '#075985', 900: '#0c4a6e',
-                        },
+                        cyber: {
+                            black: '#020204',
+                            white: '#ffffff',
+                            neon: '#00f3ff',
+                            pink: '#ff00ff',
+                            yellow: '#f3ff00',
+                            slate: '#1a1a1e'
+                        }
                     },
                     animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'spin-slow': 'spin 8s linear infinite',
+                        'glitch': 'glitch 1s infinite linear alternate-reverse',
+                        'scanline': 'scanline 8s linear infinite',
+                        'neon-pulse': 'neon-pulse 2s infinite ease-in-out',
                     },
                     keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
+                        glitch: {
+                            '0%': { transform: 'translate(0)' },
+                            '20%': { transform: 'translate(-2px, 2px)' },
+                            '40%': { transform: 'translate(-2px, -2px)' },
+                            '60%': { transform: 'translate(2px, 2px)' },
+                            '80%': { transform: 'translate(2px, -2px)' },
+                            '100%': { transform: 'translate(0)' },
+                        },
+                        scanline: {
+                            '0%': { top: '0%' },
+                            '100%': { top: '100%' }
+                        },
+                        'neon-pulse': {
+                            '0%, 100%': { boxShadow: '0 0 20px #00f3ff, inset 0 0 10px #00f3ff' },
+                            '50%': { boxShadow: '0 0 40px #00f3ff, inset 0 0 20px #00f3ff' }
                         }
                     }
                 }
@@ -42,286 +52,117 @@
     </script>
     <style>
         [x-cloak] { display: none !important; }
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .dark .glass { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .neo-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .neo-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.15); }
-        #map { height: 400px; border-radius: 2rem; z-index: 10; }
-        .custom-slider { -webkit-appearance: none; width: 100%; height: 6px; background: #e2e8f0; border-radius: 5px; outline: none; }
-        .custom-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: #0ea5e9; border-radius: 50%; cursor: pointer; border: 4px solid white; box-shadow: 0 0 10px rgba(14, 165, 233, 0.3); }
+        .cyber-border { border: 2px solid; border-image: linear-gradient(45deg, #00f3ff, #ff00ff) 1; }
+        .neon-text { text-shadow: 0 0 10px #00f3ff, 0 0 20px #00f3ff; }
+        .pink-text { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff; }
+        .cyber-grid { background-image: linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px); background-size: 50px 50px; }
+        .dark .cyber-grid { background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px); }
+        .cyber-card { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-500" x-data="app()" x-init="initMap()" x-cloak>
-    
-    <!-- Background Decor -->
-    <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
-        <div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary-200/20 dark:bg-primary-900/10 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-200/20 dark:bg-emerald-900/10 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s"></div>
-    </div>
+<body class="bg-white dark:bg-cyber-black text-cyber-black dark:text-white transition-colors duration-500 overflow-x-hidden" x-data="{ darkMode: true }" :class="darkMode ? 'dark' : ''" x-init="darkMode = true">
 
-    <!-- Interactive Navigation -->
-    <nav class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-5xl z-[100] glass rounded-[2rem] px-8 h-20 flex items-center justify-between shadow-2xl shadow-slate-200/50 dark:shadow-none">
-        <div class="flex items-center gap-2 cursor-pointer group" @click="tab = 'home'">
-            <div class="p-2 bg-primary-600 rounded-xl group-hover:rotate-12 transition-transform">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    <!-- Scanline Effect -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-cyber-neon/10 z-[1000] pointer-events-none animate-scanline opacity-20"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-cyber-neon/20 bg-white/80 dark:bg-cyber-black/80 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 bg-cyber-neon flex items-center justify-center skew-x-[-15deg] group-hover:skew-x-[15deg] transition-transform">
+                    <span class="text-cyber-black font-black text-2xl skew-x-[15deg] group-hover:skew-x-[-15deg]">R</span>
+                </div>
+                <span class="text-3xl font-black tracking-tighter uppercase italic">Realteak</span>
+            </a>
+
+            <div class="hidden lg:flex items-center gap-12 font-bold uppercase tracking-widest text-xs">
+                <a href="index.html" class="text-cyber-neon border-b-2 border-cyber-neon pb-1">Index</a>
+                <a href="forecast.html" class="hover:text-cyber-neon transition-colors">Forecast</a>
+                <a href="analytics.html" class="hover:text-cyber-neon transition-colors">Analytics</a>
+                <a href="method.html" class="hover:text-cyber-neon transition-colors">Method</a>
             </div>
-            <span class="text-xl font-black tracking-tighter">Realteak <span class="text-primary-500">PRO</span></span>
-        </div>
 
-        <div class="hidden lg:flex items-center gap-1">
-            <button @click="tab = 'home'" :class="tab === 'home' ? 'bg-primary-500 text-white shadow-lg' : 'hover:bg-slate-100 dark:hover:bg-white/5'" class="px-6 py-2.5 rounded-2xl font-bold text-sm transition-all">Studio</button>
-            <button @click="tab = 'predict'" :class="tab === 'predict' ? 'bg-primary-500 text-white shadow-lg' : 'hover:bg-slate-100 dark:hover:bg-white/5'" class="px-6 py-2.5 rounded-2xl font-bold text-sm transition-all">Predictor</button>
-            <button @click="tab = 'market'" :class="tab === 'market' ? 'bg-primary-500 text-white shadow-lg' : 'hover:bg-slate-100 dark:hover:bg-white/5'" class="px-6 py-2.5 rounded-2xl font-bold text-sm transition-all">Analytics</button>
-        </div>
-
-        <div class="flex items-center gap-4">
-            <button @click="darkMode = !darkMode; document.documentElement.classList.toggle('dark')" class="p-3 bg-slate-100 dark:bg-white/10 rounded-2xl hover:scale-110 transition-all">
-                <template x-if="!darkMode"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></template>
-                <template x-if="darkMode"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></template>
-            </button>
-            <button class="px-6 py-3 bg-slate-900 dark:bg-white dark:text-slate-900 text-white rounded-2xl font-bold text-sm hover:scale-105 transition-all hidden sm:block">Get Started</button>
+            <div class="flex items-center gap-6">
+                <button @click="darkMode = !darkMode" class="p-3 border-2 border-cyber-neon/30 hover:border-cyber-neon transition-all">
+                    <svg x-show="!darkMode" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                    <svg x-show="darkMode" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                </button>
+                <a href="forecast.html" class="px-8 py-3 bg-cyber-neon text-cyber-black font-black skew-x-[-15deg] hover:scale-110 transition-all shadow-[0_0_20px_#00f3ff]">
+                    <div class="skew-x-[15deg]">CONNECT</div>
+                </a>
+            </div>
         </div>
     </nav>
 
-    <!-- Main Dynamic Content -->
-    <main class="pt-40 pb-20 px-6 max-w-7xl mx-auto">
-        
-        <!-- Tab: Studio (Home) -->
-        <div x-show="tab === 'home'" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-24">
-            <section class="text-center space-y-8">
-                <div class="inline-flex items-center gap-3 px-6 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-600 rounded-full font-black text-[10px] uppercase tracking-widest animate-bounce">
-                    <span class="w-2 h-2 bg-primary-500 rounded-full"></span>
-                    Interactive AI Lab
+    <!-- Hero Section -->
+    <main class="relative min-h-screen flex items-center pt-24 cyber-grid">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div class="space-y-10 relative z-10">
+                <div class="inline-block px-4 py-1 border-l-4 border-cyber-neon bg-cyber-neon/10 font-bold uppercase tracking-[0.3em] text-xs">
+                    Protocol: Future Markets 2024
                 </div>
-                <h1 class="text-7xl lg:text-9xl font-black tracking-tighter leading-none bg-gradient-to-b from-slate-900 to-slate-500 dark:from-white dark:to-slate-500 bg-clip-text text-transparent">
-                    Visualize <br> The Market.
+                <h1 class="text-7xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.8] italic">
+                    Forecast <br> <span class="dark:neon-text text-cyber-neon">Everything.</span>
                 </h1>
-                <p class="text-xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed italic">
-                    "Predicting real estate is no longer about spreadsheets. It's about immersive data interaction."
+                <p class="text-xl font-medium max-w-xl border-l-2 border-cyber-neon/30 pl-8 opacity-80 leading-relaxed">
+                    Access the most advanced real estate intelligence network. High-fidelity predictive modeling for the next generation of property investment.
                 </p>
-                <div class="flex justify-center gap-6 pt-10">
-                    <button @click="tab = 'predict'" class="w-20 h-20 bg-primary-600 text-white rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-2xl shadow-primary-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
-                    </button>
-                    <div class="text-left py-2">
-                        <p class="text-sm font-black uppercase tracking-widest text-slate-400">Launch Lab</p>
-                        <p class="text-lg font-bold">Start Forecasting</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Interactive Metrics -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <template x-for="stat in ['85% Accuracy', '2024 Market', 'Spatial AI', 'Live Feed']">
-                    <div class="p-8 glass rounded-[2.5rem] text-center neo-card group cursor-pointer">
-                        <div class="w-12 h-12 bg-slate-50 dark:bg-white/5 rounded-2xl mx-auto mb-4 flex items-center justify-center group-hover:bg-primary-500 group-hover:text-white transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        </div>
-                        <p class="text-lg font-black tracking-tight" x-text="stat"></p>
-                    </div>
-                </template>
-            </div>
-        </div>
-
-        <!-- Tab: Predictor (Interactive Lab) -->
-        <div x-show="tab === 'predict'" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            
-            <!-- Map Picker -->
-            <div class="lg:col-span-8 space-y-8">
-                <div class="glass p-4 rounded-[3rem] shadow-2xl relative overflow-hidden group">
-                    <div id="map"></div>
-                    <div class="absolute top-8 left-8 z-[100] px-6 py-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl font-bold shadow-xl border border-white/20">
-                        <p class="text-[10px] uppercase tracking-widest text-primary-500 mb-1">Active Region</p>
-                        <p class="text-sm" x-text="'Lat: ' + form.latitude.toFixed(4) + ' | Lon: ' + form.longitude.toFixed(4)"></p>
-                    </div>
-                </div>
-
-                <!-- Live Sliders -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="glass p-10 rounded-[2.5rem] space-y-6">
-                        <div class="flex justify-between items-center">
-                            <label class="text-xs font-black uppercase tracking-widest text-slate-400">Median Income</label>
-                            <span class="text-xl font-black text-primary-600" x-text="'$' + (form.income * 10).toFixed(1) + 'k'"></span>
-                        </div>
-                        <input type="range" min="1" max="15" step="0.1" x-model="form.income" class="custom-slider" @input="updatePreview()">
-                        <p class="text-[10px] text-slate-400 font-medium">Higher income blocks significantly drive valuation premium.</p>
-                    </div>
-                    <div class="glass p-10 rounded-[2.5rem] space-y-6">
-                        <div class="flex justify-between items-center">
-                            <label class="text-xs font-black uppercase tracking-widest text-slate-400">Housing Age</label>
-                            <span class="text-xl font-black text-primary-600" x-text="form.age + ' yrs'"></span>
-                        </div>
-                        <input type="range" min="1" max="52" x-model="form.age" class="custom-slider" @input="updatePreview()">
-                        <p class="text-[10px] text-slate-400 font-medium">Historic blocks (50+) often hold stable market value.</p>
-                    </div>
+                <div class="flex flex-col sm:flex-row gap-6 pt-6">
+                    <a href="forecast.html" class="px-12 py-5 bg-cyber-pink text-white font-black uppercase tracking-widest skew-x-[-15deg] hover:shadow-[0_0_30px_#ff00ff] transition-all">
+                        <div class="skew-x-[15deg]">Start Protocol</div>
+                    </a>
+                    <a href="analytics.html" class="px-12 py-5 border-2 border-cyber-neon text-cyber-neon font-black uppercase tracking-widest skew-x-[-15deg] hover:bg-cyber-neon hover:text-cyber-black transition-all">
+                        <div class="skew-x-[15deg]">Data Stream</div>
+                    </a>
                 </div>
             </div>
 
-            <!-- Analysis Engine -->
-            <div class="lg:col-span-4 space-y-8">
-                <div class="bg-slate-950 dark:bg-white text-white dark:text-slate-950 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden group min-h-[400px] flex flex-col justify-between">
-                    <div class="absolute top-0 right-0 w-40 h-40 bg-primary-500/30 rounded-full blur-[80px]"></div>
+            <!-- Visual Component -->
+            <div class="relative group">
+                <div class="absolute -inset-10 bg-cyber-neon/20 blur-[100px] animate-pulse"></div>
+                <div class="relative cyber-card border-4 border-cyber-neon p-2 bg-cyber-black overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80" alt="Cyber City" class="w-full h-[600px] object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700">
+                    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-cyber-black to-transparent"></div>
                     
-                    <div>
-                        <p class="text-[10px] font-black uppercase tracking-[0.2em] opacity-50 mb-4">Real-Time Estimation</p>
-                        <div class="space-y-2">
-                            <h2 class="text-6xl font-black tracking-tight" x-text="'$' + formatNumber(resultPrice)"></h2>
-                            <p class="text-xs font-bold text-emerald-400" x-show="resultPrice > 870000">▲ Above California Median</p>
-                            <p class="text-xs font-bold text-primary-400" x-show="resultPrice <= 870000">▼ Below California Median</p>
+                    <!-- HUD Elements -->
+                    <div class="absolute top-10 right-10 text-right space-y-2">
+                        <div class="text-[10px] font-black uppercase tracking-widest text-cyber-neon">Market Saturation</div>
+                        <div class="text-3xl font-black italic">89.2%</div>
+                        <div class="w-32 h-1 bg-cyber-neon/30 ml-auto overflow-hidden">
+                            <div class="w-2/3 h-full bg-cyber-neon"></div>
                         </div>
                     </div>
 
-                    <div class="space-y-6">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold opacity-40 uppercase">Confidence</span>
-                            <div class="flex gap-1">
-                                <template x-for="i in 5">
-                                    <div class="w-4 h-1 rounded-full bg-primary-500" :class="i <= 4 ? 'opacity-100' : 'opacity-20'"></div>
-                                </template>
+                    <div class="absolute bottom-10 left-10 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 border-2 border-cyber-pink flex items-center justify-center rounded-full animate-spin-slow">
+                                <div class="w-8 h-8 border-2 border-cyber-neon flex items-center justify-center rounded-full"></div>
                             </div>
-                        </div>
-                        <button @click="generateReport()" class="w-full py-4 bg-primary-600 text-white dark:text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary-500/20">Generate PDF Insight</button>
-                    </div>
-                </div>
-
-                <!-- Interactive Chart -->
-                <div class="glass p-8 rounded-[3rem]">
-                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-6">Price Breakdown</h4>
-                    <canvas id="priceChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab: Analytics (Global) -->
-        <div x-show="tab === 'market'" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-10" x-transition:enter-end="opacity-100 translate-x-0" class="space-y-10">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <template x-for="item in analytics">
-                    <div class="glass p-8 rounded-[2.5rem] neo-card">
-                        <div class="flex justify-between items-start mb-8">
                             <div>
-                                <h3 class="text-3xl font-black" x-text="item.price"></h3>
-                                <p class="text-sm font-bold text-slate-400 uppercase tracking-widest" x-text="item.city"></p>
+                                <div class="text-[8px] font-black uppercase tracking-[0.3em] text-cyber-pink">Core Intelligence</div>
+                                <div class="text-lg font-black italic">ACTIVE_STREAM</div>
                             </div>
-                            <span class="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full font-black text-[10px]" x-text="item.growth"></span>
                         </div>
-                        <div class="h-2 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary-500" :style="'width: ' + item.demand + '%'"></div>
-                        </div>
-                        <p class="mt-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Market Saturation: <span class="text-slate-900 dark:text-white" x-text="item.demand + '%'"></span></p>
                     </div>
-                </template>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Interactive Toast -->
-    <div x-show="toast.show" x-transition class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] px-8 py-4 bg-slate-900 text-white rounded-2xl shadow-2xl flex items-center gap-4 font-bold text-sm">
-        <div class="p-1 bg-emerald-500 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-        <span x-text="toast.message"></span>
-    </div>
+    <!-- Footer -->
+    <footer class="py-20 border-t-4 border-cyber-neon bg-cyber-black text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:row items-center justify-between gap-10">
+            <div class="text-4xl font-black italic tracking-tighter uppercase">Realteak</div>
+            <div class="flex gap-10 text-xs font-bold uppercase tracking-widest">
+                <a href="#" class="hover:text-cyber-neon transition-colors">Terminals</a>
+                <a href="#" class="hover:text-cyber-neon transition-colors">Security</a>
+                <a href="#" class="hover:text-cyber-neon transition-colors">Nodes</a>
+            </div>
+            <div class="text-[10px] font-medium opacity-50 uppercase tracking-widest">
+                System Version 4.48 // 2024 Build
+            </div>
+        </div>
+    </nav>
 
-    <script>
-        function app() {
-            return {
-                tab: 'home',
-                darkMode: false,
-                mobileMenu: false,
-                map: null,
-                marker: null,
-                resultPrice: 1250000,
-                toast: { show: false, message: '' },
-                form: {
-                    longitude: -122.23,
-                    latitude: 37.88,
-                    age: 25,
-                    income: 8.5,
-                    ocean: 'NEAR BAY'
-                },
-                analytics: [
-                    { city: 'San Francisco', price: '$1,420k', growth: '+14.2%', demand: 92 },
-                    { city: 'Los Angeles', price: '$980k', growth: '+9.1%', demand: 85 },
-                    { city: 'London', price: '£720k', growth: '+5.4%', demand: 78 }
-                ],
-                initMap() {
-                    this.$nextTick(() => {
-                        this.map = L.map('map', { zoomControl: false }).setView([37.88, -122.23], 10);
-                        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                            attribution: '©OpenStreetMap'
-                        }).addTo(this.map);
-
-                        this.marker = L.marker([37.88, -122.23], { draggable: true }).addTo(this.map);
-                        
-                        this.marker.on('drag', (e) => {
-                            const pos = e.target.getLatLng();
-                            this.form.latitude = pos.lat;
-                            this.form.longitude = pos.lng;
-                            this.updatePreview();
-                        });
-
-                        this.map.on('click', (e) => {
-                            this.marker.setLatLng(e.latlng);
-                            this.form.latitude = e.latlng.lat;
-                            this.form.longitude = e.latlng.lng;
-                            this.updatePreview();
-                        });
-
-                        this.initChart();
-                    });
-                },
-                initChart() {
-                    const ctx = document.getElementById('priceChart').getContext('2d');
-                    this.chart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['Location', 'Income', 'Age', 'Rooms'],
-                            datasets: [{
-                                data: [40, 30, 15, 15],
-                                backgroundColor: ['#0ea5e9', '#10b981', '#f59e0b', '#6366f1'],
-                                borderWidth: 0,
-                                hoverOffset: 10
-                            }]
-                        },
-                        options: {
-                            cutout: '80%',
-                            plugins: { legend: { display: false } },
-                            animation: { animateRotate: true }
-                        }
-                    });
-                },
-                updatePreview() {
-                    // Hyper-reactive pseudo-logic for instant feedback
-                    const base = 250000;
-                    const multiplier = 4.48; // 2024 Market scaling
-                    const incomeImpact = this.form.income * 25000;
-                    const ageImpact = (52 - this.form.age) * 2000;
-                    
-                    // Simple distance heuristic for interactivity
-                    const distToCenter = Math.sqrt(Math.pow(this.form.latitude - 37.7, 2) + Math.pow(this.form.longitude + 122.4, 2));
-                    const locationImpact = Math.max(0.8, 1.5 - distToCenter);
-                    
-                    this.resultPrice = Math.round((base + incomeImpact + ageImpact) * multiplier * locationImpact / 1000) * 1000;
-                    
-                    // Update chart randomly for visual pop
-                    if (this.chart) {
-                        this.chart.data.datasets[0].data = [
-                            40 + (Math.random() * 10 - 5),
-                            30 + (Math.random() * 10 - 5),
-                            15 + (Math.random() * 6 - 3),
-                            15 + (Math.random() * 6 - 3)
-                        ];
-                        this.chart.update('none');
-                    }
-                },
-                formatNumber(num) {
-                    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                },
-                generateReport() {
-                    this.toast.show = true;
-                    this.toast.message = 'Insight Engine generating property report...';
-                    setTimeout(() => { this.toast.show = false }, 3000);
-                }
-            }
-        }
-    </script>
 </body>
 </html>
