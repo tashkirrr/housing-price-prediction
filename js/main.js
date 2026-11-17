@@ -13,11 +13,12 @@ function toggleNav() {
 
 // Hero search function
 function heroSearch() {
-    const location = document.getElementById('heroSearch').value;
+    const location = document.getElementById('heroSearch').value.trim();
+    const explorePage = 'global-housing-static/explore.html';
     if (location) {
-        window.location.href = `explore.html?search=${encodeURIComponent(location)}`;
+        window.location.href = `${explorePage}?search=${encodeURIComponent(location)}`;
     } else {
-        window.location.href = 'explore.html';
+        window.location.href = explorePage;
     }
 }
 
