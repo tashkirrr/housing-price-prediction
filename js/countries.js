@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <h3>${country.name}</h3>
             <div class="stats">
                 ${cityCount} cities • Currency: ${country.currency}<br>
-                Avg: ${formatCurrency(country.avgPricePerSqft, country.currency)}/sq ft
+                Sample price: ${formatCurrency(country.avgPricePerSqft, country.currency)}/sq ft
             </div>
         `;
         

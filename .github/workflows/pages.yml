@@ -25,10 +25,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v4
+      - name: Prepare the canonical site
+        run: |
+          mkdir -p _site/css _site/js
+          cp index.html explore.html predict.html countries.html about.html forecast.html analytics.html method.html _site/
+          cp css/style.css css/home.css _site/css/
+          cp js/main.js js/explore.js js/predict.js js/countries.js _site/js/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
