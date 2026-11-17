@@ -3,7 +3,12 @@
 // Mobile navigation toggle
 function toggleNav() {
     const navLinks = document.getElementById('navLinks');
-    navLinks.classList.toggle('active');
+    const navToggle = document.querySelector('.nav-toggle');
+    if (!navLinks || !navToggle) return;
+
+    const isOpen = navLinks.classList.toggle('active');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
 }
 
 // Hero search function
@@ -166,6 +171,28 @@ function getCityEmoji(cityName, countryCode) {
 
 // Populate featured properties on homepage
 document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.getElementById('heroSearchForm');
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            heroSearch();
+        });
+    }
+
+    const navLinks = document.getElementById('navLinks');
+    if (navLinks) {
+        navLinks.addEventListener('click', function(event) {
+            if (event.target instanceof Element && event.target.closest('a')) {
+                navLinks.classList.remove('active');
+                const navToggle = document.querySelector('.nav-toggle');
+                if (navToggle) {
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navToggle.setAttribute('aria-label', 'Open navigation menu');
+                }
+            }
+        });
+    }
+
     const propertiesGrid = document.getElementById('propertiesGrid');
     if (propertiesGrid) {
         globalData.featuredProperties.forEach(prop => {
